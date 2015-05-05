@@ -1,3 +1,5 @@
-include ':orc-engine-android', ':orc-engine-core', ':live-sdk'
-project(':orc-engine-core').projectDir = new File('core/orc-engine-core')
-project(':live-sdk').projectDir = new File('core/live-sdk')
+include ':orc-engine-android'
+//        ':orc-engine-core',
+//        ':live-sdk'
+//project(':orc-engine-core').projectDir = new File('core/orc-engine-core')
+//project(':live-sdk').projectDir = new File('core/live-sdk')

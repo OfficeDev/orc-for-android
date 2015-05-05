@@ -3,6 +3,7 @@ buildscript {
     repositories {
         jcenter()
     }
+
     dependencies {
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:0.6"
         classpath 'com.android.tools.build:gradle:1.0.0'
@@ -23,9 +24,13 @@ allprojects {
 
     repositories {
         jcenter()
+
+        maven {
+            url "http://dl.bintray.com/msopentech/Maven"
+        }
     }
 
     apply plugin: 'idea'
-    group = 'com.microsoft.services'
-    version = '0.13.0'
+    group = 'com.microsoft.orc.android'
+    version = '0.14.0'
 }
