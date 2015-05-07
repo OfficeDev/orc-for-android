@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 
 ext {
-    PUBLISH_ARTIFACT_ID = 'odata-engine-android'
+    PUBLISH_ARTIFACT_ID = 'orc-engine-android'
 }
 
 android {
