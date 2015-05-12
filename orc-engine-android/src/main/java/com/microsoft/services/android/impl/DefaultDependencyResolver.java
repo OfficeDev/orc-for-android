@@ -4,7 +4,6 @@ import android.os.Build;
 
 import com.microsoft.services.orc.Constants;
 import com.microsoft.services.android.impl.http.AndroidHttpTransport;
-import com.microsoft.services.android.impl.LoggerImpl;
 import com.microsoft.services.orc.impl.OrcURLImpl;
 import com.microsoft.services.orc.impl.http.RequestImpl;
 import com.microsoft.services.orc.interfaces.Credentials;

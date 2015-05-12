@@ -11,7 +11,6 @@ import com.microsoft.services.orc.interfaces.Response;
 import com.microsoft.services.orc.impl.http.BaseHttpTransport;
 import com.microsoft.services.orc.impl.http.NetworkRunnable;
 
-
 /**
  * The type Android http transport.
  */

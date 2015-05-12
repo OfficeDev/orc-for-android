@@ -3,7 +3,6 @@ package com.microsoft.services.android.impl;
 import android.util.Log;
 
 import com.microsoft.services.orc.interfaces.LogLevel;
-import com.microsoft.services.orc.interfaces.Logger;
 import com.microsoft.services.orc.impl.LoggerBase;
 
 /**
