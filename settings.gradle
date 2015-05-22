@@ -4,6 +4,7 @@ include ':orc-engine-android',
         ':odata-engine-unit-tests',
         ':sample-service'
 
+project(':orc-engine-android').projectDir = new File('src/orc-engine-android')
 project(':orc-engine-core').projectDir = new File('core/orc-engine-core')
 project(':live-auth').projectDir = new File('core/live-auth')
 project(':sample-service').projectDir = new File('test/sample-service')

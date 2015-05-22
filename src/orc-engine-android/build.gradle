@@ -26,10 +26,8 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.google.code.gson:gson:2.3'
     compile('com.microsoft.aad:adal:1.0.5')
-    compile(group: 'com.microsoft.orc', name: 'orc-engine-core', version: '0.14.0')
-    compile(group: 'com.microsoft.orc', name: 'live-auth', version: '0.14.0')
-    //compile project(':orc-engine-core')
-    //compile project(':live-sdk')
+    compile project(':orc-engine-core')
+    compile project(':live-auth')
 }
 
-apply from: '../android-libraries.gradle'
+apply from: '../../android-libraries.gradle'
