@@ -1,5 +1,10 @@
-include ':orc-engine-android'
-//       ':orc-engine-core',
-//       ':live-sdk'
-//project(':orc-engine-core').projectDir = new File('core/orc-engine-core')
-//project(':live-sdk').projectDir = new File('core/live-sdk')
+include ':orc-engine-android',
+        ':orc-engine-core',
+        ':live-auth',
+        ':odata-engine-unit-tests',
+        ':sample-service'
+
+project(':orc-engine-core').projectDir = new File('core/orc-engine-core')
+project(':live-auth').projectDir = new File('core/live-auth')
+project(':sample-service').projectDir = new File('test/sample-service')
+project(':odata-engine-unit-tests').projectDir = new File('test/odata-engine-unit-tests')

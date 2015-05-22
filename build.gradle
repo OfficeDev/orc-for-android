@@ -2,10 +2,6 @@
 buildscript {
     repositories {
         jcenter()
-
-        maven {
-            url "http://dl.bintray.com/msopentech/Maven"
-        }
     }
 
     dependencies {
@@ -28,10 +24,6 @@ allprojects {
 
     repositories {
         jcenter()
-
-        maven {
-            url "http://dl.bintray.com/msopentech/Maven"
-        }
     }
 
     apply plugin: 'idea'

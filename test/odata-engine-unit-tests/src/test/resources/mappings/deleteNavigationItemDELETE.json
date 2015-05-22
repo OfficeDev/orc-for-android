@@ -1,0 +1,13 @@
+{
+    "request": {
+        "method": "DELETE",
+        "url": "/Me/Navigations('SomeId')/",
+        "headers": {
+            "If-Match": {
+                "equalTo": "*"
+            }        }
+    },
+    "response": {
+        "status": 200
+    }
+}
