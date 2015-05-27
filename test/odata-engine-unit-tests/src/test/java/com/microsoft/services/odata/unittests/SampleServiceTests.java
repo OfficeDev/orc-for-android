@@ -398,7 +398,7 @@ public class SampleServiceTests extends WireMockTestBase {
         //updateNavigationItemPOST.json
         AnotherEntity existingEntity = getAnotherEntity();
         existingEntity.setSomeString("Some Updated String");
-        String result = null;
+        AnotherEntity result = null;
         try {
             result = client.getMe()
                     .getNavigations()
@@ -406,8 +406,6 @@ public class SampleServiceTests extends WireMockTestBase {
                     .addHeader("IsPatch", "yes")
                     .update(existingEntity, false)
                     .get();
-
-            resolver.getLogger().log(result, LogLevel.INFO);
 
         } catch (Throwable t) {
             resolver.getLogger().log(t.getLocalizedMessage(), LogLevel.ERROR);
