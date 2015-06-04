@@ -24,9 +24,12 @@ allprojects {
 
     repositories {
         jcenter()
+        maven {
+            url  "http://dl.bintray.com/msopentech/Maven"
+        }
     }
 
     apply plugin: 'idea'
     group = 'com.microsoft.orc'
-    version = '0.14.0'
+    version = '0.14.1'
 }
