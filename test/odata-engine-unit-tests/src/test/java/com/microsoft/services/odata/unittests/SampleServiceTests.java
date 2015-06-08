@@ -6,6 +6,7 @@ import com.microsoft.sampleservice.orc.SampleContainerClient;
 import com.microsoft.sampleservice.SampleEntity;
 import com.microsoft.services.orc.Helpers;
 import com.microsoft.services.orc.interfaces.LogLevel;
+import com.microsoft.services.orc.jvm.impl.GsonSerializer;
 import com.microsoft.services.orc.jvm.impl.JvmDependencyResolver;
 
 import org.junit.Test;
@@ -433,6 +434,66 @@ public class SampleServiceTests extends WireMockTestBase {
         }
 
         assertThat(result, is(notNullValue()));
+    }
+
+    @Test
+    public void testGetAndUpdateNestedEntity() throws ExecutionException, InterruptedException {
+        //getSampleEntity.json
+        //updateSampleEntityPATCH.json
+
+        String payload= new GsonSerializer().serialize(getSampleEntity());
+        resolver.getLogger().log("EntityPayload: " + payload, LogLevel.ERROR);
+        //Get Entity
+        SampleEntity result = null;
+        SampleEntity updateResponse= null;
+        try {
+            result = client.getMe()
+                    .addHeader("WithNested", "no")
+                    .read()
+                    .get();
+
+            SampleEntity nestedEntity = getSampleEntity();
+            result.setNestedSampleEntity(nestedEntity);
+
+            updateResponse = client.getMe()
+                    .addHeader("UpdateNested", "no")
+                    .update(result).get();
+
+        } catch (Throwable t) {
+            resolver.getLogger().log(t.getLocalizedMessage(), LogLevel.ERROR);
+        }
+
+        assertThat(result, is(notNullValue()));
+        assertThat(updateResponse, is(notNullValue()));
+    }
+
+    @Test
+    public void testGetAndUpdatePropertyInNestedEntity() throws ExecutionException, InterruptedException {
+        //getSampleEntityWithNestedGET.json
+        //updateSampleEntityNestedPropertyChangedPATCH.json
+
+        String payload= new GsonSerializer().serialize(getSampleEntity());
+        resolver.getLogger().log("EntityPayload: " + payload, LogLevel.ERROR);
+        //Get Entity
+        SampleEntity result = null;
+        SampleEntity updateResponse= null;
+        try {
+            result = client.getMe()
+                    .addHeader("WithNested", "yes")
+                    .read()
+                    .get();
+
+            result.getNestedSampleEntity().setDisplayName("New Name");
+            updateResponse = client.getMe()
+                    .addHeader("UpdateNested", "yes")
+                    .update(result).get();
+
+        } catch (Throwable t) {
+            resolver.getLogger().log(t.getLocalizedMessage(), LogLevel.ERROR);
+        }
+
+        assertThat(result, is(notNullValue()));
+        assertThat(updateResponse, is(notNullValue()));
     }
 
     private SampleEntity getSampleEntity() {

@@ -1,0 +1,15 @@
+{
+    "request": {
+        "method": "GET",
+        "url": "/Me/",
+        "headers": {
+                    "WithNested": {
+                        "equalTo": "yes"
+                    }
+                   }
+    },
+    "response": {
+        "status": 200,
+        "body": "{\"nestedSampleEntity\":{\"DisplayName\":\"Some Display Name\",\"entityKey\":\"Some Entity Key\",\"Id\":\"5C338D75-CB90-4785-8667-CED25B3695BF\",\"@odata.type\":\"#Microsoft.SampleService.SampleEntity\"},\"DisplayName\":\"Some Display Name\",\"entityKey\":\"Some Entity Key\",\"Id\":\"5C338D75-CB90-4785-8667-CED25B3695BF\",\"@odata.type\":\"#Microsoft.SampleService.SampleEntity\"}"
+    }
+}
