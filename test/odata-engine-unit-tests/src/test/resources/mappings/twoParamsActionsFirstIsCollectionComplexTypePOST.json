@@ -1,7 +1,7 @@
 {
     "request": {
         "method": "POST",
-        "url": "/Me/TwoParamsActionsFirstIsCollectionComplexType/",
+        "url": "/Me/Microsoft.SampleService.TwoParamsActionsFirstIsCollectionComplexType/",
         "bodyPatterns": [{"equalTo" : "{\"BooleanParams\":false,\"CollectionType\":[{\"Name\":\"Some Name\",\"AnotherProperty\":\"AnotherProperty\",\"@odata.type\":\"#Microsoft.SampleService.SampleComplexType\"}]}"}]
     },
     "response": {

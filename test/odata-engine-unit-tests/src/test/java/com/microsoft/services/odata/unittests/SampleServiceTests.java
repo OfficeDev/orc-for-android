@@ -2,7 +2,7 @@ package com.microsoft.services.odata.unittests;
 
 import com.microsoft.sampleservice.AnotherEntity;
 import com.microsoft.sampleservice.SampleComplexType;
-import com.microsoft.sampleservice.SampleContainerClient;
+import com.microsoft.sampleservice.orc.SampleContainerClient;
 import com.microsoft.sampleservice.SampleEntity;
 import com.microsoft.services.orc.Helpers;
 import com.microsoft.services.orc.interfaces.LogLevel;
@@ -56,7 +56,7 @@ public class SampleServiceTests extends WireMockTestBase {
 
     @Test
     public void testTwoParamsActionsFirstIsComplexTypeUri() throws ExecutionException, InterruptedException {
-        //twoParamsActionsFirstIsCollectionComplexTypePOST.json
+        //twoParamsActionsFirstIsComplexTypePOST.json
         Integer result = null;
         SampleComplexType sampleComplexEntity = getSampleComplexType();
         try {
@@ -286,7 +286,7 @@ public class SampleServiceTests extends WireMockTestBase {
         List<SampleEntity> result = null;
 
         try {
-            result = client.getservices()
+            result = client.getServices()
                     .expand("SomeProp")
                     .filter("SomeProp eq 'SomeString'")
                     .read()
@@ -305,7 +305,7 @@ public class SampleServiceTests extends WireMockTestBase {
         List<SampleEntity> result = null;
 
         try {
-            result = client.getservices()
+            result = client.getServices()
                     .addHeader("Header1", "Value1")
                     .addHeader("Header2", "Value2")
                     .read()
@@ -324,7 +324,7 @@ public class SampleServiceTests extends WireMockTestBase {
         List<SampleEntity> result = null;
 
         try {
-            result = client.getservices()
+            result = client.getServices()
                     .top(99)
                     .read()
                     .get();
@@ -438,7 +438,7 @@ public class SampleServiceTests extends WireMockTestBase {
     private SampleEntity getSampleEntity() {
         SampleEntity sampleEntity = new SampleEntity();
         sampleEntity.setDisplayName("Some Display Name");
-        sampleEntity.setentityKey("Some Entity Key");
+        sampleEntity.setEntityKey("Some Entity Key");
         sampleEntity.setId("5C338D75-CB90-4785-8667-CED25B3695BF");
         return sampleEntity;
     }

@@ -7,7 +7,7 @@
                         "equalTo": "yes"
                     }
                    },
-        "bodyPatterns" : [{"equalTo": "{\"SomeString\":\"Some Updated String\"}"}]
+        "bodyPatterns" : [{"equalTo": "{\"SomeString\":\"Some Updated String\",\"Id\":\"3281EC0B-1AEB-49A4-A345-E64D732DA6D3\"}"}]
     },
     "response": {
         "status": 200,
