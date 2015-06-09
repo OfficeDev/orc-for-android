@@ -472,8 +472,17 @@ public class SampleServiceTests extends WireMockTestBase {
         //getSampleEntityWithNestedGET.json
         //updateSampleEntityNestedPropertyChangedPATCH.json
 
-        String payload= new GsonSerializer().serialize(getSampleEntity());
+        /*
+        SampleEntity entity = getSampleEntity();
+        AnotherEntity nav1 = new AnotherEntity();
+        nav1.setSomeString("MyString");
+
+        List<AnotherEntity> navigations = new ArrayList<>();
+        navigations.add(nav1);
+        entity.setNavigations(navigations);
+        String payload= new GsonSerializer().serialize(entity);
         resolver.getLogger().log("EntityPayload: " + payload, LogLevel.ERROR);
+        */
         //Get Entity
         SampleEntity result = null;
         SampleEntity updateResponse= null;
@@ -486,6 +495,60 @@ public class SampleServiceTests extends WireMockTestBase {
             result.getNestedSampleEntity().setDisplayName("New Name");
             updateResponse = client.getMe()
                     .addHeader("UpdateNested", "yes")
+                    .update(result).get();
+
+        } catch (Throwable t) {
+            resolver.getLogger().log(t.getLocalizedMessage(), LogLevel.ERROR);
+        }
+
+        assertThat(result, is(notNullValue()));
+        assertThat(updateResponse, is(notNullValue()));
+    }
+
+    @Test
+    public void testGetAndUpdatePropertyInList() throws ExecutionException, InterruptedException {
+        //getSampleEntityWithNavigationsGET.json
+        //updateSampleEntityListPropertyChangedPATCH.json
+
+        //Get Entity
+        SampleEntity result = null;
+        SampleEntity updateResponse= null;
+        try {
+            result = client.getMe()
+                    .addHeader("WithNavigations", "yes")
+                    .read()
+                    .get();
+
+            result.getNavigations().get(0).setSomeString("Some New String");
+            updateResponse = client.getMe()
+                    .addHeader("UpdateNavigations", "yes")
+                    .update(result).get();
+
+        } catch (Throwable t) {
+            resolver.getLogger().log(t.getLocalizedMessage(), LogLevel.ERROR);
+        }
+
+        assertThat(result, is(notNullValue()));
+        assertThat(updateResponse, is(notNullValue()));
+    }
+
+    @Test
+    public void testGetAndUpdatePropertyInListOf3elements() throws ExecutionException, InterruptedException {
+        //getSampleEntityWith3NavigationsGET.json
+        //updateSampleEntityListWith3ElementsPropertyChangedPATCH.json
+
+        //Get Entity
+        SampleEntity result = null;
+        SampleEntity updateResponse= null;
+        try {
+            result = client.getMe()
+                    .addHeader("With3Navigations", "yes")
+                    .read()
+                    .get();
+
+            result.getNavigations().get(0).setSomeString("Some New String");
+            updateResponse = client.getMe()
+                    .addHeader("WithNavigations3", "yes")
                     .update(result).get();
 
         } catch (Throwable t) {
