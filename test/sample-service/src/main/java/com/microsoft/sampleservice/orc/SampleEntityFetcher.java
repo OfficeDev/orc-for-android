@@ -86,4 +86,22 @@ public class SampleEntityFetcher extends OrcEntityFetcher<SampleEntity,SampleEnt
          return new OrcCollectionFetcher<AnotherEntity, AnotherEntityFetcher, AnotherEntityCollectionOperations>("Navigations", this, AnotherEntity.class, AnotherEntityCollectionOperations.class).getById(id);
     }
 
+     /**
+     * Gets items.
+     *
+     * @return the items
+     */
+    public OrcCollectionFetcher<Item, ItemFetcher, ItemCollectionOperations> getItems() {
+        return new OrcCollectionFetcher<Item, ItemFetcher, ItemCollectionOperations>("Items", this, Item.class, ItemCollectionOperations.class);
+    }
+
+    /**
+     * Gets item.
+     *
+     * @return the item
+     */
+    public ItemFetcher getItem(String id){
+         return new OrcCollectionFetcher<Item, ItemFetcher, ItemCollectionOperations>("Items", this, Item.class, ItemCollectionOperations.class).getById(id);
+    }
+
 }

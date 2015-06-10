@@ -20,19 +20,19 @@ import com.microsoft.services.orc.Readable;
 import com.microsoft.services.orc.interfaces.*;
 
 /**
- * The type  EntityFetcher.
+ * The type  ItemAFetcher.
  */
-public class EntityFetcher extends OrcEntityFetcher<Entity,EntityOperations> 
-                                     implements Readable<Entity> {
+public class ItemAFetcher extends OrcEntityFetcher<ItemA,ItemAOperations> 
+                                     implements Readable<ItemA> {
 
      /**
-     * Instantiates a new EntityFetcher.
+     * Instantiates a new ItemAFetcher.
      *
      * @param urlComponent the url component
      * @param parent the parent
      */
-     public EntityFetcher(String urlComponent, OrcExecutable parent) {
-        super(urlComponent, parent, Entity.class, EntityOperations.class);
+     public ItemAFetcher(String urlComponent, OrcExecutable parent) {
+        super(urlComponent, parent, ItemA.class, ItemAOperations.class);
     }
 
      /**
@@ -42,7 +42,7 @@ public class EntityFetcher extends OrcEntityFetcher<Entity,EntityOperations>
      * @param value the value
      * @return the fetcher
      */
-    public EntityFetcher addParameter(String name, Object value) {
+    public ItemAFetcher addParameter(String name, Object value) {
         addCustomParameter(name, value);
         return this;
     }
@@ -54,22 +54,10 @@ public class EntityFetcher extends OrcEntityFetcher<Entity,EntityOperations>
      * @param value the value
      * @return the fetcher
      */
-    public EntityFetcher addHeader(String name, String value) {
+    public ItemAFetcher addHeader(String name, String value) {
         addCustomHeader(name, value);
         return this;
     }
 
-    
-    public ItemFetcher asItem(){
-        return new ItemFetcher(this.urlComponent, this.parent);
-    }   
-
-    public AnotherEntityFetcher asAnotherEntity(){
-        return new AnotherEntityFetcher(this.urlComponent, this.parent);
-    }   
-
-    public SampleEntityFetcher asSampleEntity(){
-        return new SampleEntityFetcher(this.urlComponent, this.parent);
-    }   
-    
+        
 }

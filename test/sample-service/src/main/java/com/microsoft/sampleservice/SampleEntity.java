@@ -114,5 +114,30 @@ public class SampleEntity extends Entity {
         valueChanged("Navigations", value);
 
     }
+    
+        
+    private java.util.List<Item> Items = null;
+    
+    
+     
+    /**
+    * Gets the Items.
+    *
+    * @return the java.util.List<Item>
+    */
+    public java.util.List<Item> getItems() {
+        return this.Items; 
+    }
+
+    /**
+    * Sets the Items.
+    *
+    * @param value the java.util.List<Item>
+    */
+    public void setItems(java.util.List<Item> value) { 
+        this.Items = value; 
+        valueChanged("Items", value);
+
+    }
 }
 
