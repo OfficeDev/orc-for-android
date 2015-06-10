@@ -31,5 +31,5 @@ allprojects {
 
     apply plugin: 'idea'
     group = 'com.microsoft.orc'
-    version = '0.14.1'
+    version = '0.14.2'
 }
