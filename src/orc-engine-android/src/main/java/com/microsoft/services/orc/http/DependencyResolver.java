@@ -1,6 +1,7 @@
 package com.microsoft.services.orc.http;
 
 import com.microsoft.services.orc.log.Logger;
+import com.microsoft.services.orc.serialization.JsonSerializer;
 
 /**
  * The interface Dependency resolver.

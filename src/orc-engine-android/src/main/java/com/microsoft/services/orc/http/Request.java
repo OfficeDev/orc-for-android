@@ -8,54 +8,54 @@ import java.util.Map;
  */
 public interface Request {
 
-    public static final String MUST_STREAM_RESPONSE_CONTENT = "MUST_STREAM_RESPONSE_CONTENT";
+    String MUST_STREAM_RESPONSE_CONTENT = "MUST_STREAM_RESPONSE_CONTENT";
 
     /**
      * Sets content.
      *
      * @param content the content
      */
-    public void setContent(byte[] content);
+    void setContent(byte[] content);
 
 
     /**
      * Sets content that comes from a stream
      * @param stream the stream
      */
-    public void setStreamedContent(InputStream stream, long streamSize);
+    void setStreamedContent(InputStream stream, long streamSize);
 
     /**
      * Get the streamed content
      * @return the stream
      */
-    public InputStream getStreamedContent();
+    InputStream getStreamedContent();
 
     /**
      * Get the streamed content size
      * @return the size
      */
-    public long getStreamedContentSize();
+    long getStreamedContentSize();
 
     /**
      * Get content.
      *
      * @return the byte [ ]
      */
-    public byte[] getContent();
+    byte[] getContent();
 
     /**
      * Gets headers.
      *
      * @return the headers
      */
-    public Map<String, String> getHeaders();
+    Map<String, String> getHeaders();
 
     /**
      * Sets headers.
      *
      * @param headers the headers
      */
-    public void setHeaders(Map<String, String> headers);
+    void setHeaders(Map<String, String> headers);
 
     /**
      * Add header.
@@ -63,44 +63,44 @@ public interface Request {
      * @param name the name
      * @param value the value
      */
-    public void addHeader(String name, String value);
+    void addHeader(String name, String value);
 
     /**
      * Remove header.
      *
      * @param name the name
      */
-    public void removeHeader(String name);
+    void removeHeader(String name);
 
     /**
      * Gets verb.
      *
      * @return the verb
      */
-    public HttpVerb getVerb();
+    HttpVerb getVerb();
 
     /**
      * Sets verb.
      *
      * @param httpVerb the http verb
      */
-    public void setVerb(HttpVerb httpVerb);
+    void setVerb(HttpVerb httpVerb);
 
     /**
      * Sets url.
      *
      * @param url the url
      */
-    public void setUrl(OrcURL url);
+    void setUrl(OrcURL url);
 
     /**
      * Gets url.
      *
      * @return the url
      */
-    public OrcURL getUrl();
+    OrcURL getUrl();
 
-    public Map<String, String> getOptions();
+    Map<String, String> getOptions();
 
-    public void addOption(String option, String value);
+    void addOption(String option, String value);
 }

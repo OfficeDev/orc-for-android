@@ -9,5 +9,5 @@ public interface Credentials {
      *
      * @param request the request
      */
-    public void prepareRequest(Request request);
+    void prepareRequest(Request request);
 }

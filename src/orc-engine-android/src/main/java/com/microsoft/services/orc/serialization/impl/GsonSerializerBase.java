@@ -1,4 +1,4 @@
-package com.microsoft.services.orc.serialization;
+package com.microsoft.services.orc.serialization.impl;
 
 
 import com.google.gson.FieldNamingPolicy;
@@ -9,7 +9,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.microsoft.services.orc.core.Constants;
-import com.microsoft.services.orc.http.JsonSerializer;
+import com.microsoft.services.orc.serialization.ByteArrayTypeAdapterBase;
+import com.microsoft.services.orc.serialization.JsonSerializer;
 import com.microsoft.services.orc.serialization.impl.CalendarTypeAdapter;
 
 import java.lang.reflect.Field;

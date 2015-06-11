@@ -14,7 +14,7 @@ public interface Response {
      *
      * @return the headers
      */
-    public Map<String, List<String>> getHeaders();
+    Map<String, List<String>> getHeaders();
 
     /**
      * Gets headers.
@@ -22,26 +22,26 @@ public interface Response {
      * @param headerName the header name
      * @return the headers
      */
-    public List<String> getHeaders(String headerName);
+    List<String> getHeaders(String headerName);
 
     /**
      * Gets status.
      *
      * @return the status
      */
-    public int getStatus();
+    int getStatus();
 
     /**
      * Gets stream.
      *
      * @return the stream
      */
-    public InputStream getStream();
+    InputStream getStream();
 
     /**
      * Close void.
      *
      * @throws IOException the iO exception
      */
-    public void close() throws IOException;
+    void close() throws IOException;
 }

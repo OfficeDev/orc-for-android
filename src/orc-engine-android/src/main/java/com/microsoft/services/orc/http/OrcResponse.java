@@ -13,14 +13,14 @@ public interface OrcResponse {
      *
      * @return the byte [ ]
      */
-    public byte[] getPayload() throws IOException;
+    byte[] getPayload() throws IOException;
 
     /**
      * Gets response.
      *
      * @return the response
      */
-    public Response getResponse();
+    Response getResponse();
 
     /**
      * Opens a streamed response.

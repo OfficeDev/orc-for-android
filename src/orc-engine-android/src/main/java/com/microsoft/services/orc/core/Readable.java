@@ -12,6 +12,6 @@ import com.google.common.util.concurrent.ListenableFuture;
  * @param <T>  the type parameter
  */
 public interface Readable<T> {
-    public ListenableFuture<T> read();
-    public ListenableFuture<String> readRaw();
+    ListenableFuture<T> read();
+    ListenableFuture<String> readRaw();
 }
