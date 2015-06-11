@@ -1,0 +1,15 @@
+{
+    "request": {
+        "method": "GET",
+        "url": "/Me/",
+        "headers": {
+                    "With3Navigations": {
+                        "equalTo": "yes"
+                    }
+                   }
+    },
+    "response": {
+        "status": 200,
+        "body": "{\"DisplayName\":\"Some Display Name\",\"entityKey\":\"Some Entity Key\",\"Navigations\":[{\"SomeString\":\"MyString1\",\"@odata.type\":\"#Microsoft.SampleService.AnotherEntity\"},{\"SomeString\":\"MyString2\",\"@odata.type\":\"#Microsoft.SampleService.AnotherEntity\"},{\"SomeString\":\"MyString3\",\"@odata.type\":\"#Microsoft.SampleService.AnotherEntity\"}],\"Id\":\"5C338D75-CB90-4785-8667-CED25B3695BF\",\"@odata.type\":\"#Microsoft.SampleService.SampleEntity\"}"
+    }
+}

@@ -1,0 +1,11 @@
+{
+    "request": {
+        "method": "GET",
+        "url": "/Me/Items('SomeId')/"
+
+    },
+    "response": {
+        "status": 200,
+        "body": "{\"Id\":\"SomeId\",\"PropertyA\":\"My A value\",\"ItemName\":\"NameA\",\"@odata.type\":\"#Microsoft.SampleService.ItemA\"}"
+    }
+}

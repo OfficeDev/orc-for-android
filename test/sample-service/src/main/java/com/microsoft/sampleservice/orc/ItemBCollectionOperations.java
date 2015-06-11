@@ -16,23 +16,22 @@ package com.microsoft.sampleservice.orc;
 import com.microsoft.sampleservice.*;
 import com.google.common.util.concurrent.*;
 import com.microsoft.services.orc.*;
-import com.microsoft.services.orc.Readable;
 import com.microsoft.services.orc.interfaces.*;
+import static com.microsoft.services.orc.Helpers.*;
 
 /**
- * The type  EntityFetcher.
+ * The type ItemBCollectionOperations
  */
-public class EntityFetcher extends OrcEntityFetcher<Entity,EntityOperations> 
-                                     implements Readable<Entity> {
+public class ItemBCollectionOperations extends ItemCollectionOperations{
 
-     /**
-     * Instantiates a new EntityFetcher.
+    /**
+     * Instantiates a new ItemBCollectionOperations.
      *
      * @param urlComponent the url component
      * @param parent the parent
      */
-     public EntityFetcher(String urlComponent, OrcExecutable parent) {
-        super(urlComponent, parent, Entity.class, EntityOperations.class);
+    public ItemBCollectionOperations(String urlComponent, OrcExecutable parent) {
+        super(urlComponent, parent);
     }
 
      /**
@@ -40,9 +39,9 @@ public class EntityFetcher extends OrcEntityFetcher<Entity,EntityOperations>
      *
      * @param name the name
      * @param value the value
-     * @return the fetcher
+     * @return the collection operations
      */
-    public EntityFetcher addParameter(String name, Object value) {
+    public ItemBCollectionOperations addParameter(String name, Object value) {
         addCustomParameter(name, value);
         return this;
     }
@@ -52,24 +51,10 @@ public class EntityFetcher extends OrcEntityFetcher<Entity,EntityOperations>
      *
      * @param name the name
      * @param value the value
-     * @return the fetcher
+     * @return the collection operations
      */
-    public EntityFetcher addHeader(String name, String value) {
+    public ItemBCollectionOperations addHeader(String name, String value) {
         addCustomHeader(name, value);
         return this;
     }
-
-    
-    public ItemFetcher asItem(){
-        return new ItemFetcher(this.urlComponent, this.parent);
-    }   
-
-    public AnotherEntityFetcher asAnotherEntity(){
-        return new AnotherEntityFetcher(this.urlComponent, this.parent);
-    }   
-
-    public SampleEntityFetcher asSampleEntity(){
-        return new SampleEntityFetcher(this.urlComponent, this.parent);
-    }   
-    
 }

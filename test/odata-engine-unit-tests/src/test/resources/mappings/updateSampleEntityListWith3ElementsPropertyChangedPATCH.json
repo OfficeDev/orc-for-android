@@ -1,0 +1,16 @@
+{
+  "request": {
+    "method": "PATCH",
+    "url": "/Me/",
+     "headers": {
+                 "WithNavigations3": {
+                     "equalTo": "yes"
+                 }
+                },
+    "bodyPatterns": [{"equalTo": "{\"Navigations\":[{\"SomeString\":\"Some New String\",\"@odata.type\":\"#Microsoft.SampleService.AnotherEntity\"},{\"SomeString\":\"MyString2\",\"@odata.type\":\"#Microsoft.SampleService.AnotherEntity\"},{\"SomeString\":\"MyString3\",\"@odata.type\":\"#Microsoft.SampleService.AnotherEntity\"}]}"}]
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"DisplayName\":\"Some Display Name\",\"entityKey\":\"Some Entity Key\",\"Navigations\":[{\"SomeString\":\"Some New String\",\"@odata.type\":\"#Microsoft.SampleService.AnotherEntity\"},{\"SomeString\":\"MyString2\",\"@odata.type\":\"#Microsoft.SampleService.AnotherEntity\"},{\"SomeString\":\"MyString3\",\"@odata.type\":\"#Microsoft.SampleService.AnotherEntity\"}],\"Id\":\"5C338D75-CB90-4785-8667-CED25B3695BF\",\"@odata.type\":\"#Microsoft.SampleService.SampleEntity\"}"
+  }
+}

@@ -20,19 +20,19 @@ import com.microsoft.services.orc.Readable;
 import com.microsoft.services.orc.interfaces.*;
 
 /**
- * The type  EntityFetcher.
+ * The type  ItemFetcher.
  */
-public class EntityFetcher extends OrcEntityFetcher<Entity,EntityOperations> 
-                                     implements Readable<Entity> {
+public class ItemFetcher extends OrcEntityFetcher<Item,ItemOperations> 
+                                     implements Readable<Item> {
 
      /**
-     * Instantiates a new EntityFetcher.
+     * Instantiates a new ItemFetcher.
      *
      * @param urlComponent the url component
      * @param parent the parent
      */
-     public EntityFetcher(String urlComponent, OrcExecutable parent) {
-        super(urlComponent, parent, Entity.class, EntityOperations.class);
+     public ItemFetcher(String urlComponent, OrcExecutable parent) {
+        super(urlComponent, parent, Item.class, ItemOperations.class);
     }
 
      /**
@@ -42,7 +42,7 @@ public class EntityFetcher extends OrcEntityFetcher<Entity,EntityOperations>
      * @param value the value
      * @return the fetcher
      */
-    public EntityFetcher addParameter(String name, Object value) {
+    public ItemFetcher addParameter(String name, Object value) {
         addCustomParameter(name, value);
         return this;
     }
@@ -54,22 +54,18 @@ public class EntityFetcher extends OrcEntityFetcher<Entity,EntityOperations>
      * @param value the value
      * @return the fetcher
      */
-    public EntityFetcher addHeader(String name, String value) {
+    public ItemFetcher addHeader(String name, String value) {
         addCustomHeader(name, value);
         return this;
     }
 
     
-    public ItemFetcher asItem(){
-        return new ItemFetcher(this.urlComponent, this.parent);
+    public ItemAFetcher asItemA(){
+        return new ItemAFetcher(this.urlComponent, this.parent);
     }   
 
-    public AnotherEntityFetcher asAnotherEntity(){
-        return new AnotherEntityFetcher(this.urlComponent, this.parent);
-    }   
-
-    public SampleEntityFetcher asSampleEntity(){
-        return new SampleEntityFetcher(this.urlComponent, this.parent);
+    public ItemBFetcher asItemB(){
+        return new ItemBFetcher(this.urlComponent, this.parent);
     }   
     
 }

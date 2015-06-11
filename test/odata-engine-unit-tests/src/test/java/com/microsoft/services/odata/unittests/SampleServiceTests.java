@@ -1,6 +1,9 @@
 package com.microsoft.services.odata.unittests;
 
 import com.microsoft.sampleservice.AnotherEntity;
+import com.microsoft.sampleservice.Item;
+import com.microsoft.sampleservice.ItemA;
+import com.microsoft.sampleservice.ItemB;
 import com.microsoft.sampleservice.SampleComplexType;
 import com.microsoft.sampleservice.orc.SampleContainerClient;
 import com.microsoft.sampleservice.SampleEntity;
@@ -17,6 +20,7 @@ import java.util.concurrent.ExecutionException;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
@@ -469,11 +473,6 @@ public class SampleServiceTests extends WireMockTestBase {
 
     @Test
     public void testGetAndUpdatePropertyInNestedEntity() throws ExecutionException, InterruptedException {
-        //getSampleEntityWithNestedGET.json
-        //updateSampleEntityNestedPropertyChangedPATCH.json
-
-        String payload= new GsonSerializer().serialize(getSampleEntity());
-        resolver.getLogger().log("EntityPayload: " + payload, LogLevel.ERROR);
         //Get Entity
         SampleEntity result = null;
         SampleEntity updateResponse= null;
@@ -494,6 +493,102 @@ public class SampleServiceTests extends WireMockTestBase {
 
         assertThat(result, is(notNullValue()));
         assertThat(updateResponse, is(notNullValue()));
+    }
+
+    @Test
+    public void testGetAndUpdatePropertyInList() throws ExecutionException, InterruptedException {
+        //getSampleEntityWithNavigationsGET.json
+        //updateSampleEntityListPropertyChangedPATCH.json
+
+        //Get Entity
+        SampleEntity result = null;
+        SampleEntity updateResponse= null;
+        try {
+            result = client.getMe()
+                    .addHeader("WithNavigations", "yes")
+                    .read()
+                    .get();
+
+            result.getNavigations().get(0).setSomeString("Some New String");
+            updateResponse = client.getMe()
+                    .addHeader("UpdateNavigations", "yes")
+                    .update(result).get();
+
+        } catch (Throwable t) {
+            resolver.getLogger().log(t.getLocalizedMessage(), LogLevel.ERROR);
+        }
+
+        assertThat(result, is(notNullValue()));
+        assertThat(updateResponse, is(notNullValue()));
+    }
+
+    @Test
+    public void testGetAndUpdatePropertyInListOf3elements() throws ExecutionException, InterruptedException {
+        //getSampleEntityWith3NavigationsGET.json
+        //updateSampleEntityListWith3ElementsPropertyChangedPATCH.json
+
+        //Get Entity
+        SampleEntity result = null;
+        SampleEntity updateResponse= null;
+        try {
+            result = client.getMe()
+                    .addHeader("With3Navigations", "yes")
+                    .read()
+                    .get();
+
+            result.getNavigations().get(0).setSomeString("Some New String");
+            updateResponse = client.getMe()
+                    .addHeader("WithNavigations3", "yes")
+                    .update(result).get();
+
+        } catch (Throwable t) {
+            resolver.getLogger().log(t.getLocalizedMessage(), LogLevel.ERROR);
+        }
+
+        assertThat(result, is(notNullValue()));
+        assertThat(updateResponse, is(notNullValue()));
+    }
+
+    @Test
+    public void testGetListWithDerivedClasses() throws ExecutionException, InterruptedException {
+        //getListDerivedClassesGET.json
+
+        //Get Entity
+        List<Item> result = null;
+        try {
+            result = client.getMe()
+                    .getItems()
+                    .read()
+                    .get();
+
+        } catch (Throwable t) {
+            resolver.getLogger().log(t.getLocalizedMessage(), LogLevel.ERROR);
+        }
+
+        assertThat(result, is(notNullValue()));
+        assertThat(result.get(0), instanceOf(ItemA.class));
+        assertThat(result.get(1), instanceOf(ItemB.class));
+    }
+
+    @Test
+    public void testGetItemWithDerivedClasses() throws ExecutionException, InterruptedException {
+        //getListDerivedClassesByIdGET.json
+
+        //Get Entity
+        Item result = null;
+        try {
+            result = client.getMe()
+                    .getItems()
+                    .getById("SomeId")
+                    .read()
+                    .get();
+
+        } catch (Throwable t) {
+            resolver.getLogger().log(t.getLocalizedMessage(), LogLevel.ERROR);
+        }
+
+        assertThat(result, is(notNullValue()));
+        assertThat(result, instanceOf(ItemA.class));
     }
 
     private SampleEntity getSampleEntity() {
