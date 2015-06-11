@@ -1,4 +1,4 @@
-package com.microsoft.services.android.impl;
+package com.microsoft.services.orc.serialization.impl;
 
 import android.util.Base64;
 
@@ -7,10 +7,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
-import com.microsoft.services.orc.impl.ByteArrayTypeAdapterBase;
-import com.microsoft.services.orc.interfaces.Base64Encoder;
 
 import java.lang.reflect.Type;
+
+import com.microsoft.services.orc.http.Base64Encoder;
+import com.microsoft.services.orc.http.impl.Base64EncoderImpl;
+import com.microsoft.services.orc.serialization.ByteArrayTypeAdapterBase;
 
 public class ByteArrayTypeAdapterImpl extends ByteArrayTypeAdapterBase {
 

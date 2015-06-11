@@ -1,10 +1,9 @@
-package com.microsoft.services.android.impl;
-
+package com.microsoft.services.orc.resolvers;
 
 import com.microsoft.aad.adal.AuthenticationContext;
 import com.microsoft.aad.adal.AuthenticationResult;
-import com.microsoft.services.orc.impl.OAuthCredentials;
-import com.microsoft.services.orc.interfaces.Credentials;
+import com.microsoft.services.orc.http.Credentials;
+import com.microsoft.services.orc.http.impl.OAuthCredentials;
 
 
 /**

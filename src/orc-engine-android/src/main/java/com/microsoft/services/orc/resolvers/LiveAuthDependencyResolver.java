@@ -1,4 +1,4 @@
-package com.microsoft.services.android.impl;
+package com.microsoft.services.orc.resolvers;
 
 import android.content.Context;
 import android.app.Activity;
@@ -10,9 +10,9 @@ import com.microsoft.live.LiveAuthException;
 import com.microsoft.live.LiveAuthListener;
 import com.microsoft.live.LiveConnectSession;
 import com.microsoft.live.LiveStatus;
-import com.microsoft.services.orc.impl.OAuthCredentials;
-import com.microsoft.services.orc.interfaces.Credentials;
-import com.microsoft.services.orc.interfaces.LogLevel;
+import com.microsoft.services.orc.http.Credentials;
+import com.microsoft.services.orc.http.impl.OAuthCredentials;
+import com.microsoft.services.orc.log.LogLevel;
 
 import java.util.concurrent.ExecutionException;
 

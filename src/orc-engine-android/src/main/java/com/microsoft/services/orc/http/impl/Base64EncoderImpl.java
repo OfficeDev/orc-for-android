@@ -1,8 +1,8 @@
-package com.microsoft.services.android.impl;
+package com.microsoft.services.orc.http.impl;
 
 import android.util.Base64;
+import com.microsoft.services.orc.http.Base64Encoder;
 
-import com.microsoft.services.orc.interfaces.Base64Encoder;
 
 public class Base64EncoderImpl implements Base64Encoder {
     private Base64EncoderImpl() {

@@ -3,17 +3,15 @@
  * All Rights Reserved
  * See License.txt in the project root for license information.
  ******************************************************************************/
-package com.microsoft.services.android.impl.http;
+package com.microsoft.services.orc.http.impl;
 
 import android.net.http.AndroidHttpClient;
 
 import com.google.common.util.concurrent.SettableFuture;
-import com.microsoft.services.orc.Constants;
-import com.microsoft.services.orc.impl.http.EmptyResponse;
-import com.microsoft.services.orc.impl.http.NetworkRunnable;
-import com.microsoft.services.orc.impl.http.ResponseImpl;
-import com.microsoft.services.orc.interfaces.Request;
-import com.microsoft.services.orc.interfaces.Response;
+import com.microsoft.services.orc.core.Constants;
+import com.microsoft.services.orc.http.NetworkRunnable;
+import com.microsoft.services.orc.http.Request;
+import com.microsoft.services.orc.http.Response;
 
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;

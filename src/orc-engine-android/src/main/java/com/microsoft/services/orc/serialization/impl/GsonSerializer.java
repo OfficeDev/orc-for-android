@@ -1,7 +1,6 @@
-package com.microsoft.services.android.impl;
+package com.microsoft.services.orc.serialization.impl;
 
-
-import com.microsoft.services.orc.impl.GsonSerializerBase;
+import com.microsoft.services.orc.serialization.GsonSerializerBase;
 
 /**
  * The type Gson serializer.

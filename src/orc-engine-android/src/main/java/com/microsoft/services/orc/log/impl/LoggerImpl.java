@@ -1,9 +1,9 @@
-package com.microsoft.services.android.impl;
+package com.microsoft.services.orc.log.impl;
 
 import android.util.Log;
 
-import com.microsoft.services.orc.interfaces.LogLevel;
-import com.microsoft.services.orc.impl.LoggerBase;
+import com.microsoft.services.orc.log.LogLevel;
+import com.microsoft.services.orc.log.LoggerBase;
 
 /**
  * The type Logger impl.
