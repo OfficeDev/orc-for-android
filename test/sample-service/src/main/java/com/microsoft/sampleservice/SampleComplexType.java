@@ -13,8 +13,8 @@
  ******************************************************************************/
 package com.microsoft.sampleservice;
 
-import com.microsoft.services.orc.ODataBaseEntity;
 
+import com.microsoft.services.orc.core.ODataBaseEntity;
 
 /**
  * The type Sample Complex Type.

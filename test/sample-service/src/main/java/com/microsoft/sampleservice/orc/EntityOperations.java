@@ -16,8 +16,10 @@ package com.microsoft.sampleservice.orc;
 import com.microsoft.sampleservice.*;
 import com.google.common.util.concurrent.*;
 import com.microsoft.services.orc.*;
-import com.microsoft.services.orc.interfaces.*;
-import static com.microsoft.services.orc.Helpers.*;
+import com.microsoft.services.orc.core.OrcExecutable;
+import com.microsoft.services.orc.core.OrcOperations;
+
+import static com.microsoft.services.orc.core.Helpers.*;
 
 /**
  * The type EntityOperations.

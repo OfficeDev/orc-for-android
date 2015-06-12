@@ -7,10 +7,10 @@ import com.microsoft.sampleservice.ItemB;
 import com.microsoft.sampleservice.SampleComplexType;
 import com.microsoft.sampleservice.orc.SampleContainerClient;
 import com.microsoft.sampleservice.SampleEntity;
-import com.microsoft.services.orc.Helpers;
-import com.microsoft.services.orc.interfaces.LogLevel;
+import com.microsoft.services.orc.core.Helpers;
 import com.microsoft.services.orc.jvm.impl.GsonSerializer;
 import com.microsoft.services.orc.jvm.impl.JvmDependencyResolver;
+import com.microsoft.services.orc.log.LogLevel;
 
 import org.junit.Test;
 

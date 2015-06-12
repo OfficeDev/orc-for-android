@@ -15,9 +15,11 @@ package com.microsoft.sampleservice.orc;
 
 import com.microsoft.sampleservice.*;
 import com.google.common.util.concurrent.*;
-import com.microsoft.services.orc.*;
-import com.microsoft.services.orc.interfaces.*;
-import static com.microsoft.services.orc.Helpers.*;
+import com.microsoft.services.orc.core.*;
+import com.microsoft.services.orc.http.*;
+import com.microsoft.services.orc.serialization.*;
+
+import static com.microsoft.services.orc.core.Helpers.*;
 
 /**
  * The type SampleEntityOperations.
@@ -66,7 +68,7 @@ public class SampleEntityOperations extends EntityOperations {
      * @return the listenable future
      */         
     public ListenableFuture<Integer> twoParamsActionsFirstIsEntityType(SampleEntity anEntity, Boolean booleanParams) { 
-        JsonSerializer serializer = getResolver().getJsonSerializer();      
+        JsonSerializer serializer = getResolver().getJsonSerializer();
         String serializedAnEntity = serializer.serialize(anEntity);
 		String serializedBooleanParams = serializer.serialize(booleanParams);
 		  

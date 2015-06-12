@@ -15,9 +15,11 @@ package com.microsoft.sampleservice.orc;
 
 import com.microsoft.sampleservice.*;
 import com.google.common.util.concurrent.*;
-import com.microsoft.services.orc.*;
-import com.microsoft.services.orc.interfaces.*;
-import static com.microsoft.services.orc.Helpers.*;
+import com.microsoft.services.orc.core.OrcExecutable;
+import com.microsoft.services.orc.http.HttpVerb;
+import com.microsoft.services.orc.http.OrcResponse;
+import com.microsoft.services.orc.http.Request;
+import static com.microsoft.services.orc.core.Helpers.*;
 
 /**
  * The type SampleEntityCollectionOperations
@@ -75,7 +77,7 @@ public class SampleEntityCollectionOperations extends EntityCollectionOperations
 
         String parameters = getFunctionParameters(map);
         request.getUrl().appendPathComponent("SomeFunction(" + parameters + ")");
-        ListenableFuture<OrcResponse> future = oDataExecute(request);   
+        ListenableFuture<OrcResponse> future = oDataExecute(request);
         
         return transformToEntityListenableFuture(transformToStringListenableFuture(future), SampleComplexType.class, getResolver());
         

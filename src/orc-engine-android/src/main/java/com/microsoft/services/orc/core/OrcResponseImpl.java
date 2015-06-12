@@ -7,7 +7,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-class OrcResponseImpl implements OrcResponse {
+public class OrcResponseImpl implements OrcResponse {
 
     private Response response;
     private byte[] payload = null;

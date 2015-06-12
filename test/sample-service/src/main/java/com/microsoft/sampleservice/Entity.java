@@ -13,8 +13,8 @@
  ******************************************************************************/
 package com.microsoft.sampleservice;
 
-import com.microsoft.services.orc.ODataBaseEntity;
 
+import com.microsoft.services.orc.core.ODataBaseEntity;
 
 /**
  * The type Entity.
@@ -26,7 +26,6 @@ public class Entity extends ODataBaseEntity {
     }
             
     private String Id;
-     
     /**
     * Gets the Id.
     *
