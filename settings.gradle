@@ -1,3 +1,6 @@
+//include ':orc-engine-android'
+//project(':orc-engine-android').projectDir = new File('src/orc-engine-android')
+
 include ':orc-engine-android',
         ':odata-engine-unit-tests',
         ':sample-service'

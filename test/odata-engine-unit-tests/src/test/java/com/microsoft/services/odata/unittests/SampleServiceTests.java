@@ -5,7 +5,7 @@ import com.microsoft.sampleservice.Item;
 import com.microsoft.sampleservice.ItemA;
 import com.microsoft.sampleservice.ItemB;
 import com.microsoft.sampleservice.SampleComplexType;
-import com.microsoft.sampleservice.orc.SampleContainerClient;
+import com.microsoft.sampleservice.fetchers.SampleContainerClient;
 import com.microsoft.sampleservice.SampleEntity;
 import com.microsoft.services.orc.core.Helpers;
 import com.microsoft.services.orc.jvm.impl.GsonSerializer;
