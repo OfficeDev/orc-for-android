@@ -10,7 +10,6 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
 import com.microsoft.services.orc.http.Credentials;
-import com.microsoft.services.orc.http.DependencyResolver;
 import com.microsoft.services.orc.http.HttpTransport;
 import com.microsoft.services.orc.http.OrcResponse;
 import com.microsoft.services.orc.http.Request;

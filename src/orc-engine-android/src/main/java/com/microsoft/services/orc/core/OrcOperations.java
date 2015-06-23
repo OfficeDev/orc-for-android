@@ -6,7 +6,6 @@
 package com.microsoft.services.orc.core;
 
 import com.google.common.util.concurrent.ListenableFuture;
-import com.microsoft.services.orc.http.DependencyResolver;
 import com.microsoft.services.orc.http.OrcResponse;
 import com.microsoft.services.orc.http.Request;
 

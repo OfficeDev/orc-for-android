@@ -11,8 +11,8 @@ uploadArchives {
                 url: 'https://api.bintray.com/maven/msopentech/Maven/orc-for-android'
         ) {
             authentication(
-                    userName: 'marcote',
-                    password: '2f2a02f569ad61578e7fdb352eafc379434eb941'
+                    userName: 'foo',
+                    password: 'bar'
             )
         }
     }

@@ -4,7 +4,6 @@ import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
-import com.microsoft.services.orc.http.DependencyResolver;
 import com.microsoft.services.orc.http.HttpVerb;
 import com.microsoft.services.orc.http.OrcResponse;
 import com.microsoft.services.orc.http.OrcURL;

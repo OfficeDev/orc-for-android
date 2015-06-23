@@ -3,8 +3,8 @@ package com.microsoft.services.orc.resolvers;
 import android.os.Build;
 
 import com.microsoft.services.orc.core.Constants;
+import com.microsoft.services.orc.core.DependencyResolver;
 import com.microsoft.services.orc.http.Credentials;
-import com.microsoft.services.orc.http.DependencyResolver;
 import com.microsoft.services.orc.http.HttpTransport;
 import com.microsoft.services.orc.serialization.JsonSerializer;
 import com.microsoft.services.orc.http.OrcURL;
