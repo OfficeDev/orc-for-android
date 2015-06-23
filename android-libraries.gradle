@@ -7,12 +7,11 @@ uploadArchives {
         pom.groupId = myProject.group
         pom.artifactId = PUBLISH_ARTIFACT_ID
         pom.version = myProject.version
-        repository (
-                url: 'https://api.bintray.com/maven/msopentech/Maven/orc-for-android'
-        ) {
+        repository (url: 'https://api.bintray.com/maven/msopentech/Maven/orc-for-android') {
             authentication(
-                    userName: 'foo',
-                    password: 'bar'
+                 //TODO: Replace with values from ~/settings.gradle
+                 userName: 'foo',
+                 password: 'bar'
             )
         }
     }
