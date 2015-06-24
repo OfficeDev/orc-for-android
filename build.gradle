@@ -1,16 +1,25 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+apply plugin: 'com.android.library'
+apply plugin: 'maven'
+
 buildscript {
     repositories {
         jcenter()
     }
 
     dependencies {
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:0.6"
         classpath 'com.android.tools.build:gradle:1.2.3'
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
     }
 }
+
+allprojects {
+    repositories {
+        jcenter()
+        maven {
+            url "http://dl.bintray.com/msopentech/Maven"
+        }
+    }
+}
+
 
 if (JavaVersion.current().isJava8Compatible()) {
     allprojects {
@@ -20,19 +29,69 @@ if (JavaVersion.current().isJava8Compatible()) {
     }
 }
 
-allprojects {
+android {
+    compileSdkVersion 20
+    buildToolsVersion "20.0.0"
 
-    repositories {
-        jcenter()
-
-        maven {
-            url  "http://dl.bintray.com/msopentech/Maven"
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 15
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled
+            proguardFiles getDefaultProguardFile('proguard-android.txt')
         }
     }
+}
+
+dependencies {
+    compile 'com.google.code.gson:gson:2.3'
+    compile 'com.google.guava:guava:18.0'
+    compile 'com.microsoft.aad:adal:1.1.7'
+
+    //TODO: Replace with new MSA SDK
+    compile (group: 'com.microsoft.orc', name: 'live-auth', version: '0.14.2')
+}
 
 
+uploadArchives {
+    configuration = configurations.archives
+    repositories.mavenDeployer {
+        pom {
+           setGroupId project.mavenGroupId
+           setArtifactId project.mavenArtifactId
+           setVersion project.mavenVersion
+        }
+        repository (url: project.mavenRepoUrl) {
+            authentication(
+                 //TODO: Replace with values from ~/settings.gradle
+                 userName: 'foo',
+                 password: 'bar'
+            )
+        }
+    }
+}
 
-    apply plugin: 'idea'
-    group = 'com.microsoft.services.orc'
-    version = '0.15.4'
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath())
+    classpath += configurations.compile
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.srcDirs
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
 }
