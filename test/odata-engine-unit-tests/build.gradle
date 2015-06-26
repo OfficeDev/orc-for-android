@@ -14,7 +14,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.3'
 
     compile project(':sample-service')
-    compile(group: 'com.microsoft.orc', name: 'orc-engine-jvm', version: '0.14.0', ext: 'jar')
+    compile(group: 'com.microsoft.services.orc', name: 'orc-jvm', version: '1.0.0', ext: 'jar')
 
     testCompile 'junit:junit:4.8.+'
     testCompile 'org.hamcrest:hamcrest-all:1.3'
