@@ -14,6 +14,9 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven {
+            url project.nightliesUrl
+        }
     }
 }
 
@@ -64,7 +67,7 @@ uploadArchives {
         }
         repository (url: project.mavenRepoUrl) {
             authentication(
-                 //TODO: Replace with values from ~/settings.gradle
+                 // put these values in local file ~/.gradle/gradle.properties
                  userName: project.bintrayUsername,
                  password: project.bintrayApikey
             )
