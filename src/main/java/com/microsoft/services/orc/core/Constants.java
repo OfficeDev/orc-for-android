@@ -24,7 +24,7 @@ public class Constants {
     /**
      * The constant SDK_VERSION.
      */
-    public static final String SDK_VERSION = "0.14.1";
+    public static final String SDK_VERSION = "1.0.0";
 
     /**
      * The constant USER_AGENT_HEADER.
@@ -110,9 +110,4 @@ public class Constants {
      * The constant PROPERTY_NAME_RESERVED_PREFIX
      */
     public static final String PROPERTY_NAME_IGNORE_PREFIX = "$$$__$$$";
-
-    /**
-     * The constant ODATA_ENTITY_BASE_CLASS_NAME
-     */
-    public static final String ODATA_ENTITY_BASE_CLASS_NAME = "ODataBaseEntity";
 }

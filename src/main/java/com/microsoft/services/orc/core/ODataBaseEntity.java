@@ -16,6 +16,8 @@
  */
 package com.microsoft.services.orc.core;
 
+import java.util.AbstractMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -24,6 +26,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ODataBaseEntity {
 
     protected String $$__ODataType;
+
+    protected Map.Entry<ODataBaseEntity, String> $$$__$$$parentReference = null;
 
     ConcurrentHashMap<String, Object> $$$__$$$updatedValues = new ConcurrentHashMap<String, Object>();
 
@@ -38,5 +42,13 @@ public class ODataBaseEntity {
 
     public void valueChanged(String property, Object payload) {
         $$$__$$$updatedValues.put(property, payload);
+        if ($$$__$$$parentReference != null) {
+            String referenceProperty = $$$__$$$parentReference.getValue();
+            $$$__$$$parentReference.getKey().valueChanged(referenceProperty, this);
+        }
+    }
+
+    public void setParent(ODataBaseEntity parentEntity, String referenceProperty) {
+        $$$__$$$parentReference = new AbstractMap.SimpleEntry<ODataBaseEntity, String>(parentEntity, referenceProperty);
     }
 }

@@ -12,7 +12,7 @@ public class CalendarSerializer {
      * Deserializes an ISO-8601 formatted date
      * @param strVal the str val
      * @return the calendar
-     * @throws ParseException the parse exception
+     * @throws java.text.ParseException the parse exception
      */
     public static Calendar deserialize(String strVal) throws ParseException {
         // Change Z to +0000 to adapt the string to a format
@@ -41,7 +41,7 @@ public class CalendarSerializer {
 
         Date date = dateFormat.parse(s);
 
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = java.util.Calendar.getInstance();
         calendar.setTime(date);
         return calendar;
     }
@@ -53,7 +53,7 @@ public class CalendarSerializer {
      * @return the string
      */
     public static String serialize(Calendar src) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'.'SSSSSSS'Z'", Locale.getDefault());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'.'SSS'Z'", Locale.getDefault());
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         return dateFormat.format(src.getTime());
     }

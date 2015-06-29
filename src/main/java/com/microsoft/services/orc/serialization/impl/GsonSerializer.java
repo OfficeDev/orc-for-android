@@ -1,12 +1,11 @@
 package com.microsoft.services.orc.serialization.impl;
 
-/**
- * The type Gson serializer.
- */
-public class GsonSerializer extends GsonSerializerBase {
 
+import com.microsoft.services.orc.serialization.ByteArrayTypeAdapterBase;
+
+public class GsonSerializer extends GsonSerializerBase {
     @Override
-    protected ByteArrayTypeAdapterImpl getByteArrayTypeAdapter() {
+    protected ByteArrayTypeAdapterBase getByteArrayTypeAdapter() {
         return new ByteArrayTypeAdapterImpl();
     }
 }
