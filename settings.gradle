@@ -1,4 +1,4 @@
-include ':odata-engine-unit-tests',
-        ':sample-service'
-project(':sample-service').projectDir = new File('test/sample-service')
-project(':odata-engine-unit-tests').projectDir = new File('test/odata-engine-unit-tests')
+//include ':odata-engine-unit-tests',
+//        ':sample-service'
+//project(':sample-service').projectDir = new File('test/sample-service')
+//project(':odata-engine-unit-tests').projectDir = new File('test/odata-engine-unit-tests')
