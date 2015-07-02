@@ -68,8 +68,8 @@ uploadArchives {
         repository (url: project.mavenRepoUrl) {
             authentication(
                  //TODO: Replace with values from ~/settings.gradle
-                 userName: 'foo',
-                 password: 'bar'
+                 userName: project.bintrayUsername,
+                 password: project.bintrayApikey
             )
         }
     }
