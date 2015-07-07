@@ -14,15 +14,14 @@
 package com.microsoft.sampleservice.fetchers;
 
 import com.microsoft.sampleservice.*;
-import com.microsoft.services.orc.core.OrcCollectionFetcher;
-import com.microsoft.services.orc.core.OrcEntityFetcher;
-import com.microsoft.services.orc.core.OrcExecutable;
+import com.google.common.util.concurrent.*;
+import com.microsoft.services.orc.core.*;
 import com.microsoft.services.orc.core.Readable;
 
 /**
  * The type  SampleEntityFetcher.
  */
-public class SampleEntityFetcher extends OrcEntityFetcher<SampleEntity,SampleEntityOperations>
+public class SampleEntityFetcher extends OrcEntityFetcher<SampleEntity,SampleEntityOperations> 
                                      implements Readable<SampleEntity> {
 
      /**
@@ -102,6 +101,24 @@ public class SampleEntityFetcher extends OrcEntityFetcher<SampleEntity,SampleEnt
      */
     public ItemFetcher getItem(String id){
          return new OrcCollectionFetcher<Item, ItemFetcher, ItemCollectionOperations>("Items", this, Item.class, ItemCollectionOperations.class).getById(id);
+    }
+
+     /**
+     * Gets nested sample entity collection.
+     *
+     * @return the nested sample entity collection
+     */
+    public OrcCollectionFetcher<SampleEntity, SampleEntityFetcher, SampleEntityCollectionOperations> getNestedSampleEntityCollection() {
+        return new OrcCollectionFetcher<SampleEntity, SampleEntityFetcher, SampleEntityCollectionOperations>("nestedSampleEntityCollection", this, SampleEntity.class, SampleEntityCollectionOperations.class);
+    }
+
+    /**
+     * Gets nested sample entity collection.
+     *
+     * @return the nested sample entity collection
+     */
+    public SampleEntityFetcher getNestedSampleEntityCollection(String id){
+         return new OrcCollectionFetcher<SampleEntity, SampleEntityFetcher, SampleEntityCollectionOperations>("nestedSampleEntityCollection", this, SampleEntity.class, SampleEntityCollectionOperations.class).getById(id);
     }
 
 }

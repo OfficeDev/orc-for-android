@@ -14,9 +14,9 @@
 package com.microsoft.sampleservice.fetchers;
 
 import com.microsoft.sampleservice.*;
+import com.google.common.util.concurrent.*;
 import com.microsoft.services.orc.core.*;
 import com.microsoft.services.orc.core.Readable;
-import com.microsoft.services.orc.core.OrcExecutable;
 
 /**
  * The type  EntityFetcher.

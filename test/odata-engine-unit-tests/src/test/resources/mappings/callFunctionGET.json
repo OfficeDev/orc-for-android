@@ -1,0 +1,11 @@
+{
+    "request": {
+        "method": "GET",
+        "url": "/Me/nestedSampleEntityCollection/Microsoft.SampleService.SomeFunction/",
+        "bodyPatterns": [{"equalTo" : "{\"path\":\"SomePath\"}"}]
+    },
+    "response": {
+        "status": 200,
+        "body": "{\"BooleanParams\":false,\"CollectionType\":[{\"Name\":\"Some Name\",\"AnotherProperty\":\"AnotherProperty\",\"@odata.type\":\"#Microsoft.SampleService.SampleComplexType\"}]}"
+    }
+}

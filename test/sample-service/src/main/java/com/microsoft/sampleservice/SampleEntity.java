@@ -139,5 +139,30 @@ public class SampleEntity extends Entity {
         valueChanged("Items", value);
 
     }
+    
+        
+    private java.util.List<SampleEntity> nestedSampleEntityCollection = null;
+    
+    
+     
+    /**
+    * Gets the nested Sample Entity Collection.
+    *
+    * @return the java.util.List<SampleEntity>
+    */
+    public java.util.List<SampleEntity> getNestedSampleEntityCollection() {
+        return this.nestedSampleEntityCollection; 
+    }
+
+    /**
+    * Sets the nested Sample Entity Collection.
+    *
+    * @param value the java.util.List<SampleEntity>
+    */
+    public void setNestedSampleEntityCollection(java.util.List<SampleEntity> value) { 
+        this.nestedSampleEntityCollection = value; 
+        valueChanged("nestedSampleEntityCollection", value);
+
+    }
 }
 

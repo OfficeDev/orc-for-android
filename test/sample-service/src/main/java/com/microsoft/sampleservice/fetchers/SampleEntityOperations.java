@@ -68,7 +68,7 @@ public class SampleEntityOperations extends EntityOperations {
      * @return the listenable future
      */         
     public ListenableFuture<Integer> twoParamsActionsFirstIsEntityType(SampleEntity anEntity, Boolean booleanParams) { 
-        JsonSerializer serializer = getResolver().getJsonSerializer();
+        JsonSerializer serializer = getResolver().getJsonSerializer();      
         String serializedAnEntity = serializer.serialize(anEntity);
 		String serializedBooleanParams = serializer.serialize(booleanParams);
 		  

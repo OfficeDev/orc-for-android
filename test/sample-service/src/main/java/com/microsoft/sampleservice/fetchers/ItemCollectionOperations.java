@@ -13,7 +13,14 @@
  ******************************************************************************/
 package com.microsoft.sampleservice.fetchers;
 
-import com.microsoft.services.orc.core.OrcExecutable;
+import com.microsoft.sampleservice.*;
+import com.google.common.util.concurrent.*;
+import com.microsoft.services.orc.core.*;
+import com.microsoft.services.orc.http.*;
+import com.microsoft.services.orc.serialization.*;
+
+import static com.microsoft.services.orc.core.Helpers.*;
+
 
 /**
  * The type ItemCollectionOperations

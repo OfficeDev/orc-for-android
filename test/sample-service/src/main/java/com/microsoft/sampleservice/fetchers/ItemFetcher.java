@@ -14,15 +14,14 @@
 package com.microsoft.sampleservice.fetchers;
 
 import com.microsoft.sampleservice.*;
-import com.microsoft.services.orc.core.OrcEntityFetcher;
-import com.microsoft.services.orc.core.OrcExecutable;
+import com.google.common.util.concurrent.*;
+import com.microsoft.services.orc.core.*;
 import com.microsoft.services.orc.core.Readable;
-
 
 /**
  * The type  ItemFetcher.
  */
-public class ItemFetcher extends OrcEntityFetcher<Item,ItemOperations>
+public class ItemFetcher extends OrcEntityFetcher<Item,ItemOperations> 
                                      implements Readable<Item> {
 
      /**

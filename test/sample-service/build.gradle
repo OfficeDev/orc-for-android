@@ -8,6 +8,6 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.google.guava:guava:18.0'
     compile 'com.google.code.gson:gson:2.3'
-    compile 'com.microsoft.services.orc:orc-jvm:1.0.0'
+    compile 'com.microsoft.services.orc:orc-java:1.0.0'
 
 }
