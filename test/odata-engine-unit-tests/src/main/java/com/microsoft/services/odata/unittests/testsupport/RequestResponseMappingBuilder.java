@@ -34,7 +34,7 @@ public class RequestResponseMappingBuilder {
 	private int responseStatus = 200;
 	private String responseBody = "";
 	private List<HttpHeader> headers = newArrayList();
-	
+
 	public static RequestResponseMappingBuilder aMapping() {
 		return new RequestResponseMappingBuilder();
 	}
@@ -58,12 +58,12 @@ public class RequestResponseMappingBuilder {
 		this.responseBody = responseBody;
 		return this;
 	}
-	
+
 	public RequestResponseMappingBuilder withHeader(String key, String value) {
 		headers.add(new HttpHeader(key, value));
 		return this;
 	}
-	
+
 	public StubMapping build() {
 		RequestPattern requestPattern = new RequestPattern(method, url);
 		ResponseDefinition response = new ResponseDefinition(responseStatus, responseBody);

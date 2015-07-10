@@ -28,10 +28,10 @@ import static com.google.common.base.Charsets.UTF_8;
 import static com.google.common.collect.Iterables.getFirst;
 
 public class WireMockResponse {
-	
+
 	private final HttpResponse httpResponse;
 	private final byte[] content;
-	
+
 	public WireMockResponse(HttpResponse httpResponse) {
 		this.httpResponse = httpResponse;
 		content = getEntityAsByteArrayAndCloseStream(httpResponse);
@@ -40,7 +40,7 @@ public class WireMockResponse {
 	public int statusCode() {
 		return httpResponse.getStatusLine().getStatusCode();
 	}
-	
+
 	public String content() {
         if(content==null) {
             return null;
@@ -51,18 +51,18 @@ public class WireMockResponse {
     public byte[] binaryContent() {
         return content;
     }
-	
+
 	public String firstHeader(String key) {
 		return getFirst(headers().get(key), null);
 	}
-	
+
 	public Multimap<String, String> headers() {
         ImmutableListMultimap.Builder<String, String> builder = ImmutableListMultimap.builder();
 
 		for (Header header: httpResponse.getAllHeaders()) {
 			builder.put(header.getName(), header.getValue());
 		}
-		
+
 		return builder.build();
 	}
 

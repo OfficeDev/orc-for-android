@@ -7,11 +7,15 @@ import com.microsoft.sampleservice.ItemB;
 import com.microsoft.sampleservice.SampleComplexType;
 import com.microsoft.sampleservice.fetchers.SampleContainerClient;
 import com.microsoft.sampleservice.SampleEntity;
+import com.microsoft.services.orc.core.DependencyResolver;
 import com.microsoft.services.orc.core.Helpers;
 import com.microsoft.services.orc.log.LogLevel;
-import com.microsoft.services.orc.resolvers.JavaDependencyResolver;
 import com.microsoft.services.orc.serialization.impl.GsonSerializer;
 
+import org.jmock.*;
+import org.jmock.auto.Mock;
+import org.jmock.Expectations;
+import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -29,23 +33,21 @@ import static org.junit.Assert.assertThat;
 public class SampleServiceTests extends WireMockTestBase {
 
     private String url = "http://localhost:8080";
-
-    private JavaDependencyResolver resolver;
+    private Mockery mockingContext;
+    private DependencyResolver resolver;
     private SampleContainerClient client;
 
     public SampleServiceTests() {
-
-        resolver = new JavaDependencyResolver("faketoken");
-        resolver.getLogger().setLogLevel(LogLevel.VERBOSE);
-        resolver.getLogger().setEnabled(true);
+        mockingContext = new JUnit4Mockery();
+        resolver = mockingContext.mock(DependencyResolver.class);
         client = new SampleContainerClient(url, resolver);
     }
-
 
     @Test
     public void testTwoParamsActionsFirstIsEntityTypeUri() throws ExecutionException, InterruptedException {
         //twoParamsActionsFirstIsEntityTypePOST.json
         Integer result = null;
+
         try {
             result = client.getMe()
                     .getOperations()
@@ -53,6 +55,8 @@ public class SampleServiceTests extends WireMockTestBase {
                     .get();
 
         } catch (Throwable t) {
+
+
             resolver.getLogger().log(t.getLocalizedMessage(), LogLevel.ERROR);
         }
 
@@ -445,11 +449,11 @@ public class SampleServiceTests extends WireMockTestBase {
         //getSampleEntity.json
         //updateSampleEntityPATCH.json
 
-        String payload= new GsonSerializer().serialize(getSampleEntity());
+        String payload = new GsonSerializer().serialize(getSampleEntity());
         resolver.getLogger().log("EntityPayload: " + payload, LogLevel.ERROR);
         //Get Entity
         SampleEntity result = null;
-        SampleEntity updateResponse= null;
+        SampleEntity updateResponse = null;
         try {
             result = client.getMe()
                     .addHeader("WithNested", "no")
@@ -475,7 +479,7 @@ public class SampleServiceTests extends WireMockTestBase {
     public void testGetAndUpdatePropertyInNestedEntity() throws ExecutionException, InterruptedException {
         //Get Entity
         SampleEntity result = null;
-        SampleEntity updateResponse= null;
+        SampleEntity updateResponse = null;
         try {
             result = client.getMe()
                     .addHeader("WithNested", "yes")
@@ -502,7 +506,7 @@ public class SampleServiceTests extends WireMockTestBase {
 
         //Get Entity
         SampleEntity result = null;
-        SampleEntity updateResponse= null;
+        SampleEntity updateResponse = null;
         try {
             result = client.getMe()
                     .addHeader("WithNavigations", "yes")
@@ -529,7 +533,7 @@ public class SampleServiceTests extends WireMockTestBase {
 
         //Get Entity
         SampleEntity result = null;
-        SampleEntity updateResponse= null;
+        SampleEntity updateResponse = null;
         try {
             result = client.getMe()
                     .addHeader("With3Navigations", "yes")

@@ -32,6 +32,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 
 import static com.github.tomakehurst.wiremock.core.Options.DEFAULT_PORT;
@@ -119,24 +120,24 @@ public class WireMockTestClient {
         return executeMethodAndCovertExceptions(httpRequest, headers);
     }
 
-    public WireMockResponse putWithBody(String url, String body, String contentType, TestHttpHeader... headers) {
+    public WireMockResponse putWithBody(String url, String body, String contentType, TestHttpHeader... headers) throws UnsupportedEncodingException {
         HttpPut httpPut = new HttpPut(mockServiceUrlFor(url));
         return requestWithBody(httpPut, body, contentType, headers);
     }
 
-    public WireMockResponse patchWithBody(String url, String body, String contentType, TestHttpHeader... headers) {
-        HttpPatch httpPatch = new HttpPatch(mockServiceUrlFor(url));
-        return requestWithBody(httpPatch, body, contentType, headers);
-    }
+//    public WireMockResponse patchWithBody(String url, String body, String contentType, TestHttpHeader... headers) {
+//        HttpPatch httpPatch = new HttpPatch(mockServiceUrlFor(url));
+//        return requestWithBody(httpPatch, body, contentType, headers);
+//    }
 
     private WireMockResponse requestWithBody(
-        HttpEntityEnclosingRequestBase request, String body, String contentType, TestHttpHeader... headers) {
-        request.setEntity(new StringEntity(body, ContentType.create(contentType, "utf-8")));
+        HttpEntityEnclosingRequestBase request, String body, String contentType, TestHttpHeader... headers) throws UnsupportedEncodingException {
+        request.setEntity(new StringEntity(body, ContentType.create(contentType, "utf-8").toString()));
         return executeMethodAndCovertExceptions(request, headers);
     }
 
-    public WireMockResponse postWithBody(String url, String body, String bodyMimeType, String bodyEncoding) {
-        return post(url, new StringEntity(body, ContentType.create(bodyMimeType, bodyEncoding)));
+    public WireMockResponse postWithBody(String url, String body, String bodyMimeType, String bodyEncoding) throws UnsupportedEncodingException {
+        return post(url, new StringEntity(body, ContentType.create(bodyMimeType, bodyEncoding).toString()));
     }
 
     public WireMockResponse postWithChunkedBody(String url, byte[] body) {
@@ -149,8 +150,8 @@ public class WireMockTestClient {
         return executeMethodAndCovertExceptions(httpPost);
     }
 
-    public WireMockResponse patchWithBody(String url, String body, String bodyMimeType, String bodyEncoding) {
-        return patch(url, new StringEntity(body, ContentType.create(bodyMimeType, bodyEncoding)));
+    public WireMockResponse patchWithBody(String url, String body, String bodyMimeType, String bodyEncoding) throws UnsupportedEncodingException {
+        return patch(url, new StringEntity(body, ContentType.create(bodyMimeType, bodyEncoding).toString()));
     }
 
     public WireMockResponse patch(String url, HttpEntity entity) {
@@ -184,7 +185,7 @@ public class WireMockTestClient {
         HttpPost post = new HttpPost(url);
         try {
             if (json != null) {
-                post.setEntity(new StringEntity(json, ContentType.create(JSON.toString(), "utf-8")));
+                post.setEntity(new StringEntity(json, ContentType.create(JSON.toString(), "utf-8").toString()));
             }
             HttpResponse httpResponse = httpClient().execute(post);
             return httpResponse.getStatusLine().getStatusCode();

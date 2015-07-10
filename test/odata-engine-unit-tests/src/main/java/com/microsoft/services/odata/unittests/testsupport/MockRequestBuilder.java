@@ -39,22 +39,22 @@ public class MockRequestBuilder {
     private List<HttpHeader> individualHeaders = newArrayList();
 	private String body = "";
 	private boolean browserProxyRequest = false;
-	
+
 	private String mockName;
-	
+
 	public MockRequestBuilder(Mockery context) {
 		this.context = context;
 	}
-	
+
 	public MockRequestBuilder(Mockery context, String mockName) {
 		this.mockName = mockName;
 		this.context = context;
 	}
-	
+
 	public static MockRequestBuilder aRequest(Mockery context) {
 		return new MockRequestBuilder(context);
 	}
-	
+
 	public static MockRequestBuilder aRequest(Mockery context, String mockName) {
 		return new MockRequestBuilder(context, mockName);
 	}
@@ -73,17 +73,17 @@ public class MockRequestBuilder {
         individualHeaders.add(new HttpHeader(key, value));
 		return this;
 	}
-	
+
 	public MockRequestBuilder withBody(String body) {
 		this.body = body;
 		return this;
 	}
-	
+
 	public MockRequestBuilder asBrowserProxyRequest() {
 		this.browserProxyRequest = true;
 		return this;
 	}
-	
+
 	public Request build() {
         final HttpHeaders headers = new HttpHeaders(individualHeaders);
 
@@ -111,7 +111,7 @@ public class MockRequestBuilder {
 			allowing(request).getAbsoluteUrl(); will(returnValue("http://localhost:8080" + url));
 			allowing(request).isBrowserProxyRequest(); will(returnValue(browserProxyRequest));
 		}});
-		
+
 		return request;
 	}
 }
