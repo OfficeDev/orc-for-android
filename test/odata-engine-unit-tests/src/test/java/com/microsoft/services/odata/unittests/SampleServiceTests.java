@@ -5,17 +5,21 @@ import com.microsoft.sampleservice.Item;
 import com.microsoft.sampleservice.ItemA;
 import com.microsoft.sampleservice.ItemB;
 import com.microsoft.sampleservice.SampleComplexType;
-import com.microsoft.sampleservice.fetchers.SampleContainerClient;
 import com.microsoft.sampleservice.SampleEntity;
+import com.microsoft.sampleservice.fetchers.SampleContainerClient;
 import com.microsoft.services.orc.core.DependencyResolver;
 import com.microsoft.services.orc.core.Helpers;
+import com.microsoft.services.orc.http.Credentials;
+import com.microsoft.services.orc.http.HttpTransport;
+import com.microsoft.services.orc.http.OrcURL;
+import com.microsoft.services.orc.http.Request;
 import com.microsoft.services.orc.log.LogLevel;
+import com.microsoft.services.orc.log.Logger;
+import com.microsoft.services.orc.resolvers.ADALDependencyResolver;
+import com.microsoft.services.orc.resolvers.DefaultDependencyResolver;
+import com.microsoft.services.orc.serialization.JsonSerializer;
 import com.microsoft.services.orc.serialization.impl.GsonSerializer;
 
-import org.jmock.*;
-import org.jmock.auto.Mock;
-import org.jmock.Expectations;
-import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -30,22 +34,23 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
+
 public class SampleServiceTests extends WireMockTestBase {
 
     private String url = "http://localhost:8080";
-    private Mockery mockingContext;
-    private DependencyResolver resolver;
     private SampleContainerClient client;
+    private DependencyResolver resolver;
+
 
     public SampleServiceTests() {
-        mockingContext = new JUnit4Mockery();
-        resolver = mockingContext.mock(DependencyResolver.class);
+        resolver = new DefaultDependencyResolver("footoken");
         client = new SampleContainerClient(url, resolver);
     }
 
     @Test
     public void testTwoParamsActionsFirstIsEntityTypeUri() throws ExecutionException, InterruptedException {
         //twoParamsActionsFirstIsEntityTypePOST.json
+
         Integer result = null;
 
         try {
@@ -55,8 +60,6 @@ public class SampleServiceTests extends WireMockTestBase {
                     .get();
 
         } catch (Throwable t) {
-
-
             resolver.getLogger().log(t.getLocalizedMessage(), LogLevel.ERROR);
         }
 
