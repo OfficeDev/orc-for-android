@@ -5,11 +5,11 @@ import android.app.Activity;
 import android.util.Log;
 
 import com.google.common.util.concurrent.SettableFuture;
-import com.microsoft.live.LiveAuthClient;
-import com.microsoft.live.LiveAuthException;
-import com.microsoft.live.LiveAuthListener;
-import com.microsoft.live.LiveConnectSession;
-import com.microsoft.live.LiveStatus;
+import com.microsoft.services.msa.LiveAuthClient;
+import com.microsoft.services.msa.LiveAuthException;
+import com.microsoft.services.msa.LiveAuthListener;
+import com.microsoft.services.msa.LiveConnectSession;
+import com.microsoft.services.msa.LiveStatus;
 import com.microsoft.services.orc.http.Credentials;
 import com.microsoft.services.orc.http.impl.OAuthCredentials;
 import com.microsoft.services.orc.log.LogLevel;
@@ -17,11 +17,11 @@ import com.microsoft.services.orc.log.LogLevel;
 import java.util.concurrent.ExecutionException;
 
 /**
- * The type LiveSDK dependency resolver.
+ * The type MSAAuthDependencyResolver dependency resolver.
  */
-public class LiveAuthDependencyResolver extends DefaultDependencyResolver {
+public class MSAAuthDependencyResolver extends DefaultDependencyResolver {
 
-    private static final String TAG = "LiveAuthDepResolver";
+    private static final String TAG = "MSAAuthDepResolver";
 
     private LiveAuthClient liveAuthClient;
     private Context mContext;
@@ -31,7 +31,7 @@ public class LiveAuthDependencyResolver extends DefaultDependencyResolver {
      *
      * @param theAuthClient the context
      */
-    public LiveAuthDependencyResolver(LiveAuthClient theAuthClient) {
+    public MSAAuthDependencyResolver(LiveAuthClient theAuthClient) {
         super("");
         this.liveAuthClient = theAuthClient;
     }
@@ -40,7 +40,7 @@ public class LiveAuthDependencyResolver extends DefaultDependencyResolver {
         final SettableFuture<Boolean> signal = SettableFuture.create();
 
         this.getLogger().log(
-                "Initializing LiveAuthDependencyResolver. If cached refresh token is available it will be used.", LogLevel.INFO);
+                "Initializing MSAAuthDependencyResolver. If cached refresh token is available it will be used.", LogLevel.INFO);
 
         contextActivity.runOnUiThread(new Runnable() {
             @Override
@@ -49,7 +49,7 @@ public class LiveAuthDependencyResolver extends DefaultDependencyResolver {
                     @Override
                     public void onAuthComplete(LiveStatus status, LiveConnectSession session, Object userState) {
                         if (status == LiveStatus.CONNECTED) {
-                            LiveAuthDependencyResolver.this.getLogger().log(
+                            MSAAuthDependencyResolver.this.getLogger().log(
                                     "Successfully refreshed tokens with refresh token.", LogLevel.INFO);
                             signal.set(true);
                         } else {
@@ -86,7 +86,7 @@ public class LiveAuthDependencyResolver extends DefaultDependencyResolver {
                     OAuthCredentials credentials = new OAuthCredentials(session.getAccessToken());
                     credentialsFuture.set(credentials);
                 } else {
-                    credentialsFuture.setException(new LiveAuthException("Couldn't initialize LiveAuthClient, perform UI Login."));
+                    credentialsFuture.setException(new LiveAuthException("Couldn't initialize MSAAuthClient, perform UI Login."));
                 }
             }
         });
@@ -119,9 +119,7 @@ public class LiveAuthDependencyResolver extends DefaultDependencyResolver {
 
         try {
             logoutFuture.get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
 
