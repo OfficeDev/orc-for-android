@@ -1,4 +1,7 @@
-//include ':odata-engine-unit-tests',
-//        ':sample-service'
-//project(':sample-service').projectDir = new File('test/sample-service')
-//project(':odata-engine-unit-tests').projectDir = new File('test/odata-engine-unit-tests')
+include ':orc-android',
+        ':odata-engine-unit-tests',
+        ':sample-service'
+
+project(':orc-android').projectDir = new File('src/orc-android')
+project(':sample-service').projectDir = new File('test/sample-service')
+project(':odata-engine-unit-tests').projectDir = new File('test/odata-engine-unit-tests')

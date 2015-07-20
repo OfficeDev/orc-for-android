@@ -119,7 +119,9 @@ public class MSAAuthDependencyResolver extends DefaultDependencyResolver {
 
         try {
             logoutFuture.get();
-        } catch (InterruptedException | ExecutionException e) {
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }catch ( ExecutionException e){
             e.printStackTrace();
         }
 
