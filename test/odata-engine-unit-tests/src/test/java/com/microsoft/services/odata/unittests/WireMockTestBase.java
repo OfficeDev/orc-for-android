@@ -4,7 +4,6 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.common.SingleRootFileSource;
 import com.github.tomakehurst.wiremock.core.Options;
 import com.github.tomakehurst.wiremock.standalone.JsonFileMappingsLoader;
-import com.microsoft.services.odata.unittests.testsupport.WireMockTestClient;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;

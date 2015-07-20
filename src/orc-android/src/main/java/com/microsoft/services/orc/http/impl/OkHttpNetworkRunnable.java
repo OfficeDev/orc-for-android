@@ -32,7 +32,7 @@ public class OkHttpNetworkRunnable extends NetworkRunnable {
             client.networkInterceptors().add(new LoggingInterceptor());
 
             RequestBody requestBody = null;
-            MediaType mediaType = MediaType.parse("application/octet-stream");
+            MediaType mediaType = MediaType.parse("application/json");
 
             if (mRequest.getContent() != null) {
                 requestBody = RequestBody.create(mediaType, mRequest.getContent());
@@ -66,7 +66,7 @@ public class OkHttpNetworkRunnable extends NetworkRunnable {
 
                 mFuture.set(response);
             } else {
-                //close here??
+                responseBody.close();
                 mFuture.set(new EmptyResponse(status, okResponse.headers().toMultimap()));
             }
 

@@ -11,13 +11,16 @@ import com.microsoft.services.orc.http.Request;
 import com.microsoft.services.orc.http.impl.OkHttpTransport;
 import com.microsoft.services.orc.http.impl.OrcURLImpl;
 import com.microsoft.services.orc.http.impl.RequestImpl;
+import com.microsoft.services.orc.log.Logger;
+import com.microsoft.services.orc.log.LoggerBase;
 import com.microsoft.services.orc.log.impl.LoggerImpl;
+import com.microsoft.services.orc.log.impl.SimpleLogger;
 import com.microsoft.services.orc.serialization.JsonSerializer;
 import com.microsoft.services.orc.serialization.impl.GsonSerializer;
 
 public class OkHttpDependencyResolver implements DependencyResolver {
 
-    private LoggerImpl logger;
+    private LoggerBase logger;
     private String token;
 
     /**
@@ -25,7 +28,7 @@ public class OkHttpDependencyResolver implements DependencyResolver {
      */
     public OkHttpDependencyResolver(String token) {
         this.token = token;
-        this.logger = new LoggerImpl();
+        this.logger = new SimpleLogger();
     }
 
     @Override
@@ -34,7 +37,7 @@ public class OkHttpDependencyResolver implements DependencyResolver {
     }
 
     @Override
-    public LoggerImpl getLogger() {
+    public Logger getLogger() {
         return this.logger;
     }
 

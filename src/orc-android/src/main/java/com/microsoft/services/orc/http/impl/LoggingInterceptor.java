@@ -5,11 +5,11 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
-import org.slf4j.*;
 
 public class LoggingInterceptor implements Interceptor {
-    static Logger logger = LoggerFactory.getLogger(LoggingInterceptor.class);
+    static Logger logger = Logger.getLogger(LoggingInterceptor.class.getName());
 
     @Override
     public Response intercept(Chain chain) throws IOException {
