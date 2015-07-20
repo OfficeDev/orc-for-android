@@ -1,4 +1,4 @@
-package com.microsoft.services.odata.unittests;
+package com.microsoft.services.orc.resolvers;
 
 import android.os.Build;
 

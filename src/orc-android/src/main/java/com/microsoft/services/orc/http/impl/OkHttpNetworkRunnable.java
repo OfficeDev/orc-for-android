@@ -29,6 +29,8 @@ public class OkHttpNetworkRunnable extends NetworkRunnable {
         try {
 
             OkHttpClient client = new OkHttpClient();
+            client.networkInterceptors().add(new LoggingInterceptor());
+
             RequestBody requestBody = null;
             MediaType mediaType = MediaType.parse("application/octet-stream");
 
