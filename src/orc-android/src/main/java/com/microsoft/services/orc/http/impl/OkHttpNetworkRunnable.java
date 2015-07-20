@@ -30,12 +30,12 @@ public class OkHttpNetworkRunnable extends NetworkRunnable {
 
             OkHttpClient client = new OkHttpClient();
             RequestBody requestBody = null;
+            MediaType mediaType = MediaType.parse("application/octet-stream");
 
             if (mRequest.getContent() != null) {
-                requestBody = RequestBody.create(MediaType.parse(""), mRequest.getContent());
+                requestBody = RequestBody.create(mediaType, mRequest.getContent());
             } else if (mRequest.getStreamedContent() != null) {
-                final InputStream stream = mRequest.getStreamedContent();
-                requestBody = new StreamedRequest(stream);
+                requestBody = new StreamedRequest(mediaType, mRequest);
             }
 
             Request request = new Request.Builder().url(mRequest.getUrl().toString())
@@ -75,20 +75,23 @@ public class OkHttpNetworkRunnable extends NetworkRunnable {
     }
 
     private class StreamedRequest extends RequestBody {
-        private final InputStream stream;
 
-        public StreamedRequest(InputStream stream) {
-            this.stream = stream;
+        private MediaType mediaType;
+        private com.microsoft.services.orc.http.Request request;
+
+        public StreamedRequest(MediaType mediaType, com.microsoft.services.orc.http.Request request) {
+            this.mediaType = mediaType;
+            this.request = request;
         }
 
         @Override
         public MediaType contentType() {
-            return null;
+            return mediaType;
         }
 
         @Override
         public void writeTo(BufferedSink sink) throws IOException {
-            sink.buffer().readFrom(stream, mRequest.getStreamedContentSize());
+            sink.buffer().readFrom(request.getStreamedContent(), request.getStreamedContentSize());
         }
     }
 }
