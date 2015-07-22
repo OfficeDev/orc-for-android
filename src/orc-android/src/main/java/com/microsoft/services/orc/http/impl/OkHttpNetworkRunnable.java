@@ -32,12 +32,12 @@ public class OkHttpNetworkRunnable extends NetworkRunnable {
             client.networkInterceptors().add(new LoggingInterceptor());
 
             RequestBody requestBody = null;
-            MediaType mediaType = MediaType.parse("application/json");
+            MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
 
-            if (mRequest.getContent() != null) {
-                requestBody = RequestBody.create(mediaType, mRequest.getContent());
-            } else if (mRequest.getStreamedContent() != null) {
+            if (mRequest.getStreamedContent() != null) {
                 requestBody = new StreamedRequest(mediaType, mRequest);
+            } else if (mRequest.getContent() != null) {
+                requestBody = RequestBody.create(mediaType, mRequest.getContent());
             }
 
             Request request = new Request.Builder().url(mRequest.getUrl().toString())
@@ -50,7 +50,7 @@ public class OkHttpNetworkRunnable extends NetworkRunnable {
             final ResponseBody responseBody = okResponse.body();
             InputStream stream = null;
 
-            if (requestBody != null) {
+            if (responseBody != null) {
                 stream = responseBody.byteStream();
             }
 

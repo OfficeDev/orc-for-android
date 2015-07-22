@@ -14,7 +14,6 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 public class OkHttpTests {
-    private String url = "http://localhost:8080";
     private SampleContainerClient client;
     private DependencyResolver resolver;
 
@@ -26,12 +25,11 @@ public class OkHttpTests {
     @Test
     public void canRunTests() throws Exception {
 
-        resolver = new OkHttpDependencyResolver("footoken");
-        client = new SampleContainerClient(url, resolver);
-
-
         MockWebServer server = new MockWebServer();
         server.start();
+
+        resolver = new OkHttpDependencyResolver("footoken");
+        client = new SampleContainerClient(server.getUrl("/").toString(), resolver);
 
         Integer result = null;
 

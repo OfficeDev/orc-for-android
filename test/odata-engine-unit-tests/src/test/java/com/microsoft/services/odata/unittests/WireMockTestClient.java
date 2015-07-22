@@ -125,13 +125,13 @@ public class WireMockTestClient {
         return requestWithBody(httpPut, body, contentType, headers);
     }
 
-//    public WireMockResponse patchWithBody(String url, String body, String contentType, TestHttpHeader... headers) {
-//        HttpPatch httpPatch = new HttpPatch(mockServiceUrlFor(url));
-//        return requestWithBody(httpPatch, body, contentType, headers);
-//    }
+    public WireMockResponse patchWithBody(String url, String body, String contentType, TestHttpHeader... headers) throws UnsupportedEncodingException {
+        HttpPatch httpPatch = new HttpPatch(mockServiceUrlFor(url));
+        return requestWithBody(httpPatch, body, contentType, headers);
+    }
 
     private WireMockResponse requestWithBody(
-        HttpEntityEnclosingRequestBase request, String body, String contentType, TestHttpHeader... headers) throws UnsupportedEncodingException {
+            HttpEntityEnclosingRequestBase request, String body, String contentType, TestHttpHeader... headers) throws UnsupportedEncodingException {
         request.setEntity(new StringEntity(body, ContentType.create(contentType, "utf-8").toString()));
         return executeMethodAndCovertExceptions(request, headers);
     }

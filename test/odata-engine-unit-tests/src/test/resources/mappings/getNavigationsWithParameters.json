@@ -1,7 +1,7 @@
 {
     "request": {
         "method": "GET",
-        "url": "/Me/Navigations/?StringParam='SomeValue'"
+        "url": "/Me/Navigations/?StringParam=%27SomeValue%27"
     },
     "response": {
         "status": 200,
