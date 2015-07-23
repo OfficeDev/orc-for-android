@@ -1,8 +1,7 @@
 {
     "request": {
         "method": "GET",
-        "url": "/Me/nestedSampleEntityCollection/Microsoft.SampleService.SomeFunction/",
-        "bodyPatterns": [{"equalTo" : "{\"path\":\"SomePath\"}"}]
+        "url": "/Me/nestedSampleEntityCollection/Microsoft.SampleService.SomeFunction('path,SomePath')/"
     },
     "response": {
         "status": 200,

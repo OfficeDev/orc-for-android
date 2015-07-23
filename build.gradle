@@ -1,10 +1,16 @@
 buildscript {
     repositories {
         jcenter()
+        mavenCentral()
+        maven {
+            url project.snapshotsUrl
+        }
     }
 
     dependencies {
         classpath 'com.android.tools.build:gradle:1.2.3'
+        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:3.1.1"
+        classpath "com.github.dcendents:android-maven-plugin:1.2"
     }
 }
 
@@ -12,7 +18,7 @@ allprojects {
     repositories {
         jcenter()
         maven {
-            url project.nightliesUrl
+            url project.snapshotsUrl
         }
     }
 }
@@ -25,3 +31,4 @@ if (JavaVersion.current().isJava8Compatible()) {
         }
     }
 }
+

@@ -37,7 +37,7 @@ public class OkHttpDependencyResolver implements DependencyResolver {
     }
 
     @Override
-    public Logger getLogger() {
+    public LoggerBase getLogger() {
         return this.logger;
     }
 
