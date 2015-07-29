@@ -10,5 +10,5 @@ public interface Logger {
      * @param content the content
      * @param logLevel the log level
      */
-    public void log(String content, LogLevel logLevel);
+    void log(String content, LogLevel logLevel);
 }

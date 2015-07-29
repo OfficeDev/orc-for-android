@@ -15,7 +15,7 @@ public class Constants {
 	 * UTF-8 Encoding name
 	 */
 	public static final String UTF8_NAME = "UTF-8";
-	
+
 	/**
 	 * UTF-8 Charset instance
 	 */
@@ -24,7 +24,7 @@ public class Constants {
     /**
      * The constant SDK_VERSION.
      */
-    public static final String SDK_VERSION = "1.0.0";
+    public static final String SDK_VERSION = "1.2.0";
 
     /**
      * The constant USER_AGENT_HEADER.

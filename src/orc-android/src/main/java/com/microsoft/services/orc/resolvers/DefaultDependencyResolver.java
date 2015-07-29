@@ -6,14 +6,14 @@ import com.microsoft.services.orc.core.Constants;
 import com.microsoft.services.orc.core.DependencyResolver;
 import com.microsoft.services.orc.http.Credentials;
 import com.microsoft.services.orc.http.HttpTransport;
-import com.microsoft.services.orc.log.Logger;
-import com.microsoft.services.orc.serialization.JsonSerializer;
 import com.microsoft.services.orc.http.OrcURL;
 import com.microsoft.services.orc.http.Request;
 import com.microsoft.services.orc.http.impl.AndroidHttpTransport;
 import com.microsoft.services.orc.http.impl.OrcURLImpl;
 import com.microsoft.services.orc.http.impl.RequestImpl;
+import com.microsoft.services.orc.log.LoggerBase;
 import com.microsoft.services.orc.log.impl.LoggerImpl;
+import com.microsoft.services.orc.serialization.JsonSerializer;
 import com.microsoft.services.orc.serialization.impl.GsonSerializer;
 
 
@@ -39,7 +39,7 @@ public class DefaultDependencyResolver implements DependencyResolver {
     }
 
     @Override
-    public Logger getLogger() {
+    public LoggerBase getLogger() {
         return this.logger;
     }
 
