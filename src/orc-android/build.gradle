@@ -4,10 +4,9 @@ apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'maven'
 
 group = project.mavenGroupId
-version = project.mavenVersion + '-SNAPSHOT'
+version = project.mavenVersion
 
 def targetRepo = project.version.endsWith('-SNAPSHOT')?'oss-snapshot-local':'oss-release-local'
-
 
 android {
     compileSdkVersion 15
