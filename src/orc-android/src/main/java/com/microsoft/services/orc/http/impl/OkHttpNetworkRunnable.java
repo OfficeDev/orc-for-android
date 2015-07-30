@@ -30,14 +30,17 @@ public class OkHttpNetworkRunnable extends NetworkRunnable {
 
             OkHttpClient client = new OkHttpClient();
             client.networkInterceptors().add(new LoggingInterceptor());
+            //client.interceptors().add(new ActionInterceptor());
 
-            RequestBody requestBody = null;
+            RequestBody requestBody;
             MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
 
             if (mRequest.getStreamedContent() != null) {
                 requestBody = new StreamedRequest(mediaType, mRequest);
             } else if (mRequest.getContent() != null) {
                 requestBody = RequestBody.create(mediaType, mRequest.getContent());
+            }else {
+                requestBody = RequestBody.create(mediaType, "{}".getBytes());
             }
 
             Request request = new Request.Builder().url(mRequest.getUrl().toString())

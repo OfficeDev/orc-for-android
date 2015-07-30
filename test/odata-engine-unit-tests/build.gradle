@@ -1,4 +1,7 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.jfrog.artifactory-upload'
+
+artifactoryPublish.skip = true
 
 android {
     compileSdkVersion 15
