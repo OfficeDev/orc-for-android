@@ -28,7 +28,7 @@ public class OkHttpDependencyResolver implements DependencyResolver {
      */
     public OkHttpDependencyResolver(String token) {
         this.token = token;
-        this.logger = new SimpleLogger();
+        this.logger = new LoggerImpl();
     }
 
     @Override

@@ -22,6 +22,7 @@ public class ActionInterceptor implements Interceptor {
                     .method(request.method(), empty(request.body()))
                     .headers(request.headers())
                     .build();
+
             return chain.proceed(patchedRequest);
 
         } else {
