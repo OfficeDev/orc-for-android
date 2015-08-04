@@ -30,7 +30,6 @@ public class OkHttpNetworkRunnable extends NetworkRunnable {
 
             OkHttpClient client = new OkHttpClient();
             client.networkInterceptors().add(new LoggingInterceptor());
-            client.networkInterceptors().add(new ActionInterceptor());
 
             RequestBody requestBody = null;
             MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
@@ -44,7 +43,7 @@ public class OkHttpNetworkRunnable extends NetworkRunnable {
             if (requestBody == null && (mRequest.getVerb().toString().equals("POST") ||
                                         mRequest.getVerb().toString().equals("PUT"))){
 
-                requestBody = RequestBody.create(mediaType, "");
+                requestBody = RequestBody.create(null, new byte[0]);
             }
 
             Request request = new Request.Builder().url(mRequest.getUrl().toString())
