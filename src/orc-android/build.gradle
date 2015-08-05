@@ -41,7 +41,7 @@ android {
 dependencies {
     compile 'com.google.code.gson:gson:2.3'
     compile 'com.google.guava:guava:18.0'
-    compile 'com.microsoft.aad:adal:1.1.7'
+    compile 'com.microsoft.aad:adal:2.0-alpha'
     compile 'com.microsoft.services.msa:msa-auth:0.8.0'
     compile 'com.squareup.okhttp:okhttp:2.4.0'
 }

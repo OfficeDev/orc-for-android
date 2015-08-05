@@ -12,43 +12,43 @@ import com.microsoft.services.orc.http.impl.OAuthCredentials;
 public class ADALDependencyResolver extends DefaultDependencyResolver {
 
     private AuthenticationContext context;
-    private String resourceId;
+    private String[] scopes;
     private String clientId;
 
     /**
      * Instantiates a new dependency resolver.
      * @param context the context
-     * @param resourceId the resource id
+     * @param scopes the scopes
      * @param clientId the client id
      */
-    public ADALDependencyResolver(AuthenticationContext context, String resourceId, String clientId) {
+    public ADALDependencyResolver(AuthenticationContext context, String[] scopes, String clientId) {
         super("");
         this.context = context;
-        this.resourceId = resourceId;
+        this.scopes = scopes;
         this.clientId = clientId;
     }
 
     /**
-     * Sets resource id.
+     * Sets scopes.
      *
-     * @param resourceId the resource id
+     * @param scopes the scopes
      */
-    public void setResourceId(String resourceId) {
-        this.resourceId = resourceId;
+    public void setScopes(String[] scopes) {
+        this.scopes = scopes;
     }
 
     /**
-     * Gets resource id.
+     * Gets scopes.
      *
-     * @return the resource id
+     * @return the scopes
      */
-    public String getResourceId() {
-        return this.resourceId;
+    public String[] getScopes() {
+        return this.scopes;
     }
 
     @Override
     public Credentials getCredentials() {
-        AuthenticationResult result = this.context.acquireTokenSilentSync(resourceId, clientId, null);
+        AuthenticationResult result = this.context.acquireTokenSilentSync(scopes, clientId, null);
         return new OAuthCredentials(result.getAccessToken());
     }
 }
