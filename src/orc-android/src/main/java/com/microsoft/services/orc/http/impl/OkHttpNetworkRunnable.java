@@ -41,7 +41,7 @@ public class OkHttpNetworkRunnable extends NetworkRunnable {
             }
 
             if (requestBody == null && (mRequest.getVerb().toString().equals("POST") ||
-                                        mRequest.getVerb().toString().equals("PUT"))){
+                    mRequest.getVerb().toString().equals("PUT"))) {
 
                 requestBody = RequestBody.create(null, new byte[0]);
             }
@@ -72,7 +72,6 @@ public class OkHttpNetworkRunnable extends NetworkRunnable {
 
                 mFuture.set(response);
             } else {
-                responseBody.close();
                 mFuture.set(new EmptyResponse(status, okResponse.headers().toMultimap()));
             }
 
@@ -95,6 +94,11 @@ public class OkHttpNetworkRunnable extends NetworkRunnable {
         @Override
         public MediaType contentType() {
             return mediaType;
+        }
+
+        @Override
+        public long contentLength() throws IOException {
+            return request.getStreamedContentSize();
         }
 
         @Override
