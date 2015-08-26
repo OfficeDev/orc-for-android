@@ -2,6 +2,7 @@ package com.microsoft.services.orc.resolvers;
 
 import com.microsoft.aad.adal.AuthenticationContext;
 import com.microsoft.aad.adal.AuthenticationResult;
+import com.microsoft.aad.adal.UserIdentifier;
 import com.microsoft.services.orc.http.Credentials;
 import com.microsoft.services.orc.http.impl.OAuthCredentials;
 
@@ -17,8 +18,9 @@ public class ADALDependencyResolver extends DefaultDependencyResolver {
 
     /**
      * Instantiates a new dependency resolver.
-     * @param context the context
-     * @param scopes the scopes
+     *
+     * @param context  the context
+     * @param scopes   the scopes
      * @param clientId the client id
      */
     public ADALDependencyResolver(AuthenticationContext context, String[] scopes, String clientId) {
@@ -48,7 +50,8 @@ public class ADALDependencyResolver extends DefaultDependencyResolver {
 
     @Override
     public Credentials getCredentials() {
-        AuthenticationResult result = this.context.acquireTokenSilentSync(scopes, clientId, null);
+        AuthenticationResult result = this.context.acquireTokenSilentSync(scopes, clientId,
+                                           UserIdentifier.getAnyUser());
         return new OAuthCredentials(result.getAccessToken());
     }
 }
