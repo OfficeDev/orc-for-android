@@ -2,7 +2,7 @@ language: android
 
 android:
   components:
-    - build-tools-18.1.1
+    - build-tools-21.1.1
     - android-18
 
 script: ./gradlew clean assembleDebug test --continue --stacktrace
