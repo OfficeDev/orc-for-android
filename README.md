@@ -1,5 +1,7 @@
 ## ORC for Android
 
+
+[![Build Status](https://travis-ci.org/MSOpenTech/orc-for-android.svg?branch=master)](https://travis-ci.org/MSOpenTech/orc-for-android)
 [ ![Download](https://api.bintray.com/packages/msopentech/Maven/ORC-android/images/download.svg) ](https://bintray.com/msopentech/Maven/ORC-android/_latestVersion)
 
 The Office REST Client provides shared components for generated proxies calling Office 365 APIs. These components include an authentication provider based on ADAL or MSA, JSON serializer, HTTP client, logger, and base URL builder (fetcher) classes based on the constrained behaviors defined by OData.
