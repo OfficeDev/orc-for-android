@@ -38,8 +38,13 @@ public abstract class LoggerBase implements Logger {
         }
     }
 
+    /**
+     * Print void.
+     *
+     * @param content the content
+     * @param logLevel the log level
+     */
     public abstract void print(String content, LogLevel logLevel);
-
 
 
     /**

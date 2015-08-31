@@ -43,6 +43,11 @@ public abstract class GsonSerializerBase implements JsonSerializer {
                 .create();
     }
 
+    /**
+     * Gets byte array type adapter.
+     *
+     * @return the byte array type adapter
+     */
     protected abstract ByteArrayTypeAdapterBase getByteArrayTypeAdapter();
 
     @Override
@@ -137,10 +142,26 @@ public abstract class GsonSerializerBase implements JsonSerializer {
 
     private class ParentReferencedList<E> extends ODataBaseEntity implements List<E> { // necesito que este y que odatabaseentity implementen notifypropertychanged, para que cuando encuentra la lista pase siempre esa lista como objeto para notificar en la recursion, en vez de el odatabaseentity
 
+        /**
+         * The Wrapped list.
+         */
         List<E> wrappedList;
+        /**
+         * The Parent.
+         */
         ODataBaseEntity parent;
+        /**
+         * The Reference property.
+         */
         String referenceProperty;
 
+        /**
+         * Instantiates a new Parent referenced list.
+         *
+         * @param wrappedlist the wrappedlist
+         * @param parent the parent
+         * @param referenceProperty the reference property
+         */
         public ParentReferencedList(List<E> wrappedlist, ODataBaseEntity parent, String referenceProperty) {
             this.wrappedList = wrappedlist;
             this.parent = parent;
@@ -151,6 +172,9 @@ public abstract class GsonSerializerBase implements JsonSerializer {
             valueChanged();
         }
 
+        /**
+         * Value changed.
+         */
         void valueChanged() {
             parent.valueChanged(referenceProperty, this);
         }
@@ -289,6 +313,13 @@ public abstract class GsonSerializerBase implements JsonSerializer {
         }
     }
 
+    /**
+     * Gets class from json.
+     *
+     * @param json the json
+     * @param pkg the pkg
+     * @return the class from json
+     */
     protected Class getClassFromJson(JsonElement json, Package pkg) {
         try {
             if (json.isJsonObject()) {

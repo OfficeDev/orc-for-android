@@ -7,6 +7,9 @@ import com.microsoft.services.orc.http.Request;
 import com.microsoft.services.orc.http.Response;
 
 
+/**
+ * The type Ok http transport.
+ */
 public class OkHttpTransport extends BaseHttpTransport {
 
     @Override

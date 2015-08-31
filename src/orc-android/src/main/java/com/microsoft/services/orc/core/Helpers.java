@@ -80,6 +80,11 @@ public class Helpers {
         reservedNames.add("while");
     }
 
+    /**
+     * Gets reserved names.
+     *
+     * @return the reserved names
+     */
     public static HashSet<String> getReservedNames() {
         return reservedNames;
     }
@@ -87,9 +92,9 @@ public class Helpers {
     /**
      * Add custom parameters to o data uRL.
      *
-     * @param request    the request
+     * @param request the request
      * @param parameters the parameters
-     * @param headers    the custom headers
+     * @param headers the custom headers
      */
     public static void addCustomParametersToRequest(Request request, Map<String, Object> parameters, Map<String, String> headers) {
         OrcURL url = request.getUrl();
@@ -106,6 +111,12 @@ public class Helpers {
         }
     }
 
+    /**
+     * Gets function parameters.
+     *
+     * @param map the map
+     * @return the function parameters
+     */
     public static String getFunctionParameters(Map<String, Object> map) {
         StringBuilder sb = new StringBuilder();
         Set<String> keys = map.keySet();
@@ -139,11 +150,11 @@ public class Helpers {
     /**
      * Url encode.
      *
-     * @param s the s
+     * @param string the string
      * @return the string
      */
-    public static String urlEncode(String s) {
-        return percentEncode(s, ENCODE_EXCEPTIONS);
+    public static String urlEncode(String string) {
+        return percentEncode(string, ENCODE_EXCEPTIONS);
     }
 
     private static String percentEncode(String s, String reserved) {
@@ -195,7 +206,7 @@ public class Helpers {
     /**
      * Serialize to json byte array.
      *
-     * @param entity   the entity
+     * @param entity the entity
      * @param resolver the resolver
      * @return the byte [ ]
      */
@@ -226,7 +237,10 @@ public class Helpers {
     /**
      * Apply string listenable future.
      *
+     * @param <TEntity>  the type parameter
      * @param future the future
+     * @param clazz the clazz
+     * @param resolver the resolver
      * @return the listenable future
      */
     public static <TEntity> ListenableFuture<TEntity> transformToEntityListenableFuture(
@@ -258,7 +272,11 @@ public class Helpers {
     /**
      * Add list result callback.
      *
+     * @param <TEntity>  the type parameter
      * @param future the future
+     * @param clazz the clazz
+     * @param resolver the resolver
+     * @return the listenable future
      */
     public static <TEntity> ListenableFuture<List<TEntity>> transformToEntityListListenableFuture(
             ListenableFuture<String> future,
@@ -289,6 +307,7 @@ public class Helpers {
      * Add null result callback.
      *
      * @param future the future
+     * @return the listenable future
      */
     public static ListenableFuture<Void> transformToVoidListenableFuture(ListenableFuture<OrcResponse> future) {
         return Futures.transform(future, new AsyncFunction<OrcResponse, Void>() {

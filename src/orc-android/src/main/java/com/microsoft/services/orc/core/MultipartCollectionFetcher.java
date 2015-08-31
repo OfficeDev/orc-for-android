@@ -13,15 +13,21 @@ import java.util.UUID;
 import static com.microsoft.services.orc.core.Helpers.transformToVoidListenableFuture;
 
 
+/**
+ * The type Multipart collection fetcher.
+ * @param <TEntity>  the type parameter
+ * @param <TFetcher>  the type parameter
+ * @param <TOperations>  the type parameter
+ */
 public class MultipartCollectionFetcher<TEntity, TFetcher extends OrcEntityFetcher, TOperations extends OrcOperations>
         extends OrcCollectionFetcher<TEntity, TFetcher, TOperations> {
 
     /**
      * Instantiates a new OrcCollectionFetcher.
      *
-     * @param urlComponent   the url component
-     * @param parent         the parent
-     * @param clazz          the clazz
+     * @param urlComponent the url component
+     * @param parent the parent
+     * @param clazz the clazz
      * @param operationClazz the operation clazz
      */
     public MultipartCollectionFetcher(String urlComponent, OrcExecutable parent, Class<TEntity> clazz, Class<TOperations> operationClazz) {
@@ -57,7 +63,6 @@ public class MultipartCollectionFetcher<TEntity, TFetcher extends OrcEntityFetch
         }
 
         String closeLine = Constants.HTTP_NEW_LINE + "--" + Constants.MULTIPART_BOUNDARY_NAME + random + "--";
-
 
         request.addHeader(Constants.CONTENT_TYPE_HEADER, Constants.MULTIPART_CONTENT_TYPE + random );
         request.setContent(Bytes.concat(Bytes.concat(content), closeLine.getBytes()));

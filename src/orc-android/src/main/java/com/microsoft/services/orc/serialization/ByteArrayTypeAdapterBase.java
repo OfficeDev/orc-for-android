@@ -11,6 +11,9 @@ import com.microsoft.services.orc.http.Base64Encoder;
 
 import java.lang.reflect.Type;
 
+/**
+ * The type Byte array type adapter base.
+ */
 public abstract class ByteArrayTypeAdapterBase implements JsonSerializer<byte[]>, JsonDeserializer<byte[]> {
 
     @Override
@@ -23,5 +26,10 @@ public abstract class ByteArrayTypeAdapterBase implements JsonSerializer<byte[]>
         return new JsonPrimitive(getBase64Encoder().encode(src));
     }
 
+    /**
+     * Gets base 64 encoder.
+     *
+     * @return the base 64 encoder
+     */
     protected abstract Base64Encoder getBase64Encoder();
 }

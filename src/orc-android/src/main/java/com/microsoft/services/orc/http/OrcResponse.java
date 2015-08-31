@@ -11,7 +11,7 @@ public interface OrcResponse {
     /**
      * Get payload.
      *
-     * @return the byte [ ]
+     * @return the byte array
      */
     byte[] getPayload() throws IOException;
 

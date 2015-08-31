@@ -82,11 +82,11 @@ public abstract class OrcExecutable {
     }
 
     /**
-     * As t.
+     * Casts the object to another
      *
      * @param <T>  the type parameter
      * @param inference the inference
-     * @return the t
+     * @return the Cast
      */
     public <T extends OrcExecutable> T as(Class<T> inference) {
         return (T)this;

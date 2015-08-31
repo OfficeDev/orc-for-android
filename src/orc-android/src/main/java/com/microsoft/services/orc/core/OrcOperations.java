@@ -18,7 +18,7 @@ public abstract class OrcOperations extends OrcExecutable {
     private String urlComponent;
     private OrcExecutable parent;
 
-	 /**
+    /**
      * Instantiates a new ODataOperation.
      *
      * @param urlComponent the url component

@@ -36,6 +36,14 @@ public class MSAAuthDependencyResolver extends DefaultDependencyResolver {
         this.liveAuthClient = theAuthClient;
     }
 
+    /**
+     * Interactive initialize.
+     *
+     * @param contextActivity the context activity
+     * @return the settable future
+     * @throws ExecutionException the execution exception
+     * @throws InterruptedException the interrupted exception
+     */
     public SettableFuture<Boolean> interactiveInitialize(final Activity contextActivity) throws ExecutionException, InterruptedException {
         final SettableFuture<Boolean> signal = SettableFuture.create();
 
@@ -102,6 +110,9 @@ public class MSAAuthDependencyResolver extends DefaultDependencyResolver {
         }
     }
 
+    /**
+     * Logout void.
+     */
     public void logout() {
         final SettableFuture<Boolean> logoutFuture = SettableFuture.create();
 

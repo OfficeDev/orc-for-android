@@ -7,11 +7,19 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * The type Orc response implementation.
+ */
 public class OrcResponseImpl implements OrcResponse {
 
     private Response response;
     private byte[] payload = null;
 
+    /**
+     * Instantiates a new Orc response implementation.
+     *
+     * @param response the response
+     */
     public OrcResponseImpl(Response response) {
         this.response = response;
     }

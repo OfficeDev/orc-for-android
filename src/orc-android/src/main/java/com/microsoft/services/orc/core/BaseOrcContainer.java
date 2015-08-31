@@ -27,6 +27,12 @@ public abstract class BaseOrcContainer extends OrcExecutable {
     private String url;
     private DependencyResolver resolver;
 
+    /**
+     * Instantiates a new Base orc container.
+     *
+     * @param url the url
+     * @param resolver the resolver
+     */
     public BaseOrcContainer(String url, DependencyResolver resolver) {
         this.url = url;
         this.resolver = resolver;
@@ -153,7 +159,7 @@ public abstract class BaseOrcContainer extends OrcExecutable {
      * Generate parameters payload.
      *
      * @param parameters the parameters
-     * @param resolver   the resolver
+     * @param resolver the resolver
      * @return the string
      */
     public static String generateParametersPayload(Map<String, Object> parameters, DependencyResolver resolver) {

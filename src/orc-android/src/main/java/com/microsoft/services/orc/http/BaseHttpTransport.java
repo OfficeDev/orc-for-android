@@ -53,5 +53,12 @@ public abstract class BaseHttpTransport implements HttpTransport {
         return future;
     }
 
+    /**
+     * Create network runnable.
+     *
+     * @param request the request
+     * @param future the future
+     * @return the network runnable
+     */
     protected abstract NetworkRunnable createNetworkRunnable(Request request, SettableFuture<Response> future);
 }

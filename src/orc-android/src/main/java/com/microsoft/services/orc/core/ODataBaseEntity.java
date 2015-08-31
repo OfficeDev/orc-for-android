@@ -25,21 +25,46 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ODataBaseEntity {
 
+    /**
+     * The $$ __ o data type.
+     */
     protected String $$__ODataType;
 
+    /**
+     * The $$$ __ $$$ parent reference.
+     */
     protected Map.Entry<ODataBaseEntity, String> $$$__$$$parentReference = null;
 
+    /**
+     * The $$$ __ $$$ updated values.
+     */
     ConcurrentHashMap<String, Object> $$$__$$$updatedValues = new ConcurrentHashMap<String, Object>();
 
+    /**
+     * Sets o data type.
+     *
+     * @param value the value
+     */
     protected void setODataType(String value) {
         this.$$__ODataType = value;
     }
 
+    /**
+     * Gets updated values.
+     *
+     * @return the updated values
+     */
     public ConcurrentHashMap<String, Object> getUpdatedValues() {
 
         return new ConcurrentHashMap<String, Object>($$$__$$$updatedValues);
     }
 
+    /**
+     * Value changed.
+     *
+     * @param property the property
+     * @param payload the payload
+     */
     public void valueChanged(String property, Object payload) {
         $$$__$$$updatedValues.put(property, payload);
         if ($$$__$$$parentReference != null) {
@@ -48,6 +73,12 @@ public class ODataBaseEntity {
         }
     }
 
+    /**
+     * Sets parent.
+     *
+     * @param parentEntity the parent entity
+     * @param referenceProperty the reference property
+     */
     public void setParent(ODataBaseEntity parentEntity, String referenceProperty) {
         $$$__$$$parentReference = new AbstractMap.SimpleEntry<ODataBaseEntity, String>(parentEntity, referenceProperty);
     }

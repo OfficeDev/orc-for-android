@@ -18,6 +18,9 @@ import com.microsoft.services.orc.log.impl.SimpleLogger;
 import com.microsoft.services.orc.serialization.JsonSerializer;
 import com.microsoft.services.orc.serialization.impl.GsonSerializer;
 
+/**
+ * The type Ok http dependency resolver.
+ */
 public class OkHttpDependencyResolver implements DependencyResolver {
 
     private LoggerBase logger;
@@ -25,6 +28,7 @@ public class OkHttpDependencyResolver implements DependencyResolver {
 
     /**
      * Instantiates a new Default dependency resolver.
+     * @param token the token
      */
     public OkHttpDependencyResolver(String token) {
         this.token = token;

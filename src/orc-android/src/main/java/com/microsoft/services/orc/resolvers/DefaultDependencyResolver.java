@@ -27,6 +27,7 @@ public class DefaultDependencyResolver implements DependencyResolver {
 
     /**
      * Instantiates a new Default dependency resolver.
+     * @param token the token
      */
     public DefaultDependencyResolver(String token) {
         this.token = token;

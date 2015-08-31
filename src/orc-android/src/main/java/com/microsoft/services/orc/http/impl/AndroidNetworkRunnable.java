@@ -39,7 +39,7 @@ public class AndroidNetworkRunnable extends NetworkRunnable {
      * Initializes the network runnable
      *
      * @param request The request to execute
-     * @param future  Future for the operation
+     * @param future Future for the operation
      */
     public AndroidNetworkRunnable(Request request, SettableFuture<Response> future) {
         super(request, future);

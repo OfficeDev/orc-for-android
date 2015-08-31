@@ -18,9 +18,9 @@ import static com.microsoft.services.orc.core.Helpers.*;
 /**
  * The type OrcCollectionFetcher.
  *
- * @param <TEntity>      the type parameter
- * @param <TFetcher>     the type parameter
- * @param <TOperations>  the type parameter
+ * @param <TEntity>       the type parameter
+ * @param <TFetcher>      the type parameter
+ * @param <TOperations>   the type parameter
  */
 public class OrcCollectionFetcher<TEntity, TFetcher extends OrcEntityFetcher, TOperations extends OrcOperations>
         extends OrcFetcher<TEntity>

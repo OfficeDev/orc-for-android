@@ -21,8 +21,8 @@ import static com.microsoft.services.orc.core.Helpers.transformToVoidListenableF
 /**
  * The type OrcEntityFetcher.
  *
- * @param <TEntity>     the type parameter
- * @param <TOperations> the type parameter
+ * @param <TEntity>      the type parameter
+ * @param <TOperations>  the type parameter
  */
 public abstract class OrcEntityFetcher<TEntity extends ODataBaseEntity, TOperations extends OrcOperations>
         extends OrcFetcher<TEntity>
@@ -35,9 +35,9 @@ public abstract class OrcEntityFetcher<TEntity extends ODataBaseEntity, TOperati
     /**
      * Instantiates a new OrcEntityFetcher.
      *
-     * @param urlComponent   the url component
-     * @param parent         the parent
-     * @param clazz          the clazz
+     * @param urlComponent the url component
+     * @param parent the parent
+     * @param clazz the clazz
      * @param operationClazz the operation clazz
      */
     public OrcEntityFetcher(String urlComponent, OrcExecutable parent, Class<TEntity> clazz, Class<TOperations> operationClazz) {
@@ -84,7 +84,7 @@ public abstract class OrcEntityFetcher<TEntity extends ODataBaseEntity, TOperati
      * Updates the given entity.
      *
      * @param updatedEntity the updated entity
-     * @param update        override
+     * @param update override
      * @return the listenable future
      */
     public ListenableFuture<TEntity> update(TEntity updatedEntity, boolean update) {
@@ -101,6 +101,7 @@ public abstract class OrcEntityFetcher<TEntity extends ODataBaseEntity, TOperati
      * Updates the given entity.
      *
      * @param payload the updated entity
+     * @param update the update
      * @return the listenable future
      */
     public ListenableFuture<String> updateRaw(String payload, boolean update) {

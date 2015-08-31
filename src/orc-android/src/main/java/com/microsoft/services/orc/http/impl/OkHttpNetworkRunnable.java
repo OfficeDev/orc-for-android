@@ -17,7 +17,16 @@ import java.io.InputStream;
 import okio.BufferedSink;
 
 
+/**
+ * The type Ok http network runnable.
+ */
 public class OkHttpNetworkRunnable extends NetworkRunnable {
+    /**
+     * Instantiates a new Ok http network runnable.
+     *
+     * @param request the request
+     * @param future the future
+     */
     public OkHttpNetworkRunnable(com.microsoft.services.orc.http.Request request,
                                  SettableFuture<com.microsoft.services.orc.http.Response> future) {
         super(request, future);
@@ -86,6 +95,12 @@ public class OkHttpNetworkRunnable extends NetworkRunnable {
         private MediaType mediaType;
         private com.microsoft.services.orc.http.Request request;
 
+        /**
+         * Instantiates a new Streamed request.
+         *
+         * @param mediaType the media type
+         * @param request the request
+         */
         public StreamedRequest(MediaType mediaType, com.microsoft.services.orc.http.Request request) {
             this.mediaType = mediaType;
             this.request = request;

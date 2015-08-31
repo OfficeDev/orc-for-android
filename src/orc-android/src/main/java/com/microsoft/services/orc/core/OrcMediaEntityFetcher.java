@@ -23,8 +23,8 @@ import static com.microsoft.services.orc.core.Helpers.transformToVoidListenableF
 /**
  * The type OrcMediaEntityFetcher.
  *
- * @param <TEntity>     the type parameter
- * @param <TOperations> the type parameter
+ * @param <TEntity>      the type parameter
+ * @param <TOperations>  the type parameter
  */
 public abstract class OrcMediaEntityFetcher<TEntity extends ODataBaseEntity, TOperations extends OrcOperations>
         extends OrcEntityFetcher<TEntity, TOperations>
@@ -33,9 +33,9 @@ public abstract class OrcMediaEntityFetcher<TEntity extends ODataBaseEntity, TOp
     /**
      * Instantiates a new OrcMediaEntityFetcher.
      *
-     * @param urlComponent   the url component
-     * @param parent         the parent
-     * @param clazz          the clazz
+     * @param urlComponent the url component
+     * @param parent the parent
+     * @param clazz the clazz
      * @param operationClazz the operation clazz
      */
 
@@ -44,6 +44,11 @@ public abstract class OrcMediaEntityFetcher<TEntity extends ODataBaseEntity, TOp
         super(urlComponent, parent, clazz, operationClazz);
     }
 
+    /**
+     * Gets content.
+     *
+     * @return the content
+     */
     public ListenableFuture<byte[]> getContent() {
 
         Request request = getResolver().createRequest();
@@ -63,6 +68,11 @@ public abstract class OrcMediaEntityFetcher<TEntity extends ODataBaseEntity, TOp
         });
     }
 
+    /**
+     * Gets streamed content.
+     *
+     * @return the streamed content
+     */
     public ListenableFuture<InputStream> getStreamedContent() {
 
         Request request = getResolver().createRequest();
@@ -84,6 +94,12 @@ public abstract class OrcMediaEntityFetcher<TEntity extends ODataBaseEntity, TOp
     }
 
 
+    /**
+     * Put content.
+     *
+     * @param content the content
+     * @return the listenable future
+     */
     public ListenableFuture<Void> putContent(byte[] content) {
 
         Request request = getResolver().createRequest();
@@ -97,6 +113,13 @@ public abstract class OrcMediaEntityFetcher<TEntity extends ODataBaseEntity, TOp
         return transformToVoidListenableFuture(future);
     }
 
+    /**
+     * Put content.
+     *
+     * @param stream the stream
+     * @param streamSize the stream size
+     * @return the listenable future
+     */
     public ListenableFuture<Void> putContent(InputStream stream, long streamSize) {
         Request request = getResolver().createRequest();
         request.setStreamedContent(stream, streamSize);
@@ -109,10 +132,19 @@ public abstract class OrcMediaEntityFetcher<TEntity extends ODataBaseEntity, TOp
         return transformToVoidListenableFuture(future);
     }
 
+    /**
+     * The type Media entity input stream.
+     */
     public class MediaEntityInputStream extends InputStream {
         private InputStream internalStream;
         private OrcResponse response;
 
+        /**
+         * Instantiates a new Media entity input stream.
+         *
+         * @param internalStream the internal stream
+         * @param response the response
+         */
         public MediaEntityInputStream(InputStream internalStream, OrcResponse response) {
             this.internalStream = internalStream;
             this.response = response;
