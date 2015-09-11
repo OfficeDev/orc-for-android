@@ -16,6 +16,7 @@ import com.microsoft.services.orc.http.Request;
 import com.microsoft.services.orc.http.Response;
 import com.microsoft.services.orc.log.LogLevel;
 import com.microsoft.services.orc.log.Logger;
+import com.microsoft.services.orc.resolvers.DependencyResolver;
 
 import java.util.Map;
 
