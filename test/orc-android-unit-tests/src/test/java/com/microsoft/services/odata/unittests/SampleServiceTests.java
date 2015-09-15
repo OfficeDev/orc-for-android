@@ -10,7 +10,6 @@ import com.microsoft.sampleservice.fetchers.SampleContainerClient;
 import com.microsoft.services.orc.core.Helpers;
 import com.microsoft.services.orc.http.impl.OkHttpTransport;
 import com.microsoft.services.orc.log.LogLevel;
-import com.microsoft.services.orc.resolvers.ADALAuth;
 import com.microsoft.services.orc.resolvers.DependencyResolver;
 import com.microsoft.services.orc.serialization.impl.GsonSerializer;
 
@@ -35,11 +34,10 @@ public class SampleServiceTests extends WireMockTestBase {
     private SampleContainerClient client;
     private DependencyResolver resolver;
 
-
     public SampleServiceTests() {
         resolver = new DependencyResolver.Builder(
-                   new OkHttpTransport(), new GsonSerializer(), new ADALAuth(null, null, null))
-                  .build();
+                   new OkHttpTransport(), new GsonSerializer(), null)
+                   .build();
 
         client = new SampleContainerClient(url, resolver);
     }

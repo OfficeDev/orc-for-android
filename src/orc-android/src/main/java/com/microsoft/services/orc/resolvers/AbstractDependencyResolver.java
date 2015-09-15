@@ -12,10 +12,6 @@ import com.microsoft.services.orc.log.LoggerBase;
 import com.microsoft.services.orc.log.impl.LoggerImpl;
 import com.microsoft.services.orc.serialization.JsonSerializer;
 
-
-/**
- * The type Default dependency resolver.
- */
 abstract class AbstractDependencyResolver {
 
     private Builder builder;
@@ -43,6 +39,21 @@ abstract class AbstractDependencyResolver {
         }
 
         public abstract AbstractDependencyResolver build();
+
+        public Builder setHttpTransport(HttpTransport transport) {
+            this.transport = transport;
+            return this;
+        }
+
+        public Builder setJsonSerializer(JsonSerializer jsonSerializer) {
+            this.jsonSerializer = jsonSerializer;
+            return this;
+        }
+
+        public Builder setAuth(Auth auth) {
+            this.auth = auth;
+            return this;
+        }
     }
 
     public HttpTransport getHttpTransport() {
@@ -53,7 +64,7 @@ abstract class AbstractDependencyResolver {
         return builder.jsonSerializer;
     }
 
-    public  Request createRequest(){
+    public Request createRequest() {
         return builder.request;
     }
 
