@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 
 
 public class LoggingInterceptor implements Interceptor {
-    static Logger logger = Logger.getLogger("Office365");
+    static Logger logger = Logger.getLogger("Office365-SDK");
 
     @Override
     public Response intercept(Chain chain) throws IOException {
