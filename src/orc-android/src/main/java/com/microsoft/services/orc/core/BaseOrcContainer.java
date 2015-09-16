@@ -117,7 +117,7 @@ public abstract class BaseOrcContainer extends OrcExecutable {
                             logger.log("Reading response data...", LogLevel.VERBOSE);
                             byte[] data = orcResponse.getPayload();
                             logger.log(data.length + " bytes read from response", LogLevel.VERBOSE);
-                            logger.log("Response Payload:" + data, LogLevel.VERBOSE);
+                            logger.log("Response Payload:" + new String(data), LogLevel.VERBOSE);
                             try {
                                 logger.log("Closing response", LogLevel.VERBOSE);
                                 response.close();
