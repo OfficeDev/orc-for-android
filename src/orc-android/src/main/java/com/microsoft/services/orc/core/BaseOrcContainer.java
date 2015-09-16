@@ -52,6 +52,7 @@ public abstract class BaseOrcContainer extends OrcExecutable {
 
             if (request.getContent() != null) {
                 logger.log("With " + request.getContent().length + " bytes of payload", LogLevel.INFO);
+                logger.log("Payload: " + new String(request.getContent()), LogLevel.VERBOSE);
             } else if (request.getStreamedContent() != null) {
                 logger.log("With stream of bytes for payload", LogLevel.INFO);
             }
@@ -116,7 +117,7 @@ public abstract class BaseOrcContainer extends OrcExecutable {
                             logger.log("Reading response data...", LogLevel.VERBOSE);
                             byte[] data = orcResponse.getPayload();
                             logger.log(data.length + " bytes read from response", LogLevel.VERBOSE);
-
+                            logger.log("Response Payload:" + data, LogLevel.VERBOSE);
                             try {
                                 logger.log("Closing response", LogLevel.VERBOSE);
                                 response.close();
