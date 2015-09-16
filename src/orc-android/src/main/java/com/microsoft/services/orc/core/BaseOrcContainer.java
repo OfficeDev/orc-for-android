@@ -16,6 +16,7 @@ import com.microsoft.services.orc.http.Request;
 import com.microsoft.services.orc.http.Response;
 import com.microsoft.services.orc.log.LogLevel;
 import com.microsoft.services.orc.log.Logger;
+import com.squareup.okhttp.HttpUrl;
 
 import java.util.Map;
 
@@ -45,7 +46,8 @@ public abstract class BaseOrcContainer extends OrcExecutable {
 
         try {
             request.getUrl().setBaseUrl(this.url);
-            String fullUrl = request.getUrl().toString();
+            String rawUrl = request.getUrl().toString();
+            String fullUrl = HttpUrl.parse(rawUrl).toString();
 
             String executionInfo = String.format("URL: %s - HTTP VERB: %s", fullUrl, request.getVerb());
             logger.log("Start preparing OData execution for " + executionInfo, LogLevel.INFO);

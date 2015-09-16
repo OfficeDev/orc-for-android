@@ -9,12 +9,18 @@ import com.microsoft.sampleservice.SampleEntity;
 import com.microsoft.sampleservice.fetchers.SampleContainerClient;
 import com.microsoft.services.orc.core.DependencyResolver;
 import com.microsoft.services.orc.core.Helpers;
+import com.microsoft.services.orc.core.OrcCollectionFetcher;
 import com.microsoft.services.orc.log.LogLevel;
 import com.microsoft.services.orc.resolvers.OkHttpDependencyResolver;
 import com.microsoft.services.orc.serialization.impl.GsonSerializer;
+import com.microsoft.services.outlook.Event;
+import com.microsoft.services.outlook.fetchers.EventCollectionOperations;
+import com.microsoft.services.outlook.fetchers.EventFetcher;
+import com.microsoft.services.outlook.fetchers.UserFetcher;
 
 import org.junit.Test;
 
+import java.nio.channels.FileLockInterruptionException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -604,6 +610,17 @@ public class SampleServiceTests extends WireMockTestBase {
         }
 
         assertThat(result, is(notNullValue()));
+    }
+
+
+    @Test
+    public void testEncodingQueryParameters() throws ExecutionException, InterruptedException {
+
+        UserFetcher userFetcher = new UserFetcher("users/test@example.onmicrosoft.com", client);
+
+        OrcCollectionFetcher<Event, EventFetcher, EventCollectionOperations> fetcher = userFetcher.getEvents();
+        fetcher.filter("Start gt 2015-01-01T12:00:00.000+02:00");
+        List<Event> events = fetcher.read().get();
     }
 
     private SampleEntity getSampleEntity() {
