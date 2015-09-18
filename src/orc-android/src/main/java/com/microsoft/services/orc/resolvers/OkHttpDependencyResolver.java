@@ -35,6 +35,16 @@ public class OkHttpDependencyResolver implements DependencyResolver {
         this.logger = new LoggerImpl();
     }
 
+    /**
+     * Instantiates a new Default dependency resolver.
+     * @param token the token
+     * @param logger the logger
+     */
+    public OkHttpDependencyResolver(String token, LoggerBase logger) {
+        this.token = token;
+        this.logger = logger;
+    }
+
     @Override
     public HttpTransport getHttpTransport() {
         return new OkHttpTransport();
