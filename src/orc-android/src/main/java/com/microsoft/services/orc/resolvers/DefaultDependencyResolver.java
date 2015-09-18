@@ -22,7 +22,7 @@ import com.microsoft.services.orc.serialization.impl.GsonSerializer;
  */
 public class DefaultDependencyResolver implements DependencyResolver {
 
-    private LoggerImpl logger;
+    private LoggerBase logger;
     private String token;
 
     /**
@@ -32,6 +32,11 @@ public class DefaultDependencyResolver implements DependencyResolver {
     public DefaultDependencyResolver(String token) {
         this.token = token;
         this.logger = new LoggerImpl();
+    }
+
+    public DefaultDependencyResolver(String token, LoggerBase logger) {
+        this.token = token;
+        this.logger = logger;
     }
 
     @Override
