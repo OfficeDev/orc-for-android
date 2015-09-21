@@ -8,8 +8,6 @@ import com.microsoft.services.orc.http.OrcURL;
 import com.microsoft.services.orc.http.Request;
 import com.microsoft.services.orc.http.impl.OrcURLImpl;
 import com.microsoft.services.orc.http.impl.RequestImpl;
-import com.microsoft.services.orc.log.LoggerBase;
-import com.microsoft.services.orc.log.impl.LoggerImpl;
 import com.microsoft.services.orc.serialization.JsonSerializer;
 
 abstract class AbstractDependencyResolver {
@@ -25,13 +23,11 @@ abstract class AbstractDependencyResolver {
         private HttpTransport transport;
         private JsonSerializer jsonSerializer;
         private AuthenticationCredentials auth;
-        private LoggerBase logger;
 
         protected Builder(HttpTransport transport, JsonSerializer serializer, AuthenticationCredentials auth) {
             this.transport = transport;
             this.jsonSerializer = serializer;
             this.auth = auth;
-            this.logger = new LoggerImpl();
         }
 
         public abstract AbstractDependencyResolver build();
@@ -62,10 +58,6 @@ abstract class AbstractDependencyResolver {
 
     public Request createRequest() {
         return new RequestImpl();
-    }
-
-    public LoggerBase getLogger() {
-        return builder.logger;
     }
 
     public OrcURL getOrcURL() {

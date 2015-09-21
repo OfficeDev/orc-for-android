@@ -7,9 +7,11 @@ import com.google.common.util.concurrent.SettableFuture;
 import com.microsoft.services.orc.http.OrcResponse;
 import com.microsoft.services.orc.http.OrcURL;
 import com.microsoft.services.orc.http.Request;
-import com.microsoft.services.orc.log.LogLevel;
 import com.microsoft.services.orc.resolvers.DependencyResolver;
 import com.microsoft.services.orc.serialization.impl.CalendarSerializer;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
@@ -22,6 +24,8 @@ import java.util.Set;
  * The type Helpers.
  */
 public class Helpers {
+
+    static final Logger logger = LoggerFactory.getLogger(Helpers.class);
 
     private static final String ENCODE_EXCEPTIONS = "!$&'()*+,;=:@";
 
@@ -255,9 +259,9 @@ public class Helpers {
                 final SettableFuture<TEntity> result = SettableFuture.create();
                 TEntity entity = null;
                 try {
-                    resolver.getLogger().log("Entity Deserialization Started", LogLevel.VERBOSE);
+                    logger.info("Entity Deserialization Started");
                     entity = resolver.getJsonSerializer().deserialize(payload, clazz);
-                    resolver.getLogger().log("Entity Deserialization Finished", LogLevel.VERBOSE);
+                    logger.info("Entity Deserialization Finished");
 
                 } catch (Throwable throwable) {
                     result.setException(throwable);
@@ -290,9 +294,9 @@ public class Helpers {
                 SettableFuture<List<TEntity>> result = SettableFuture.create();
                 List<TEntity> list;
                 try {
-                    resolver.getLogger().log("Entity collection Deserialization Started", LogLevel.VERBOSE);
+                    logger.info("Entity collection Deserialization Started");
                     list = resolver.getJsonSerializer().deserializeList(payload, clazz);
-                    resolver.getLogger().log("Entity collection Deserialization Finished", LogLevel.VERBOSE);
+                    logger.info("Entity collection Deserialization Finished");
 
                     result.set(list);
                 } catch (Throwable t) {

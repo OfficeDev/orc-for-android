@@ -8,7 +8,6 @@ package com.microsoft.services.orc.core;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.microsoft.services.orc.http.OrcResponse;
 import com.microsoft.services.orc.http.Request;
-import com.microsoft.services.orc.log.LogLevel;
 import com.microsoft.services.orc.resolvers.DependencyResolver;
 
 import java.util.HashMap;
@@ -91,9 +90,5 @@ public abstract class OrcExecutable {
      */
     public <T extends OrcExecutable> T as(Class<T> inference) {
         return (T)this;
-    }
-
-    protected void log (String content, LogLevel logLevel) {
-        getResolver().getLogger().log(content, logLevel);
     }
 }

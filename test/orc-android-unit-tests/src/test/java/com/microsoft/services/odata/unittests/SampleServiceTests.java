@@ -11,12 +11,13 @@ import com.microsoft.services.orc.core.Helpers;
 import com.microsoft.services.orc.http.Credentials;
 import com.microsoft.services.orc.http.impl.OAuthCredentials;
 import com.microsoft.services.orc.http.impl.OkHttpTransport;
-import com.microsoft.services.orc.log.LogLevel;
 import com.microsoft.services.orc.resolvers.AuthenticationCredentials;
 import com.microsoft.services.orc.resolvers.DependencyResolver;
 import com.microsoft.services.orc.serialization.impl.GsonSerializer;
 
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,8 @@ import static org.junit.Assert.assertThat;
 
 
 public class SampleServiceTests extends WireMockTestBase {
+
+    Logger logger = LoggerFactory.getLogger(SampleServiceTests.class);
 
     private String url = "http://localhost:8080";
     private SampleContainerClient client;
@@ -64,7 +67,7 @@ public class SampleServiceTests extends WireMockTestBase {
                     .get();
 
         } catch (Throwable t) {
-            resolver.getLogger().log(t.getLocalizedMessage(), LogLevel.ERROR);
+            logger.error("Error executing test", t);
         }
 
         assertThat(result, is(notNullValue()));
@@ -81,7 +84,7 @@ public class SampleServiceTests extends WireMockTestBase {
                     .twoParamsActionsFirstIsComplexType(sampleComplexEntity, false)
                     .get();
         } catch (Throwable t) {
-            resolver.getLogger().log(t.getLocalizedMessage(), LogLevel.ERROR);
+            logger.error("Error executing test", t);
         }
 
         assertThat(result, is(notNullValue()));
@@ -99,7 +102,7 @@ public class SampleServiceTests extends WireMockTestBase {
                     .twoParamsActionsFirstIsComplexTypeRaw(serializedEntity, "false")
                     .get();
         } catch (Throwable t) {
-            resolver.getLogger().log(t.getLocalizedMessage(), LogLevel.ERROR);
+            logger.error("Error executing test", t);
         }
 
         assertThat(result, is(notNullValue()));
@@ -118,7 +121,7 @@ public class SampleServiceTests extends WireMockTestBase {
                     .twoParamsActionsFirstIsCollectionEntityType(entities, false)
                     .get();
         } catch (Throwable t) {
-            resolver.getLogger().log(t.getLocalizedMessage(), LogLevel.ERROR);
+            logger.error("Error executing test", t);
         }
         assertThat(result, is(notNullValue()));
     }
@@ -138,7 +141,7 @@ public class SampleServiceTests extends WireMockTestBase {
                     .twoParamsActionsFirstIsCollectionEntityTypeRaw(serializedEntity, "false")
                     .get();
         } catch (Throwable t) {
-            resolver.getLogger().log(t.getLocalizedMessage(), LogLevel.ERROR);
+            logger.error("Error executing test", t);
         }
         assertThat(result, is(notNullValue()));
     }
@@ -156,7 +159,7 @@ public class SampleServiceTests extends WireMockTestBase {
                     .twoParamsActionsFirstIsCollectionComplexType(complexTypes, false)
                     .get();
         } catch (Throwable t) {
-            resolver.getLogger().log(t.getLocalizedMessage(), LogLevel.ERROR);
+            logger.error("Error executing test", t);
         }
         assertThat(result, is(notNullValue()));
     }
@@ -177,7 +180,7 @@ public class SampleServiceTests extends WireMockTestBase {
                     .get();
 
         } catch (Throwable t) {
-            resolver.getLogger().log(t.getLocalizedMessage(), LogLevel.ERROR);
+            logger.error("Error executing test", t);
         }
         assertThat(result, is(notNullValue()));
     }
@@ -193,7 +196,7 @@ public class SampleServiceTests extends WireMockTestBase {
                     .get();
 
         } catch (Throwable t) {
-            resolver.getLogger().log(t.getLocalizedMessage(), LogLevel.ERROR);
+            logger.error("Error executing test", t);
         }
 
         assertThat(result, is(notNullValue()));
@@ -211,7 +214,7 @@ public class SampleServiceTests extends WireMockTestBase {
                     .get();
 
         } catch (Throwable t) {
-            resolver.getLogger().log(t.getLocalizedMessage(), LogLevel.ERROR);
+            logger.error("Error executing test", t);
         }
 
         assertThat(result, is(notNullValue()));
@@ -230,7 +233,7 @@ public class SampleServiceTests extends WireMockTestBase {
                     .get();
 
         } catch (Throwable t) {
-            resolver.getLogger().log(t.getLocalizedMessage(), LogLevel.ERROR);
+            logger.error("Error executing test", t);
         }
 
         assertThat(result, is(notNullValue()));
@@ -249,7 +252,7 @@ public class SampleServiceTests extends WireMockTestBase {
                     .get();
 
         } catch (Throwable t) {
-            resolver.getLogger().log(t.getLocalizedMessage(), LogLevel.ERROR);
+            logger.error("Error executing test", t);
         }
 
         String expectedResponseString = "{\"SomeString\":\"Some String\",\"Id\":\"3281EC0B-1AEB-49A4-A345-E64D732DA6D3\",\"@odata.type\":\"#Microsoft.SampleService.AnotherEntity\"}";
@@ -269,7 +272,7 @@ public class SampleServiceTests extends WireMockTestBase {
                     .read()
                     .get();
         } catch (Throwable t) {
-            resolver.getLogger().log(t.getLocalizedMessage(), LogLevel.ERROR);
+            logger.error("Error executing test", t);
         }
 
         assertThat(result, is(notNullValue()));
@@ -288,7 +291,7 @@ public class SampleServiceTests extends WireMockTestBase {
                     .readRaw()
                     .get();
         } catch (Throwable t) {
-            resolver.getLogger().log(t.getLocalizedMessage(), LogLevel.ERROR);
+            logger.error("Error executing test", t);
         }
 
         String responseContent = "{\"value\" : [{\"SomeString\":\"Some String\",\"Id\":\"3281EC0B-1AEB-49A4-A345-E64D732DA6D3\",\"@odata.type\":\"#Microsoft.SampleService.AnotherEntity\"}]}";
@@ -308,7 +311,7 @@ public class SampleServiceTests extends WireMockTestBase {
                     .read()
                     .get();
         } catch (Throwable t) {
-            resolver.getLogger().log(t.getLocalizedMessage(), LogLevel.ERROR);
+            logger.error("Error executing test", t);
         }
 
         assertThat(result, is(notNullValue()));
@@ -327,7 +330,7 @@ public class SampleServiceTests extends WireMockTestBase {
                     .read()
                     .get();
         } catch (Throwable t) {
-            resolver.getLogger().log(t.getLocalizedMessage(), LogLevel.ERROR);
+            logger.error("Error executing test", t);
         }
         //dummy comment for testing travis
         assertThat(result, is(notNullValue()));
@@ -345,7 +348,7 @@ public class SampleServiceTests extends WireMockTestBase {
                     .read()
                     .get();
         } catch (Throwable t) {
-            resolver.getLogger().log(t.getLocalizedMessage(), LogLevel.ERROR);
+            logger.error("Error executing test", t);
         }
 
         assertThat(result, is(notNullValue()));
@@ -365,7 +368,7 @@ public class SampleServiceTests extends WireMockTestBase {
                     .get();
 
         } catch (Throwable t) {
-            resolver.getLogger().log(t.getLocalizedMessage(), LogLevel.ERROR);
+            logger.error("Error executing test", t);
         }
 
         assertThat(result, is(nullValue()));
@@ -382,7 +385,7 @@ public class SampleServiceTests extends WireMockTestBase {
                     .get();
 
         } catch (Throwable t) {
-            resolver.getLogger().log(t.getLocalizedMessage(), LogLevel.ERROR);
+            logger.error("Error executing test", t);
         }
 
         assertThat(result, is(notNullValue()));
@@ -403,7 +406,7 @@ public class SampleServiceTests extends WireMockTestBase {
                     .get();
 
         } catch (Throwable t) {
-            resolver.getLogger().log(t.getLocalizedMessage(), LogLevel.ERROR);
+            logger.error("Error executing test", t);
         }
 
         assertThat(result, is(notNullValue()));
@@ -424,7 +427,7 @@ public class SampleServiceTests extends WireMockTestBase {
                     .get();
 
         } catch (Throwable t) {
-            resolver.getLogger().log(t.getLocalizedMessage(), LogLevel.ERROR);
+            logger.error("Error executing test", t);
         }
 
         assertThat(result, is(notNullValue()));
@@ -445,7 +448,7 @@ public class SampleServiceTests extends WireMockTestBase {
                     .get();
 
         } catch (Throwable t) {
-            resolver.getLogger().log(t.getLocalizedMessage(), LogLevel.ERROR);
+            logger.error("Error executing test", t);
         }
 
         assertThat(result, is(notNullValue()));
@@ -457,7 +460,7 @@ public class SampleServiceTests extends WireMockTestBase {
         //updateSampleEntityPATCH.json
 
         String payload = new GsonSerializer().serialize(getSampleEntity());
-        resolver.getLogger().log("EntityPayload: " + payload, LogLevel.ERROR);
+        logger.info("EntityPayload: " + payload);
         //Get Entity
         SampleEntity result = null;
         SampleEntity updateResponse = null;
@@ -475,7 +478,7 @@ public class SampleServiceTests extends WireMockTestBase {
                     .update(result).get();
 
         } catch (Throwable t) {
-            resolver.getLogger().log(t.getLocalizedMessage(), LogLevel.ERROR);
+            logger.error("Error executing test", t);
         }
 
         assertThat(result, is(notNullValue()));
@@ -499,7 +502,7 @@ public class SampleServiceTests extends WireMockTestBase {
                     .update(result).get();
 
         } catch (Throwable t) {
-            resolver.getLogger().log(t.getLocalizedMessage(), LogLevel.ERROR);
+            logger.error("Error executing test", t);
         }
 
         assertThat(result, is(notNullValue()));
@@ -526,7 +529,7 @@ public class SampleServiceTests extends WireMockTestBase {
                     .update(result).get();
 
         } catch (Throwable t) {
-            resolver.getLogger().log(t.getLocalizedMessage(), LogLevel.ERROR);
+            logger.error("Error executing test", t);
         }
 
         assertThat(result, is(notNullValue()));
@@ -553,7 +556,7 @@ public class SampleServiceTests extends WireMockTestBase {
                     .update(result).get();
 
         } catch (Throwable t) {
-            resolver.getLogger().log(t.getLocalizedMessage(), LogLevel.ERROR);
+            logger.error("Error executing test", t);
         }
 
         assertThat(result, is(notNullValue()));
@@ -573,7 +576,7 @@ public class SampleServiceTests extends WireMockTestBase {
                     .get();
 
         } catch (Throwable t) {
-            resolver.getLogger().log(t.getLocalizedMessage(), LogLevel.ERROR);
+            logger.error("Error executing test", t);
         }
 
         assertThat(result, is(notNullValue()));
@@ -595,7 +598,7 @@ public class SampleServiceTests extends WireMockTestBase {
                     .get();
 
         } catch (Throwable t) {
-            resolver.getLogger().log(t.getLocalizedMessage(), LogLevel.ERROR);
+            logger.error("Error executing test", t);
         }
 
         assertThat(result, is(notNullValue()));
@@ -611,7 +614,7 @@ public class SampleServiceTests extends WireMockTestBase {
             result = client.getMe().getNestedSampleEntityCollection().getOperations().someFunction("SomePath").get();
 
         } catch (Throwable t) {
-            resolver.getLogger().log(t.getLocalizedMessage(), LogLevel.ERROR);
+            logger.error("Error executing test", t);
         }
 
         assertThat(result, is(notNullValue()));
