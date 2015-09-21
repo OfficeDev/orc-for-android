@@ -8,6 +8,7 @@ import com.microsoft.services.orc.http.OrcResponse;
 import com.microsoft.services.orc.http.OrcURL;
 import com.microsoft.services.orc.http.Request;
 import com.microsoft.services.orc.log.LogLevel;
+import com.microsoft.services.orc.resolvers.DependencyResolver;
 import com.microsoft.services.orc.serialization.impl.CalendarSerializer;
 
 import java.io.UnsupportedEncodingException;

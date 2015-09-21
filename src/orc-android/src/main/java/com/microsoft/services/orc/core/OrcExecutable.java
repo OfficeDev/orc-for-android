@@ -9,6 +9,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.microsoft.services.orc.http.OrcResponse;
 import com.microsoft.services.orc.http.Request;
 import com.microsoft.services.orc.log.LogLevel;
+import com.microsoft.services.orc.resolvers.DependencyResolver;
 
 import java.util.HashMap;
 import java.util.Map;

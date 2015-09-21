@@ -1,7 +1,7 @@
 package com.microsoft.services.orc.resolvers;
 
-import android.content.Context;
 import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
 
 import com.google.common.util.concurrent.SettableFuture;
@@ -12,27 +12,16 @@ import com.microsoft.services.msa.LiveConnectSession;
 import com.microsoft.services.msa.LiveStatus;
 import com.microsoft.services.orc.http.Credentials;
 import com.microsoft.services.orc.http.impl.OAuthCredentials;
-import com.microsoft.services.orc.log.LogLevel;
 
 import java.util.concurrent.ExecutionException;
 
-/**
- * The type MSAAuthDependencyResolver dependency resolver.
- */
-public class MSAAuthDependencyResolver extends DefaultDependencyResolver {
+public class MSAAuthentication implements AuthenticationCredentials {
 
     private static final String TAG = "MSAAuthDepResolver";
-
     private LiveAuthClient liveAuthClient;
     private Context mContext;
 
-    /**
-     * Instantiates a new dependency resolver.
-     *
-     * @param theAuthClient the context
-     */
-    public MSAAuthDependencyResolver(LiveAuthClient theAuthClient) {
-        super("");
+    public MSAAuthentication(LiveAuthClient theAuthClient) {
         this.liveAuthClient = theAuthClient;
     }
 
@@ -47,8 +36,11 @@ public class MSAAuthDependencyResolver extends DefaultDependencyResolver {
     public SettableFuture<Boolean> interactiveInitialize(final Activity contextActivity) throws ExecutionException, InterruptedException {
         final SettableFuture<Boolean> signal = SettableFuture.create();
 
-        this.getLogger().log(
+        /*
+        super.getLogger().log(
                 "Initializing MSAAuthDependencyResolver. If cached refresh token is available it will be used.", LogLevel.INFO);
+
+        */
 
         contextActivity.runOnUiThread(new Runnable() {
             @Override
@@ -57,8 +49,11 @@ public class MSAAuthDependencyResolver extends DefaultDependencyResolver {
                     @Override
                     public void onAuthComplete(LiveStatus status, LiveConnectSession session, Object userState) {
                         if (status == LiveStatus.CONNECTED) {
+
+                            /*
                             MSAAuthDependencyResolver.this.getLogger().log(
                                     "Successfully refreshed tokens with refresh token.", LogLevel.INFO);
+                            */
                             signal.set(true);
                         } else {
                             // We shouldn't get here right?
@@ -78,7 +73,6 @@ public class MSAAuthDependencyResolver extends DefaultDependencyResolver {
 
     }
 
-    @Override
     public Credentials getCredentials() {
         final SettableFuture<Credentials> credentialsFuture = SettableFuture.create();
 

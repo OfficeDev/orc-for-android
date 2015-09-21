@@ -8,6 +8,7 @@ import com.microsoft.services.orc.http.HttpVerb;
 import com.microsoft.services.orc.http.OrcResponse;
 import com.microsoft.services.orc.http.OrcURL;
 import com.microsoft.services.orc.http.Request;
+import com.microsoft.services.orc.resolvers.DependencyResolver;
 
 /**
  * The type O data fetcher.
