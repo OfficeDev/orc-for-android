@@ -11,8 +11,8 @@ import com.microsoft.services.orc.core.Helpers;
 import com.microsoft.services.orc.http.Credentials;
 import com.microsoft.services.orc.http.impl.OAuthCredentials;
 import com.microsoft.services.orc.http.impl.OkHttpTransport;
-import com.microsoft.services.orc.resolvers.AuthenticationCredentials;
-import com.microsoft.services.orc.resolvers.DependencyResolver;
+import com.microsoft.services.orc.auth.AuthenticationCredentials;
+import com.microsoft.services.orc.core.DependencyResolver;
 import com.microsoft.services.orc.serialization.impl.GsonSerializer;
 
 import org.junit.Test;

@@ -1,16 +1,16 @@
-package com.microsoft.services.orc.resolvers;
+package com.microsoft.services.orc.core;
 
 import android.os.Build;
 
-import com.microsoft.services.orc.core.Constants;
 import com.microsoft.services.orc.http.HttpTransport;
 import com.microsoft.services.orc.http.OrcURL;
 import com.microsoft.services.orc.http.Request;
 import com.microsoft.services.orc.http.impl.OrcURLImpl;
 import com.microsoft.services.orc.http.impl.RequestImpl;
+import com.microsoft.services.orc.auth.AuthenticationCredentials;
 import com.microsoft.services.orc.serialization.JsonSerializer;
 
-abstract class AbstractDependencyResolver {
+public abstract class AbstractDependencyResolver {
 
     private Builder builder;
 

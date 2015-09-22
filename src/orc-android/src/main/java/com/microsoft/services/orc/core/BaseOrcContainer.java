@@ -15,7 +15,6 @@ import com.microsoft.services.orc.http.OrcResponse;
 import com.microsoft.services.orc.http.Request;
 import com.microsoft.services.orc.http.Response;
 import com.squareup.okhttp.HttpUrl;
-import com.microsoft.services.orc.resolvers.DependencyResolver;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

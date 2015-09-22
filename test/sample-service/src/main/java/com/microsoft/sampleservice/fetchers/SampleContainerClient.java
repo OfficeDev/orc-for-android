@@ -15,7 +15,7 @@ package com.microsoft.sampleservice.fetchers;
 
 import com.microsoft.sampleservice.*;
 import com.microsoft.services.orc.core.*;
-import com.microsoft.services.orc.resolvers.DependencyResolver;
+import com.microsoft.services.orc.core.DependencyResolver;
 
 /**
  * The type SampleContainerClient.

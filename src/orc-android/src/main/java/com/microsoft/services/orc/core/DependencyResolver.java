@@ -1,7 +1,8 @@
-package com.microsoft.services.orc.resolvers;
+package com.microsoft.services.orc.core;
 
 import com.microsoft.services.orc.http.Credentials;
 import com.microsoft.services.orc.http.HttpTransport;
+import com.microsoft.services.orc.auth.AuthenticationCredentials;
 import com.microsoft.services.orc.serialization.JsonSerializer;
 
 public class DependencyResolver extends AbstractDependencyResolver {

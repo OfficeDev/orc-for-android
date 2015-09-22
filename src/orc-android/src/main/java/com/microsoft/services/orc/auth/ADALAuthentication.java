@@ -1,4 +1,4 @@
-package com.microsoft.services.orc.resolvers;
+package com.microsoft.services.orc.auth;
 
 import com.microsoft.aad.adal.AuthenticationContext;
 import com.microsoft.aad.adal.AuthenticationResult;

@@ -8,7 +8,6 @@ package com.microsoft.services.orc.core;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.microsoft.services.orc.http.OrcResponse;
 import com.microsoft.services.orc.http.Request;
-import com.microsoft.services.orc.resolvers.DependencyResolver;
 
 import static com.microsoft.services.orc.core.Helpers.addCustomParametersToRequest;
 
