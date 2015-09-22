@@ -263,7 +263,9 @@ public class Helpers {
                     logger.info("Entity Deserialization Finished");
 
                 } catch (Throwable throwable) {
+                    logger.error("Error in deserialization", throwable);
                     result.setException(throwable);
+
                 }
                 result.set(entity);
                 return result;
@@ -298,8 +300,9 @@ public class Helpers {
                     logger.info("Entity collection Deserialization Finished");
 
                     result.set(list);
-                } catch (Throwable t) {
-                    result.setException(t);
+                } catch (Throwable throwable) {
+                    logger.error("Error in deserialization", throwable);
+                    result.setException(throwable);
                 }
 
                 return result;
