@@ -2,7 +2,6 @@ package com.microsoft.services.orc.auth;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 
 import com.google.common.util.concurrent.SettableFuture;
 import com.microsoft.services.msa.LiveAuthClient;
@@ -13,9 +12,14 @@ import com.microsoft.services.msa.LiveStatus;
 import com.microsoft.services.orc.http.Credentials;
 import com.microsoft.services.orc.http.impl.OAuthCredentials;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.concurrent.ExecutionException;
 
 public class MSAAuthentication implements AuthenticationCredentials {
+
+    static final Logger logger = LoggerFactory.getLogger(MSAAuthentication.class);
 
     private static final String TAG = "MSAAuthDepResolver";
     private LiveAuthClient liveAuthClient;
@@ -30,17 +34,14 @@ public class MSAAuthentication implements AuthenticationCredentials {
      *
      * @param contextActivity the context activity
      * @return the settable future
-     * @throws ExecutionException the execution exception
+     * @throws ExecutionException   the execution exception
      * @throws InterruptedException the interrupted exception
      */
     public SettableFuture<Boolean> interactiveInitialize(final Activity contextActivity) throws ExecutionException, InterruptedException {
         final SettableFuture<Boolean> signal = SettableFuture.create();
 
-        /*
-        super.getLogger().log(
-                "Initializing MSAAuthDependencyResolver. If cached refresh token is available it will be used.", LogLevel.INFO);
-
-        */
+        logger.info(
+                "Initializing MSAAuthDependencyResolver. If cached refresh token is available it will be used.");
 
         contextActivity.runOnUiThread(new Runnable() {
             @Override
@@ -50,10 +51,9 @@ public class MSAAuthentication implements AuthenticationCredentials {
                     public void onAuthComplete(LiveStatus status, LiveConnectSession session, Object userState) {
                         if (status == LiveStatus.CONNECTED) {
 
-                            /*
-                            MSAAuthDependencyResolver.this.getLogger().log(
-                                    "Successfully refreshed tokens with refresh token.", LogLevel.INFO);
-                            */
+                            logger.info(
+                                    "Successfully refreshed tokens with refresh token.");
+
                             signal.set(true);
                         } else {
                             // We shouldn't get here right?
@@ -99,7 +99,7 @@ public class MSAAuthentication implements AuthenticationCredentials {
         } catch (LiveAuthException e) {
             throw e;
         } catch (Throwable t) {
-            Log.e(TAG, t.getMessage());
+            logger.error("Error getting the credentials", t);
             throw new RuntimeException(t);
         }
     }
@@ -126,7 +126,7 @@ public class MSAAuthentication implements AuthenticationCredentials {
             logoutFuture.get();
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }catch ( ExecutionException e){
+        } catch (ExecutionException e) {
             e.printStackTrace();
         }
 
