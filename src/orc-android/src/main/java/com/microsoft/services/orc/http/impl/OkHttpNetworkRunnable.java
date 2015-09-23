@@ -22,22 +22,19 @@ import okio.BufferedSink;
  */
 public class OkHttpNetworkRunnable extends NetworkRunnable {
 
-    private final static OkHttpClient client;
+    private OkHttpClient client;
 
-    static {
-        client = new OkHttpClient();
-    }
-
-    public OkHttpNetworkRunnable(com.microsoft.services.orc.http.Request request,
+    public OkHttpNetworkRunnable(OkHttpClient client,
+                                 com.microsoft.services.orc.http.Request request,
                                  SettableFuture<com.microsoft.services.orc.http.Response> future) {
         super(request, future);
+        this.client = client;
     }
 
     @Override
     public void run() {
 
         try {
-            client.networkInterceptors().add(new LoggingInterceptor());
 
             RequestBody requestBody = null;
             MediaType mediaType = MediaType.parse("application/json; charset=utf-8");

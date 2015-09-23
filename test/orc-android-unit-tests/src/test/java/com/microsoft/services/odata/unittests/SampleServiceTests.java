@@ -9,12 +9,14 @@ import com.microsoft.sampleservice.SampleEntity;
 import com.microsoft.sampleservice.fetchers.SampleContainerClient;
 import com.microsoft.services.orc.core.Helpers;
 import com.microsoft.services.orc.http.Credentials;
+import com.microsoft.services.orc.http.impl.LoggingInterceptor;
 import com.microsoft.services.orc.http.impl.OAuthCredentials;
 import com.microsoft.services.orc.http.impl.OkHttpTransport;
 import com.microsoft.services.orc.auth.AuthenticationCredentials;
 import com.microsoft.services.orc.core.DependencyResolver;
 import com.microsoft.services.orc.serialization.impl.GsonSerializer;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,14 +38,17 @@ public class SampleServiceTests extends WireMockTestBase {
 
     Logger logger = LoggerFactory.getLogger(SampleServiceTests.class);
 
-    private String url = "http://localhost:8080";
-    private SampleContainerClient client;
-    private DependencyResolver resolver;
+    private static SampleContainerClient client;
+    private static DependencyResolver resolver;
 
     public SampleServiceTests() {
+    }
+
+    @BeforeClass
+    public static void setupResolver() {
 
         resolver = new DependencyResolver.Builder(
-                new OkHttpTransport(), new GsonSerializer(),
+                new OkHttpTransport().setInterceptor(new LoggingInterceptor()), new GsonSerializer(),
                 new AuthenticationCredentials() {
                     @Override
                     public Credentials getCredentials() {
@@ -51,6 +56,7 @@ public class SampleServiceTests extends WireMockTestBase {
                     }
                 }).build();
 
+        String url = "http://localhost:8080";
         client = new SampleContainerClient(url, resolver);
     }
 
