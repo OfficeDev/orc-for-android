@@ -12,13 +12,13 @@ import com.microsoft.services.orc.http.Request;
 import java.io.InputStream;
 
 
-public class OrcStreamFetcher extends OrcExecutable {
+public class OrcODataStreamFetcher {
 
     private String urlComponent;
     private OrcExecutable parent;
     private DependencyResolver dependencyResolver;
 
-    public OrcStreamFetcher(String urlComponent, OrcExecutable parent, DependencyResolver dependencyResolver) {
+    public OrcODataStreamFetcher(String urlComponent, OrcExecutable parent, DependencyResolver dependencyResolver) {
         this.urlComponent = urlComponent;
         this.parent = parent;
         this.dependencyResolver = dependencyResolver;
@@ -44,13 +44,12 @@ public class OrcStreamFetcher extends OrcExecutable {
             @Override
             public ListenableFuture<InputStream> apply(OrcResponse response) throws Exception {
                 SettableFuture<InputStream> result = SettableFuture.create();
-                result.set(new MediaEntityInputStream(response.openStreamedResponse(), response));
+                result.set(new ODataStream(response.openStreamedResponse(), response));
                 return result;
             }
         });
     }
 
-    @Override
     protected ListenableFuture<OrcResponse> oDataExecute(Request request) {
 
         OrcURL orcURL = request.getUrl();
@@ -58,7 +57,6 @@ public class OrcStreamFetcher extends OrcExecutable {
         return parent.oDataExecute(request);
     }
 
-    @Override
     protected DependencyResolver getResolver() {
         return dependencyResolver;
     }
