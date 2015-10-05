@@ -27,7 +27,7 @@ public class SampleEntityFetcher extends OrcEntityFetcher<SampleEntity, SampleEn
      * Instantiates a new SampleEntityFetcher.
      *
      * @param urlComponent the url component
-     * @param parent the parent
+     * @param parent       the parent
      */
     public SampleEntityFetcher(String urlComponent, OrcExecutable parent) {
         super(urlComponent, parent, SampleEntity.class, SampleEntityOperations.class);
@@ -36,7 +36,7 @@ public class SampleEntityFetcher extends OrcEntityFetcher<SampleEntity, SampleEn
     /**
      * Add parameter.
      *
-     * @param name the name
+     * @param name  the name
      * @param value the value
      * @return the fetcher
      */
@@ -48,7 +48,7 @@ public class SampleEntityFetcher extends OrcEntityFetcher<SampleEntity, SampleEn
     /**
      * Add header.
      *
-     * @param name the name
+     * @param name  the name
      * @param value the value
      * @return the fetcher
      */
