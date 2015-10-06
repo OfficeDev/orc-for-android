@@ -45,8 +45,8 @@ public class AnotherEntityFetcher extends OrcEntityFetcher<AnotherEntity,Another
         addCustomParameter(name, value);
         return this;
     }
-
-     /**
+	
+	/**
      * Add header.
      *
      * @param name the name
@@ -58,5 +58,7 @@ public class AnotherEntityFetcher extends OrcEntityFetcher<AnotherEntity,Another
         return this;
     }
 
-        
+    
+    
+    
 }

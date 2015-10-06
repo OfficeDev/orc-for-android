@@ -45,8 +45,8 @@ public class EntityFetcher extends OrcEntityFetcher<Entity,EntityOperations>
         addCustomParameter(name, value);
         return this;
     }
-
-     /**
+	
+	/**
      * Add header.
      *
      * @param name the name
@@ -70,5 +70,7 @@ public class EntityFetcher extends OrcEntityFetcher<Entity,EntityOperations>
     public SampleEntityFetcher asSampleEntity(){
         return new SampleEntityFetcher(this.urlComponent, this.parent);
     }   
+
+    
     
 }

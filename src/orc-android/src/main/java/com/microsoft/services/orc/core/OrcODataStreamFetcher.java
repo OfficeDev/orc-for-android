@@ -35,7 +35,6 @@ public class OrcODataStreamFetcher {
         request.setVerb(HttpVerb.GET);
         request.addOption(Request.MUST_STREAM_RESPONSE_CONTENT, "true");
         OrcURL url = request.getUrl();
-        url.appendPathComponent(urlComponent);
         url.appendPathComponent("$value");
 
         ListenableFuture<OrcResponse> future = oDataExecute(request);

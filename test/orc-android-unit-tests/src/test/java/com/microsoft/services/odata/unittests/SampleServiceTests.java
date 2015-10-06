@@ -21,6 +21,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -619,6 +620,19 @@ public class SampleServiceTests extends WireMockTestBase {
         try {
             result = client.getMe().getNestedSampleEntityCollection().getOperations().someFunction("SomePath").get();
 
+        } catch (Throwable t) {
+            logger.error("Error executing test", t);
+        }
+
+        assertThat(result, is(notNullValue()));
+    }
+
+    @Test
+    public void testODataStream() throws ExecutionException, InterruptedException {
+
+        InputStream result = null;
+        try {
+            result = client.getMe().getContent().getStream().get();
         } catch (Throwable t) {
             logger.error("Error executing test", t);
         }

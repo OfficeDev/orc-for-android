@@ -45,8 +45,8 @@ public class ItemAFetcher extends OrcEntityFetcher<ItemA,ItemAOperations>
         addCustomParameter(name, value);
         return this;
     }
-
-     /**
+	
+	/**
      * Add header.
      *
      * @param name the name
@@ -58,5 +58,7 @@ public class ItemAFetcher extends OrcEntityFetcher<ItemA,ItemAOperations>
         return this;
     }
 
-        
+    
+    
+    
 }

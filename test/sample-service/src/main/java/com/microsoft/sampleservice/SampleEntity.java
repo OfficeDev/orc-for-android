@@ -16,6 +16,8 @@ package com.microsoft.sampleservice;
 
 import com.microsoft.services.orc.core.ODataStream;
 
+
+
 /**
  * The type Sample Entity.
 */

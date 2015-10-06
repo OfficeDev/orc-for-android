@@ -45,8 +45,8 @@ public class ItemBFetcher extends OrcEntityFetcher<ItemB,ItemBOperations>
         addCustomParameter(name, value);
         return this;
     }
-
-     /**
+	
+	/**
      * Add header.
      *
      * @param name the name
@@ -58,5 +58,7 @@ public class ItemBFetcher extends OrcEntityFetcher<ItemB,ItemBOperations>
         return this;
     }
 
-        
+    
+    
+    
 }
