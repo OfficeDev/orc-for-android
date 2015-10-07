@@ -1,5 +1,8 @@
 package com.microsoft.services.odata.unittests;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.CharStreams;
+import com.google.common.io.Closeables;
 import com.microsoft.sampleservice.AnotherEntity;
 import com.microsoft.sampleservice.Item;
 import com.microsoft.sampleservice.ItemA;
@@ -7,13 +10,13 @@ import com.microsoft.sampleservice.ItemB;
 import com.microsoft.sampleservice.SampleComplexType;
 import com.microsoft.sampleservice.SampleEntity;
 import com.microsoft.sampleservice.fetchers.SampleContainerClient;
+import com.microsoft.services.orc.auth.AuthenticationCredentials;
+import com.microsoft.services.orc.core.DependencyResolver;
 import com.microsoft.services.orc.core.Helpers;
 import com.microsoft.services.orc.http.Credentials;
 import com.microsoft.services.orc.http.impl.LoggingInterceptor;
 import com.microsoft.services.orc.http.impl.OAuthCredentials;
 import com.microsoft.services.orc.http.impl.OkHttpTransport;
-import com.microsoft.services.orc.auth.AuthenticationCredentials;
-import com.microsoft.services.orc.core.DependencyResolver;
 import com.microsoft.services.orc.serialization.impl.GsonSerializer;
 
 import org.junit.BeforeClass;
@@ -22,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -630,14 +634,18 @@ public class SampleServiceTests extends WireMockTestBase {
     @Test
     public void testODataStream() throws ExecutionException, InterruptedException {
 
-        InputStream result = null;
+        String output = null;
         try {
-            result = client.getMe().getContent().getStream().get();
+
+            InputStream stream = client.getMe().getContent().getStream().get();
+            output = CharStreams.toString(new InputStreamReader(stream, Charsets.UTF_8));
+            Closeables.closeQuietly(stream);
+
         } catch (Throwable t) {
             logger.error("Error executing test", t);
         }
 
-        assertThat(result, is(notNullValue()));
+        assertThat(output, is(notNullValue()));
     }
 
     private SampleEntity getSampleEntity() {
