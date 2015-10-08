@@ -1,0 +1,10 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/Me/Items/?paged=%27true%27"
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"@odata.nextLink\":\"http://localhost:8080/Me/getItems/nextLinkTest\",\"value\":[]}"
+  }
+}

@@ -49,7 +49,9 @@ public abstract class BaseOrcContainer extends OrcExecutable {
         final SettableFuture<OrcResponse> result = SettableFuture.create();
 
         try {
-            request.getUrl().setBaseUrl(this.url);
+            if (request.getUrl().getBaseUrl() == null) {
+                request.getUrl().setBaseUrl(this.url);
+            }
             String rawUrl = request.getUrl().toString();
             String fullUrl = HttpUrl.parse(rawUrl).toString();
 
