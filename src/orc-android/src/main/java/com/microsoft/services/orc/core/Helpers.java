@@ -139,6 +139,22 @@ public class Helpers {
         return sb.toString();
     }
 
+    public static String appendFunctionComponent(String functionName, Map<String, Object> arguments) {
+
+        String result;
+        if (!arguments.isEmpty()) {
+            result = "('";
+            for (Map.Entry<String, Object> entrySet : arguments.entrySet()) {
+                result = result + String.format("%s,%s", entrySet.getKey(), entrySet.getValue());
+            }
+            result = result + "')";
+        } else {
+            result = "()";
+        }
+        return functionName + result;
+    }
+
+
     private static String toODataURLValue(Object o) {
         if (o instanceof String) {
             return "'" + o + "'";
