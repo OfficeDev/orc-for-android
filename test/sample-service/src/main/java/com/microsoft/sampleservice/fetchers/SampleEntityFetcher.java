@@ -59,7 +59,8 @@ public class SampleEntityFetcher extends OrcEntityFetcher<SampleEntity,SampleEnt
     }
 
     
-    
+    	
+
 	/**
      * Gets content.
      *
