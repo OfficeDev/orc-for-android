@@ -1,18 +1,13 @@
 package com.microsoft.services.orc.core;
 
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.microsoft.services.orc.http.HttpVerb;
 import com.microsoft.services.orc.http.OrcResponse;
 import com.microsoft.services.orc.http.OrcURL;
 import com.microsoft.services.orc.http.Request;
-import com.microsoft.services.orc.http.Response;
-import com.microsoft.services.orc.serialization.JsonSerializer;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class OrcList<E> extends ArrayList<E> {
 
@@ -45,9 +40,7 @@ public class OrcList<E> extends ArrayList<E> {
         request.setUrl(url);
 
         ListenableFuture<OrcResponse> future = baseOrcContainer.oDataExecute(request);
-
         ListenableFuture<String> stringFuture = Helpers.transformToStringListenableFuture(future);
-
         ListenableFuture<OrcList<E>> list = Helpers.transformToEntityListListenableFuture(stringFuture, this.clazz, resolver, baseOrcContainer);
 
         return list;
