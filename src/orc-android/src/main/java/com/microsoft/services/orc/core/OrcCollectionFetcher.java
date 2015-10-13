@@ -24,7 +24,7 @@ import static com.microsoft.services.orc.core.Helpers.*;
  */
 public class OrcCollectionFetcher<TEntity, TFetcher extends OrcEntityFetcher, TOperations extends OrcOperations>
         extends OrcFetcher<TEntity>
-        implements Readable<List<TEntity>> {
+        implements Readable<OrcList<TEntity>> {
 
     private int top = -1;
     private int skip = -1;
@@ -178,8 +178,20 @@ public class OrcCollectionFetcher<TEntity, TFetcher extends OrcEntityFetcher, TO
      * @return the listenable future
      */
     @Override
-    public ListenableFuture<List<TEntity>> read() {
-        return Helpers.transformToEntityListListenableFuture(readRaw(), this.clazz, getResolver());
+    public ListenableFuture<OrcList<TEntity>> read() {
+        return Helpers.transformToEntityListListenableFuture(readRaw(), this.clazz, getResolver(), getParentOrcContainer());
+    }
+
+    private BaseOrcContainer getParentOrcContainer() {
+        OrcExecutable current = parent;
+        while ( current != null &&
+                current instanceof OrcFetcher &&
+                !(current instanceof BaseOrcContainer)) {
+            OrcFetcher fetcher = (OrcFetcher) parent;
+            current = fetcher.parent;
+        }
+
+        return (BaseOrcContainer)current;
     }
 
     /**

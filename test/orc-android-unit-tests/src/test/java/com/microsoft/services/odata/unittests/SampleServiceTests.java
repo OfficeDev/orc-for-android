@@ -1,5 +1,9 @@
 package com.microsoft.services.odata.unittests;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.CharStreams;
+import com.google.common.io.Closeables;
+import com.google.common.util.concurrent.ListenableFuture;
 import com.microsoft.sampleservice.AnotherEntity;
 import com.microsoft.sampleservice.Item;
 import com.microsoft.sampleservice.ItemA;
@@ -7,13 +11,14 @@ import com.microsoft.sampleservice.ItemB;
 import com.microsoft.sampleservice.SampleComplexType;
 import com.microsoft.sampleservice.SampleEntity;
 import com.microsoft.sampleservice.fetchers.SampleContainerClient;
+import com.microsoft.services.orc.auth.AuthenticationCredentials;
+import com.microsoft.services.orc.core.DependencyResolver;
 import com.microsoft.services.orc.core.Helpers;
+import com.microsoft.services.orc.core.OrcList;
 import com.microsoft.services.orc.http.Credentials;
 import com.microsoft.services.orc.http.impl.LoggingInterceptor;
 import com.microsoft.services.orc.http.impl.OAuthCredentials;
 import com.microsoft.services.orc.http.impl.OkHttpTransport;
-import com.microsoft.services.orc.auth.AuthenticationCredentials;
-import com.microsoft.services.orc.core.DependencyResolver;
 import com.microsoft.services.orc.serialization.impl.GsonSerializer;
 
 import org.junit.BeforeClass;
@@ -21,6 +26,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -625,6 +632,42 @@ public class SampleServiceTests extends WireMockTestBase {
 
         assertThat(result, is(notNullValue()));
     }
+
+    @Test
+    public void testODataStream() throws ExecutionException, InterruptedException {
+
+        String output = null;
+        try {
+
+            InputStream stream = client.getMe().getContent().getStream().get();
+            output = CharStreams.toString(new InputStreamReader(stream, Charsets.UTF_8));
+            Closeables.closeQuietly(stream);
+
+        } catch (Throwable t) {
+            logger.error("Error executing test", t);
+        }
+
+        assertThat(output, is(notNullValue()));
+    }
+
+    @Test
+    public void testGetNextLink() throws ExecutionException, InterruptedException {
+        //Get Entity
+
+        OrcList<Item> items = null;
+        OrcList<Item> items2 = null;
+        try {
+            items = client.getMe().getItems().addParameter("paged", "true").read().get();
+            ListenableFuture<OrcList<Item>> future = items.followNextLink();
+            items2 = future.get();
+
+        } catch (Throwable t) {
+            logger.error("Error executing test", t);
+        }
+
+        assertThat(items2, is(notNullValue()));
+    }
+
 
     private SampleEntity getSampleEntity() {
         SampleEntity sampleEntity = new SampleEntity();

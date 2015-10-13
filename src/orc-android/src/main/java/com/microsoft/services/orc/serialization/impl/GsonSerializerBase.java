@@ -8,8 +8,12 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.microsoft.services.orc.core.AbstractDependencyResolver;
+import com.microsoft.services.orc.core.BaseOrcContainer;
 import com.microsoft.services.orc.core.Constants;
+import com.microsoft.services.orc.core.DependencyResolver;
 import com.microsoft.services.orc.core.ODataBaseEntity;
+import com.microsoft.services.orc.core.OrcList;
 import com.microsoft.services.orc.serialization.ByteArrayTypeAdapterBase;
 import com.microsoft.services.orc.serialization.JsonSerializer;
 
@@ -33,6 +37,7 @@ import static com.microsoft.services.orc.core.Helpers.getReservedNames;
  */
 public abstract class GsonSerializerBase implements JsonSerializer {
     private static Map<String, Class<?>> cachedClassesFromOData = new ConcurrentHashMap<String, Class<?>>();
+    private DependencyResolver resolver;
 
     private Gson createGson() {
         return new GsonBuilder()
@@ -80,7 +85,7 @@ public abstract class GsonSerializerBase implements JsonSerializer {
         return odataEntity;
     }
 
-    private void referenceParents(Object objToAnalyze, ODataBaseEntity parent, String referenceProperty)  {
+    private void referenceParents(Object objToAnalyze, ODataBaseEntity parent, String referenceProperty) {
         if (objToAnalyze == null) {
             return;
         }
@@ -88,20 +93,20 @@ public abstract class GsonSerializerBase implements JsonSerializer {
         Class objClass = objToAnalyze.getClass();
 
         if (objToAnalyze instanceof ParentReferencedList) {
-            ParentReferencedList list = (ParentReferencedList)objToAnalyze;
+            ParentReferencedList list = (ParentReferencedList) objToAnalyze;
 
             for (Object subObject : list) {
                 referenceParents(subObject, parent, referenceProperty);
             }
         }
         if (objToAnalyze instanceof List) {
-            List list = (List)objToAnalyze;
+            List list = (List) objToAnalyze;
 
             for (Object subObject : list) {
                 referenceParents(subObject, parent, referenceProperty);
             }
         } else if (objToAnalyze instanceof ODataBaseEntity) {
-            ODataBaseEntity entity = (ODataBaseEntity)objToAnalyze;
+            ODataBaseEntity entity = (ODataBaseEntity) objToAnalyze;
             if (parent != null) {
                 entity.setParent(parent, referenceProperty);
             }
@@ -112,7 +117,7 @@ public abstract class GsonSerializerBase implements JsonSerializer {
                 try {
                     Object fieldValue = field.get(objToAnalyze);
                     if (fieldValue instanceof List && !(fieldValue instanceof ParentReferencedList)) {
-                        List originalList = (List)fieldValue;
+                        List originalList = (List) fieldValue;
                         ParentReferencedList wrapperList = new ParentReferencedList(originalList, entity, field.getName());
                         field.set(entity, wrapperList);
                         referenceParents(wrapperList, wrapperList, null);
@@ -158,8 +163,8 @@ public abstract class GsonSerializerBase implements JsonSerializer {
         /**
          * Instantiates a new Parent referenced list.
          *
-         * @param wrappedlist the wrappedlist
-         * @param parent the parent
+         * @param wrappedlist       the wrappedlist
+         * @param parent            the parent
          * @param referenceProperty the reference property
          */
         public ParentReferencedList(List<E> wrappedlist, ODataBaseEntity parent, String referenceProperty) {
@@ -218,7 +223,7 @@ public abstract class GsonSerializerBase implements JsonSerializer {
 
         @Override
         public boolean remove(Object o) {
-            boolean ret =  wrappedList.remove(o);
+            boolean ret = wrappedList.remove(o);
             valueChanged();
             return ret;
         }
@@ -230,21 +235,21 @@ public abstract class GsonSerializerBase implements JsonSerializer {
 
         @Override
         public boolean addAll(Collection<? extends E> c) {
-            boolean ret =  wrappedList.addAll(c);
+            boolean ret = wrappedList.addAll(c);
             valueChanged();
             return ret;
         }
 
         @Override
         public boolean addAll(int index, Collection<? extends E> c) {
-            boolean ret =  wrappedList.addAll(c);
+            boolean ret = wrappedList.addAll(c);
             valueChanged();
             return ret;
         }
 
         @Override
         public boolean removeAll(Collection<?> c) {
-            boolean ret =  wrappedList.removeAll(c);
+            boolean ret = wrappedList.removeAll(c);
             valueChanged();
             return ret;
         }
@@ -282,7 +287,7 @@ public abstract class GsonSerializerBase implements JsonSerializer {
 
         @Override
         public E remove(int index) {
-            E ret =  wrappedList.remove(index);
+            E ret = wrappedList.remove(index);
             valueChanged();
             return ret;
         }
@@ -317,7 +322,7 @@ public abstract class GsonSerializerBase implements JsonSerializer {
      * Gets class from json.
      *
      * @param json the json
-     * @param pkg the pkg
+     * @param pkg  the pkg
      * @return the class from json
      */
     protected Class getClassFromJson(JsonElement json, Package pkg) {
@@ -337,7 +342,7 @@ public abstract class GsonSerializerBase implements JsonSerializer {
                     String classFullName = pkg.getName() + "." + className;
                     Class<?> derivedClass = Class.forName(classFullName);
 
-                    ODataBaseEntity instance = (ODataBaseEntity)derivedClass.newInstance();
+                    ODataBaseEntity instance = (ODataBaseEntity) derivedClass.newInstance();
 
                     Field field = ODataBaseEntity.class.getDeclaredField(Constants.ODATA_TYPE_PROPERTY_NAME);
                     if (field != null) {
@@ -359,7 +364,7 @@ public abstract class GsonSerializerBase implements JsonSerializer {
     }
 
     @Override
-    public <E> List<E> deserializeList(String payload, Class<E> clazz) {
+    public <E> OrcList<E> deserializeList(String payload, Class<E> clazz, BaseOrcContainer baseOrcContainer) {
         Gson serializer = createGson();
 
         JsonParser parser = new JsonParser();
@@ -368,10 +373,12 @@ public abstract class GsonSerializerBase implements JsonSerializer {
         JsonElement jsonArray = json.get("value");
         sanitizeForDeserialization(jsonArray);
 
+        JsonElement odataNextLink = json.get("@odata.nextLink");
+
         Package pkg = clazz.getPackage();
         ArrayList<E> arrayList = new ArrayList<E>();
 
-        for(JsonElement item : jsonArray.getAsJsonArray()) {
+        for (JsonElement item : jsonArray.getAsJsonArray()) {
             Class currentClass = clazz;
             Class overridenClass = getClassFromJson(item, pkg);
 
@@ -379,11 +386,17 @@ public abstract class GsonSerializerBase implements JsonSerializer {
                 currentClass = overridenClass;
             }
 
-            E deserializedItem  = (E) serializer.fromJson(item, currentClass);
+            E deserializedItem = (E) serializer.fromJson(item, currentClass);
             arrayList.add(deserializedItem);
         }
 
-        return arrayList;
+        String nextLink = null;
+        if (odataNextLink != null) {
+            nextLink = odataNextLink.getAsString();
+        }
+
+        OrcList<E> orcList = new OrcList<E>(arrayList, clazz, nextLink, resolver, baseOrcContainer);
+        return orcList;
     }
 
     private void sanitizePostSerialization(JsonElement json) {
@@ -455,6 +468,10 @@ public abstract class GsonSerializerBase implements JsonSerializer {
                 sanitizePostSerialization(subElement);
             }
         }
+    }
+
+    public void setDependencyResolver(DependencyResolver resolver) {
+        this.resolver = resolver;
     }
 
     @Override

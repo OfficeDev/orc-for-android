@@ -139,6 +139,22 @@ public class Helpers {
         return sb.toString();
     }
 
+    public static String appendFunctionComponent(String functionName, Map<String, Object> arguments) {
+
+        String result;
+        if (!arguments.isEmpty()) {
+            result = "('";
+            for (Map.Entry<String, Object> entrySet : arguments.entrySet()) {
+                result = result + String.format("%s,%s", entrySet.getKey(), entrySet.getValue());
+            }
+            result = result + "')";
+        } else {
+            result = "()";
+        }
+        return functionName + result;
+    }
+
+
     private static String toODataURLValue(Object o) {
         if (o instanceof String) {
             return "'" + o + "'";
@@ -284,19 +300,20 @@ public class Helpers {
      * @param resolver the resolver
      * @return the listenable future
      */
-    public static <TEntity> ListenableFuture<List<TEntity>> transformToEntityListListenableFuture(
+    public static <TEntity> ListenableFuture<OrcList<TEntity>> transformToEntityListListenableFuture(
             ListenableFuture<String> future,
             final Class<TEntity> clazz,
-            final DependencyResolver resolver) {
+            final DependencyResolver resolver,
+            final BaseOrcContainer baseOrcContainer) {
 
-        return Futures.transform(future, new AsyncFunction<String, List<TEntity>>() {
+        return Futures.transform(future, new AsyncFunction<String, OrcList<TEntity>>() {
             @Override
-            public ListenableFuture<List<TEntity>> apply(String payload) throws Exception {
-                SettableFuture<List<TEntity>> result = SettableFuture.create();
-                List<TEntity> list;
+            public ListenableFuture<OrcList<TEntity>> apply(String payload) throws Exception {
+                SettableFuture<OrcList<TEntity>> result = SettableFuture.create();
+                OrcList<TEntity> list;
                 try {
                     logger.info("Entity collection Deserialization Started");
-                    list = resolver.getJsonSerializer().deserializeList(payload, clazz);
+                    list = resolver.getJsonSerializer().deserializeList(payload, clazz, baseOrcContainer);
                     logger.info("Entity collection Deserialization Finished");
 
                     result.set(list);

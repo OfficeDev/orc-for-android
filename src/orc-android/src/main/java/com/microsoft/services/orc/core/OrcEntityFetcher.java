@@ -50,24 +50,7 @@ public abstract class OrcEntityFetcher<TEntity extends ODataBaseEntity, TOperati
         }
     }
 
-    @Override
-    protected ListenableFuture<OrcResponse> oDataExecute(Request request) {
 
-        OrcURL orcURL = request.getUrl();
-
-        if (select != null) {
-            orcURL.addQueryStringParameter("$select", select);
-        }
-
-        if (expand != null) {
-            orcURL.addQueryStringParameter("$expand", expand);
-        }
-
-        orcURL.prependPathComponent(urlComponent);
-
-        addCustomParametersToRequest(request, getParameters(), getHeaders());
-        return parent.oDataExecute(request);
-    }
 
 
     /**

@@ -35,7 +35,10 @@ public class DependencyResolver extends AbstractDependencyResolver {
 
         @Override
         public DependencyResolver build() {
-            return new DependencyResolver(this);
+            DependencyResolver resolver = new DependencyResolver(this);
+            resolver.getJsonSerializer().setDependencyResolver(resolver);
+
+            return resolver;
         }
     }
 
