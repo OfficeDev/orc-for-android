@@ -18,9 +18,9 @@ import static com.microsoft.services.orc.core.Helpers.*;
 /**
  * The type OrcCollectionFetcher.
  *
- * @param <TEntity>       the type parameter
- * @param <TFetcher>      the type parameter
- * @param <TOperations>   the type parameter
+ * @param <TEntity>     the type parameter
+ * @param <TFetcher>    the type parameter
+ * @param <TOperations> the type parameter
  */
 public class OrcCollectionFetcher<TEntity, TFetcher extends OrcEntityFetcher, TOperations extends OrcOperations>
         extends OrcFetcher<TEntity>
@@ -38,9 +38,9 @@ public class OrcCollectionFetcher<TEntity, TFetcher extends OrcEntityFetcher, TO
     /**
      * Instantiates a new OrcCollectionFetcher.
      *
-     * @param urlComponent the url component
-     * @param parent the parent
-     * @param clazz the clazz
+     * @param urlComponent   the url component
+     * @param parent         the parent
+     * @param clazz          the clazz
      * @param operationClazz the operation clazz
      */
     public OrcCollectionFetcher(String urlComponent, OrcExecutable parent,
@@ -184,14 +184,14 @@ public class OrcCollectionFetcher<TEntity, TFetcher extends OrcEntityFetcher, TO
 
     private BaseOrcContainer getParentOrcContainer() {
         OrcExecutable current = parent;
-        while ( current != null &&
+        while (current != null &&
                 current instanceof OrcFetcher &&
                 !(current instanceof BaseOrcContainer)) {
-            OrcFetcher fetcher = (OrcFetcher) parent;
+            OrcFetcher fetcher = (OrcFetcher) current;
             current = fetcher.parent;
         }
 
-        return (BaseOrcContainer)current;
+        return (BaseOrcContainer) current;
     }
 
     /**
@@ -245,7 +245,7 @@ public class OrcCollectionFetcher<TEntity, TFetcher extends OrcEntityFetcher, TO
     /**
      * Add parameter.
      *
-     * @param name the name
+     * @param name  the name
      * @param value the value
      * @return the OrcCollectionFetcher
      */
@@ -257,7 +257,7 @@ public class OrcCollectionFetcher<TEntity, TFetcher extends OrcEntityFetcher, TO
     /**
      * Add header.
      *
-     * @param name the name
+     * @param name  the name
      * @param value the value
      * @return the OrcCollectionFetcher
      */
@@ -270,14 +270,14 @@ public class OrcCollectionFetcher<TEntity, TFetcher extends OrcEntityFetcher, TO
     /**
      * Sets path for collections.
      *
-     * @param url the url
+     * @param url          the url
      * @param urlComponent the url component
-     * @param top the top
-     * @param skip the skip
-     * @param select the select
-     * @param expand the expand
-     * @param filter the filter
-     * @param orderBy the order by
+     * @param top          the top
+     * @param skip         the skip
+     * @param select       the select
+     * @param expand       the expand
+     * @param filter       the filter
+     * @param orderBy      the order by
      */
     protected void setPathForCollections(OrcURL url, String urlComponent, int top, int skip, String select, String expand, String filter, String orderBy) {
         if (top > -1) {
