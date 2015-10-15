@@ -11,6 +11,8 @@ import com.microsoft.services.orc.http.Request;
 
 import java.io.InputStream;
 
+import static com.microsoft.services.orc.core.Helpers.transformToVoidListenableFuture;
+
 
 public class OrcODataStreamFetcher {
 
@@ -48,6 +50,45 @@ public class OrcODataStreamFetcher {
             }
         });
     }
+
+    /**
+     * Put content.
+     *
+     * @param content the content
+     * @return the listenable future
+     */
+    public ListenableFuture<Void> putContent(byte[] content) {
+
+        Request request = getResolver().createRequest();
+        request.setContent(content);
+        request.setVerb(HttpVerb.PUT);
+        OrcURL url = request.getUrl();
+        url.appendPathComponent("$value");
+
+        ListenableFuture<OrcResponse> future = oDataExecute(request);
+
+        return transformToVoidListenableFuture(future);
+    }
+
+    /**
+     * Put content.
+     *
+     * @param stream the stream
+     * @param streamSize the stream size
+     * @return the listenable future
+     */
+    public ListenableFuture<Void> putContent(InputStream stream, long streamSize) {
+        Request request = getResolver().createRequest();
+        request.setStreamedContent(stream, streamSize);
+        request.setVerb(HttpVerb.PUT);
+        OrcURL url = request.getUrl();
+        url.appendPathComponent("$value");
+
+        ListenableFuture<OrcResponse> future = oDataExecute(request);
+
+        return transformToVoidListenableFuture(future);
+    }
+
 
     protected ListenableFuture<OrcResponse> oDataExecute(Request request) {
 
