@@ -2,7 +2,7 @@
     "request": {
         "method": "POST",
         "url": "/Me/Microsoft.SampleService.TwoParamsActionsFirstIsCollectionEntityType/",
-        "bodyPatterns": [{"equalTo" : "{\"BooleanParams\":false,\"CollectionType\":[{\"@odata.type\":\"#Microsoft.SampleService.SampleEntity\"}]}"}]
+        "bodyPatterns": [{"equalToJson" : "{\"BooleanParams\":false,\"CollectionType\":[{\"@odata.type\":\"#Microsoft.SampleService.SampleEntity\"}]}"}]
     },
     "response": {
         "status": 200,

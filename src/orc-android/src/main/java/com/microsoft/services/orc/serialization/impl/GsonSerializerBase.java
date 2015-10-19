@@ -10,6 +10,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.microsoft.services.orc.core.AbstractDependencyResolver;
 import com.microsoft.services.orc.core.BaseOrcContainer;
+import com.microsoft.services.orc.core.ChangesTrackingList;
 import com.microsoft.services.orc.core.Constants;
 import com.microsoft.services.orc.core.DependencyResolver;
 import com.microsoft.services.orc.core.ODataBaseEntity;
@@ -80,241 +81,39 @@ public abstract class GsonSerializerBase implements JsonSerializer {
 
         E odataEntity = serializer.fromJson(json, clazz);
 
-        referenceParents(odataEntity, null, null);
+        wrapLists(odataEntity);
 
         return odataEntity;
     }
 
-    private void referenceParents(Object objToAnalyze, ODataBaseEntity parent, String referenceProperty) {
-        if (objToAnalyze == null) {
-            return;
-        }
-
-        Class objClass = objToAnalyze.getClass();
-
-        if (objToAnalyze instanceof ParentReferencedList) {
-            ParentReferencedList list = (ParentReferencedList) objToAnalyze;
-
-            for (Object subObject : list) {
-                referenceParents(subObject, parent, referenceProperty);
-            }
-        }
-        if (objToAnalyze instanceof List) {
-            List list = (List) objToAnalyze;
-
-            for (Object subObject : list) {
-                referenceParents(subObject, parent, referenceProperty);
-            }
-        } else if (objToAnalyze instanceof ODataBaseEntity) {
-            ODataBaseEntity entity = (ODataBaseEntity) objToAnalyze;
-            if (parent != null) {
-                entity.setParent(parent, referenceProperty);
-            }
-
-            for (Field field : getAllFields(objClass, ODataBaseEntity.class)) {
+    /**
+     * Wraps all the lists in an ODataBaseEntity into a ChangesTrackingList
+     * @param obj
+     */
+    private void wrapLists(Object obj) {
+        if(obj==null) return;
+        if (obj instanceof ODataBaseEntity ) {
+            ODataBaseEntity entity = (ODataBaseEntity)obj;
+            for (Field field : entity.getAllFields()) {
                 field.setAccessible(true);
 
                 try {
-                    Object fieldValue = field.get(objToAnalyze);
-                    if (fieldValue instanceof List && !(fieldValue instanceof ParentReferencedList)) {
-                        List originalList = (List) fieldValue;
-                        ParentReferencedList wrapperList = new ParentReferencedList(originalList, entity, field.getName());
-                        field.set(entity, wrapperList);
-                        referenceParents(wrapperList, wrapperList, null);
-                    } else {
-                        referenceParents(fieldValue, entity, field.getName());
+                    Object fieldValue = field.get(obj);
+                    if(fieldValue!=null) {
+                        if (fieldValue instanceof List) {
+                            field.set(entity, new ChangesTrackingList((List) fieldValue));
+                        } else {
+                            wrapLists(fieldValue);
+                        }
                     }
 
                 } catch (IllegalAccessException e) {
                 }
             }
-        }
-    }
-
-    private Iterable<? extends Field> getAllFields(Class clazz, Class topClass) {
-        List<Field> fields = new ArrayList<Field>();
-
-        while (clazz != topClass) {
-            for (Field f : clazz.getDeclaredFields()) {
-                fields.add(f);
+        } else if (obj instanceof List) {
+            for (Object internal : (List)obj) {
+                wrapLists(internal);
             }
-
-            clazz = clazz.getSuperclass();
-        }
-
-        return fields;
-    }
-
-    private class ParentReferencedList<E> extends ODataBaseEntity implements List<E> { // necesito que este y que odatabaseentity implementen notifypropertychanged, para que cuando encuentra la lista pase siempre esa lista como objeto para notificar en la recursion, en vez de el odatabaseentity
-
-        /**
-         * The Wrapped list.
-         */
-        List<E> wrappedList;
-        /**
-         * The Parent.
-         */
-        ODataBaseEntity parent;
-        /**
-         * The Reference property.
-         */
-        String referenceProperty;
-
-        /**
-         * Instantiates a new Parent referenced list.
-         *
-         * @param wrappedlist       the wrappedlist
-         * @param parent            the parent
-         * @param referenceProperty the reference property
-         */
-        public ParentReferencedList(List<E> wrappedlist, ODataBaseEntity parent, String referenceProperty) {
-            this.wrappedList = wrappedlist;
-            this.parent = parent;
-            this.referenceProperty = referenceProperty;
-        }
-
-        public void valueChanged(String property, Object payload) {
-            valueChanged();
-        }
-
-        /**
-         * Value changed.
-         */
-        void valueChanged() {
-            parent.valueChanged(referenceProperty, this);
-        }
-
-        @Override
-        public int size() {
-            return wrappedList.size();
-        }
-
-        @Override
-        public boolean isEmpty() {
-            return wrappedList.isEmpty();
-        }
-
-        @Override
-        public boolean contains(Object o) {
-            return wrappedList.contains(o);
-        }
-
-        @Override
-        public Iterator<E> iterator() {
-            return wrappedList.iterator();
-        }
-
-        @Override
-        public Object[] toArray() {
-            return wrappedList.toArray();
-        }
-
-        @Override
-        public <T> T[] toArray(T[] a) {
-            return wrappedList.toArray(a);
-        }
-
-        @Override
-        public boolean add(E e) {
-            boolean ret = wrappedList.add(e);
-            valueChanged();
-            return ret;
-        }
-
-        @Override
-        public boolean remove(Object o) {
-            boolean ret = wrappedList.remove(o);
-            valueChanged();
-            return ret;
-        }
-
-        @Override
-        public boolean containsAll(Collection<?> c) {
-            return wrappedList.containsAll(c);
-        }
-
-        @Override
-        public boolean addAll(Collection<? extends E> c) {
-            boolean ret = wrappedList.addAll(c);
-            valueChanged();
-            return ret;
-        }
-
-        @Override
-        public boolean addAll(int index, Collection<? extends E> c) {
-            boolean ret = wrappedList.addAll(c);
-            valueChanged();
-            return ret;
-        }
-
-        @Override
-        public boolean removeAll(Collection<?> c) {
-            boolean ret = wrappedList.removeAll(c);
-            valueChanged();
-            return ret;
-        }
-
-        @Override
-        public boolean retainAll(Collection<?> c) {
-            boolean ret = wrappedList.retainAll(c);
-            valueChanged();
-            return ret;
-        }
-
-        @Override
-        public void clear() {
-            wrappedList.clear();
-            valueChanged();
-        }
-
-        @Override
-        public E get(int index) {
-            return wrappedList.get(index);
-        }
-
-        @Override
-        public E set(int index, E element) {
-            E ret = wrappedList.set(index, element);
-            valueChanged();
-            return ret;
-        }
-
-        @Override
-        public void add(int index, E element) {
-            wrappedList.add(index, element);
-            valueChanged();
-        }
-
-        @Override
-        public E remove(int index) {
-            E ret = wrappedList.remove(index);
-            valueChanged();
-            return ret;
-        }
-
-        @Override
-        public int indexOf(Object o) {
-            return wrappedList.indexOf(o);
-        }
-
-        @Override
-        public int lastIndexOf(Object o) {
-            return wrappedList.lastIndexOf(o);
-        }
-
-        @Override
-        public ListIterator<E> listIterator() {
-            return wrappedList.listIterator();
-        }
-
-        @Override
-        public ListIterator<E> listIterator(int index) {
-            return wrappedList.listIterator(index);
-        }
-
-        @Override
-        public List<E> subList(int fromIndex, int toIndex) {
-            return wrappedList.subList(fromIndex, toIndex);
         }
     }
 

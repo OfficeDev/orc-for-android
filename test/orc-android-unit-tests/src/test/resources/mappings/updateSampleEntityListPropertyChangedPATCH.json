@@ -7,7 +7,7 @@
                      "equalTo": "yes"
                  }
                 },
-    "bodyPatterns": [{"equalTo": "{\"Navigations\":[{\"SomeString\":\"Some New String\",\"@odata.type\":\"#Microsoft.SampleService.AnotherEntity\"}]}"}]
+    "bodyPatterns": [{"equalToJson": "{\"Navigations\":[{\"SomeString\":\"Some New String\",\"@odata.type\":\"#Microsoft.SampleService.AnotherEntity\"}]}"}]
   },
   "response": {
     "status": 200,

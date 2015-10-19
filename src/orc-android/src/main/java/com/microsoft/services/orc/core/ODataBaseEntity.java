@@ -16,9 +16,13 @@
  */
 package com.microsoft.services.orc.core;
 
-import java.util.AbstractMap;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Set;
 
 /**
  * The type ODataBaseEntity.
@@ -31,14 +35,9 @@ public class ODataBaseEntity {
     protected String $$__ODataType;
 
     /**
-     * The $$$ __ $$$ parent reference.
-     */
-    protected Map.Entry<ODataBaseEntity, String> $$$__$$$parentReference = null;
-
-    /**
      * The $$$ __ $$$ updated values.
      */
-    ConcurrentHashMap<String, Object> $$$__$$$updatedValues = new ConcurrentHashMap<String, Object>();
+    Set<String> $$$__$$$updatedValues = new HashSet<String>();
 
     /**
      * Sets o data type.
@@ -54,9 +53,122 @@ public class ODataBaseEntity {
      *
      * @return the updated values
      */
-    public ConcurrentHashMap<String, Object> getUpdatedValues() {
+    public Map<String, Object> getUpdatedValues() {
+        try {
+            Map<String, Object> data = new HashMap<String, Object>();
+            Iterable<? extends Field> fields = getAllFields();
 
-        return new ConcurrentHashMap<String, Object>($$$__$$$updatedValues);
+            for (Field field : fields) {
+                if ($$$__$$$updatedValues.contains(field.getName())) {
+                    field.setAccessible(true);
+
+                    if (ODataBaseEntity.class.isAssignableFrom(field.getType())) {
+                        ODataBaseEntity oDataBaseEntity = ((ODataBaseEntity) field.get(this));
+                        if (oDataBaseEntity!= null) {
+                            data.put(field.getName(), oDataBaseEntity.getAllValues());
+                        } else {
+                            data.put(field.getName(), null);
+                        }
+                    } else {
+                        data.put(field.getName(), field.get(this));
+                    }
+                } else {
+                    if (ODataBaseEntity.class.isAssignableFrom(field.getType())) {
+                        field.setAccessible(true);
+                        ODataBaseEntity oDataBaseEntity = ((ODataBaseEntity) field.get(this));
+                        if (oDataBaseEntity != null) {
+                            Map<String, Object> internalData = oDataBaseEntity.getUpdatedValues();
+
+                            if (internalData.size() > 0) {
+                                data.put(field.getName(), oDataBaseEntity.getAllValues());
+                            }
+                        }
+                    } else if (List.class.isAssignableFrom(field.getType())) {
+                        field.setAccessible(true);
+
+                        List<?> list = (List<?>) field.get(this);
+
+                        if (hasListChanged(list)) {
+                            data.put(field.getName(), list);
+                        }
+                    }
+                }
+            }
+
+            return data;
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * @return All the object fields and values for the object
+     * @throws IllegalAccessException
+     */
+    private Map<String, Object> getAllValues() throws IllegalAccessException {
+        Map<String, Object> data = new HashMap<String, Object>();
+        Iterable<? extends Field> fields = getAllFields();
+
+        for (Field field : fields) {
+            field.setAccessible(true);
+            Object val = field.get(this);
+            data.put(field.getName(), val);
+        }
+
+        return data;
+    }
+
+    /**
+     * @return all the object fields
+     */
+    public Iterable<? extends Field> getAllFields() {
+        Class clazz=this.getClass();
+        List<Field> fields = new ArrayList<Field>();
+
+        while (clazz != Object.class) {
+            for (Field f : clazz.getDeclaredFields()) {
+                fields.add(f);
+            }
+
+            clazz = clazz.getSuperclass();
+        }
+
+        return fields;
+    }
+
+    private boolean hasListChanged(List<?> list) throws IllegalAccessException {
+
+        if (list == null) {
+            return false;
+        }
+
+        if(!(list instanceof ChangesTrackingList) || (list instanceof ChangesTrackingList && ((ChangesTrackingList) list).hasChanged())) {
+            return true;
+        }
+        else {
+            if (list.size() > 0) {
+
+                if (list.get(0) instanceof ODataBaseEntity || list.get(0) instanceof List) {
+
+                    for (Object elem : list) {
+                        if (elem instanceof List) {
+                            return hasListChanged((List)elem);
+                        }
+                        else
+                        {
+                            Map<String, Object> internalData = ((ODataBaseEntity)elem).getUpdatedValues();
+
+                            if (internalData.size() > 0) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -66,20 +178,6 @@ public class ODataBaseEntity {
      * @param payload the payload
      */
     public void valueChanged(String property, Object payload) {
-        $$$__$$$updatedValues.put(property, payload);
-        if ($$$__$$$parentReference != null) {
-            String referenceProperty = $$$__$$$parentReference.getValue();
-            $$$__$$$parentReference.getKey().valueChanged(referenceProperty, this);
-        }
-    }
-
-    /**
-     * Sets parent.
-     *
-     * @param parentEntity the parent entity
-     * @param referenceProperty the reference property
-     */
-    public void setParent(ODataBaseEntity parentEntity, String referenceProperty) {
-        $$$__$$$parentReference = new AbstractMap.SimpleEntry<ODataBaseEntity, String>(parentEntity, referenceProperty);
+        $$$__$$$updatedValues.add(property);
     }
 }
