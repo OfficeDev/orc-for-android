@@ -12,6 +12,7 @@ import com.microsoft.services.orc.http.OrcURL;
 import com.microsoft.services.orc.http.Request;
 
 import java.util.List;
+import java.util.UUID;
 
 import static com.microsoft.services.orc.core.Helpers.*;
 
@@ -142,7 +143,21 @@ public class OrcCollectionFetcher<TEntity, TFetcher extends OrcEntityFetcher, TO
      * @return the by id
      */
     public TFetcher getById(String id) {
-        this.selectedId = id;
+        this.selectedId = "('" + id + "')";
+        return getFetcher();
+    }
+
+    public TFetcher getById(Object id) {
+        if (id instanceof UUID) {
+            selectedId = "(" + id + ")";
+
+        } else if (id instanceof String) {
+            selectedId = "('" + id + "')";
+        }
+        return getFetcher();
+    }
+
+    private TFetcher getFetcher() {
         String packageName = operations.getClass().getPackage().getName();
         String[] classNameParts = (clazz.getCanonicalName() + "Fetcher").split("\\.");
         String className = packageName + "." + classNameParts[classNameParts.length - 1];

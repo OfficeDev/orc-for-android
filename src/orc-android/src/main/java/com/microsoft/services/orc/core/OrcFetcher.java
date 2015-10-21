@@ -119,10 +119,9 @@ public abstract class OrcFetcher<TEntity> extends OrcExecutable {
      *
      * @param url          the url
      * @param urlComponent the url component
-     * @param selectedId   the selected id
+     * @param selector   the selected id
      */
-    protected void setSelectorUrl(OrcURL url, String urlComponent, String selectedId) {
-        String selector = "('" + selectedId + "')";
+    protected void setSelectorUrl(OrcURL url, String urlComponent, String selector) {
         url.prependPathComponent(urlComponent + selector);
     }
 }

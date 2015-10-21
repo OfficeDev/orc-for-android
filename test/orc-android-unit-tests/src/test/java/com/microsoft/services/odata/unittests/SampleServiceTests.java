@@ -30,6 +30,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -348,6 +349,24 @@ public class SampleServiceTests extends WireMockTestBase {
         //dummy comment for testing travis
         assertThat(result, is(notNullValue()));
         assertThat(result.size(), is(equalTo(1)));
+    }
+
+    @Test
+    public void testGetCollectionWithUUID() throws ExecutionException, InterruptedException {
+        //getCollectionGetById.json
+
+        SampleEntity result = null;
+        UUID someUUID = UUID.fromString("0a6a3de7-b974-42d0-af9e-9c23473b09b9");
+
+        try {
+            result = client.getServices().getById(someUUID)
+                    .read()
+                    .get();
+        } catch (Throwable t) {
+            logger.error("Error executing test", t);
+        }
+        //dummy comment for testing travis
+        assertThat(result, is(notNullValue()));
     }
 
     @Test
