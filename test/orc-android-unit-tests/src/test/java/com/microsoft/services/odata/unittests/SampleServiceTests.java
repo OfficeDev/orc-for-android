@@ -19,8 +19,10 @@ import com.microsoft.services.orc.http.Credentials;
 import com.microsoft.services.orc.http.impl.LoggingInterceptor;
 import com.microsoft.services.orc.http.impl.OAuthCredentials;
 import com.microsoft.services.orc.http.impl.OkHttpTransport;
+import com.microsoft.services.orc.serialization.impl.DurationSerializer;
 import com.microsoft.services.orc.serialization.impl.GsonSerializer;
 
+import org.joda.time.Period;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -39,6 +41,8 @@ import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 
@@ -685,6 +689,33 @@ public class SampleServiceTests extends WireMockTestBase {
         }
 
         assertThat(items2, is(notNullValue()));
+    }
+
+    @Test
+    public void testPeriodSerialization() throws ExecutionException, InterruptedException {
+        //Get Entity
+
+        Period p = null;
+        Period p2 = null;
+        String strVal = "P11DT23H59M59.999S";
+        String strVal2 = "PT0S";
+        String serialized="";
+        String serialized2="";
+        try {
+
+            p = DurationSerializer.deserialize(strVal);
+            p2 = DurationSerializer.deserialize(strVal2);
+            serialized = DurationSerializer.serialize(p);
+            serialized2 = DurationSerializer.serialize(p2);
+
+        } catch (Throwable t) {
+            logger.error("Error executing test", t);
+        }
+
+        assertNotNull(p);
+        assertNotNull(p2);
+        assertEquals(strVal, serialized);
+        assertEquals(strVal2, serialized2);
     }
 
 
