@@ -11,10 +11,9 @@ import org.joda.time.Period;
 
 import java.lang.reflect.Type;
 import java.text.ParseException;
-import java.util.Calendar;
 
 /**
- * The type Calendar type adapter.
+ * The type Duration type adapter.
  */
 public class DurationTypeAdapter implements com.google.gson.JsonSerializer<Period>, JsonDeserializer<Period> {
 

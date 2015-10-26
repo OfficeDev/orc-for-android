@@ -3,15 +3,10 @@ package com.microsoft.services.orc.serialization.impl;
 import org.joda.time.Period;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
 
 public class DurationSerializer {
     /**
-     * Deserializes Edm.Duration
+     * Deserializes Duration
      * @param strVal the str val
      * @return the period
      * @throws ParseException the parse exception

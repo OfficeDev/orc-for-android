@@ -18,6 +18,8 @@ import com.microsoft.services.orc.core.OrcList;
 import com.microsoft.services.orc.serialization.ByteArrayTypeAdapterBase;
 import com.microsoft.services.orc.serialization.JsonSerializer;
 
+import org.joda.time.Period;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -45,6 +47,7 @@ public abstract class GsonSerializerBase implements JsonSerializer {
                 .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
                 .registerTypeAdapter(Calendar.class, new CalendarTypeAdapter())
                 .registerTypeAdapter(GregorianCalendar.class, new CalendarTypeAdapter())
+                .registerTypeAdapter(Period.class, new DurationTypeAdapter())
                 .registerTypeAdapter(byte[].class, getByteArrayTypeAdapter())
                 .create();
     }
