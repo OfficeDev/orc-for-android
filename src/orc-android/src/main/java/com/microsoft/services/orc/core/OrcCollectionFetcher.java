@@ -12,19 +12,20 @@ import com.microsoft.services.orc.http.OrcURL;
 import com.microsoft.services.orc.http.Request;
 
 import java.util.List;
+import java.util.UUID;
 
 import static com.microsoft.services.orc.core.Helpers.*;
 
 /**
  * The type OrcCollectionFetcher.
  *
- * @param <TEntity>      the type parameter
- * @param <TFetcher>     the type parameter
- * @param <TOperations>  the type parameter
+ * @param <TEntity>     the type parameter
+ * @param <TFetcher>    the type parameter
+ * @param <TOperations> the type parameter
  */
 public class OrcCollectionFetcher<TEntity, TFetcher extends OrcEntityFetcher, TOperations extends OrcOperations>
         extends OrcFetcher<TEntity>
-        implements Readable<List<TEntity>> {
+        implements Readable<OrcList<TEntity>> {
 
     private int top = -1;
     private int skip = -1;
@@ -38,9 +39,9 @@ public class OrcCollectionFetcher<TEntity, TFetcher extends OrcEntityFetcher, TO
     /**
      * Instantiates a new OrcCollectionFetcher.
      *
-     * @param urlComponent the url component
-     * @param parent the parent
-     * @param clazz the clazz
+     * @param urlComponent   the url component
+     * @param parent         the parent
+     * @param clazz          the clazz
      * @param operationClazz the operation clazz
      */
     public OrcCollectionFetcher(String urlComponent, OrcExecutable parent,
@@ -142,7 +143,21 @@ public class OrcCollectionFetcher<TEntity, TFetcher extends OrcEntityFetcher, TO
      * @return the by id
      */
     public TFetcher getById(String id) {
-        this.selectedId = id;
+        this.selectedId = "('" + id + "')";
+        return getFetcher();
+    }
+
+    public TFetcher getById(Object id) {
+        if (id instanceof UUID) {
+            selectedId = "(" + id + ")";
+
+        } else if (id instanceof String) {
+            selectedId = "('" + id + "')";
+        }
+        return getFetcher();
+    }
+
+    private TFetcher getFetcher() {
         String packageName = operations.getClass().getPackage().getName();
         String[] classNameParts = (clazz.getCanonicalName() + "Fetcher").split("\\.");
         String className = packageName + "." + classNameParts[classNameParts.length - 1];
@@ -178,8 +193,20 @@ public class OrcCollectionFetcher<TEntity, TFetcher extends OrcEntityFetcher, TO
      * @return the listenable future
      */
     @Override
-    public ListenableFuture<List<TEntity>> read() {
-        return Helpers.transformToEntityListListenableFuture(readRaw(), this.clazz, getResolver());
+    public ListenableFuture<OrcList<TEntity>> read() {
+        return Helpers.transformToEntityListListenableFuture(readRaw(), this.clazz, getResolver(), getParentOrcContainer());
+    }
+
+    private BaseOrcContainer getParentOrcContainer() {
+        OrcExecutable current = parent;
+        while (current != null &&
+                current instanceof OrcFetcher &&
+                !(current instanceof BaseOrcContainer)) {
+            OrcFetcher fetcher = (OrcFetcher) current;
+            current = fetcher.parent;
+        }
+
+        return (BaseOrcContainer) current;
     }
 
     /**
@@ -233,7 +260,7 @@ public class OrcCollectionFetcher<TEntity, TFetcher extends OrcEntityFetcher, TO
     /**
      * Add parameter.
      *
-     * @param name the name
+     * @param name  the name
      * @param value the value
      * @return the OrcCollectionFetcher
      */
@@ -245,7 +272,7 @@ public class OrcCollectionFetcher<TEntity, TFetcher extends OrcEntityFetcher, TO
     /**
      * Add header.
      *
-     * @param name the name
+     * @param name  the name
      * @param value the value
      * @return the OrcCollectionFetcher
      */
@@ -258,14 +285,14 @@ public class OrcCollectionFetcher<TEntity, TFetcher extends OrcEntityFetcher, TO
     /**
      * Sets path for collections.
      *
-     * @param url the url
+     * @param url          the url
      * @param urlComponent the url component
-     * @param top the top
-     * @param skip the skip
-     * @param select the select
-     * @param expand the expand
-     * @param filter the filter
-     * @param orderBy the order by
+     * @param top          the top
+     * @param skip         the skip
+     * @param select       the select
+     * @param expand       the expand
+     * @param filter       the filter
+     * @param orderBy      the order by
      */
     protected void setPathForCollections(OrcURL url, String urlComponent, int top, int skip, String select, String expand, String filter, String orderBy) {
         if (top > -1) {

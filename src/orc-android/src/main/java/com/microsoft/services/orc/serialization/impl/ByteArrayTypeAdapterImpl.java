@@ -14,6 +14,9 @@ import com.microsoft.services.orc.http.Base64Encoder;
 import com.microsoft.services.orc.http.impl.Base64EncoderImpl;
 import com.microsoft.services.orc.serialization.ByteArrayTypeAdapterBase;
 
+/**
+ * The type Byte array type adapter impl.
+ */
 public class ByteArrayTypeAdapterImpl extends ByteArrayTypeAdapterBase {
 
     @Override

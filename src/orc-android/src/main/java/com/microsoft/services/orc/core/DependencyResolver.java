@@ -2,61 +2,48 @@ package com.microsoft.services.orc.core;
 
 import com.microsoft.services.orc.http.Credentials;
 import com.microsoft.services.orc.http.HttpTransport;
-import com.microsoft.services.orc.http.OrcURL;
-import com.microsoft.services.orc.http.Request;
-import com.microsoft.services.orc.log.LoggerBase;
+import com.microsoft.services.orc.auth.AuthenticationCredentials;
 import com.microsoft.services.orc.serialization.JsonSerializer;
 
-/**
- * The interface Dependency resolver.
- */
-public interface DependencyResolver {
-    /**
-     * Gets http transport.
-     *
-     * @return the http transport
-     */
-    HttpTransport getHttpTransport();
+public class DependencyResolver extends AbstractDependencyResolver {
 
-    /**
-     * Gets logger.
-     *
-     * @return the logger
-     */
-    LoggerBase getLogger();
+    public DependencyResolver(Builder builder) {
+        super(builder);
+    }
 
-    /**
-     * Gets json serializer.
-     *
-     * @return the json serializer
-     */
-    JsonSerializer getJsonSerializer();
+    public DependencyResolver(HttpTransport transport, JsonSerializer serializer, AuthenticationCredentials auth) {
+        this(new Builder(transport, serializer, auth));
+    }
 
-    /**
-     * Create o data uRL.
-     *
-     * @return the o data uRL
-     */
-    OrcURL createODataURL();
+    public static class Builder extends AbstractDependencyResolver.Builder {
 
-    /**
-     * Create request.
-     *
-     * @return the request
-     */
-    Request createRequest();
+        public Builder(HttpTransport transport, JsonSerializer serializer, AuthenticationCredentials auth) {
+            super(transport, serializer, auth);
+        }
 
-    /**
-     * Gets the user agent for a specific platform
-     * @param productName the product name
-     * @return the user agent
-     */
-    String getPlatformUserAgent(String productName);
+        public Builder setHttpTransport(HttpTransport transport) {
+            return (Builder) super.setHttpTransport(transport);
+        }
 
-    /**
-     * Gets credentials.
-     *
-     * @return the credentials
-     */
-    Credentials getCredentials();
+        public Builder setJsonSerializer(JsonSerializer jsonSerializer) {
+            return (Builder) super.setJsonSerializer(jsonSerializer);
+        }
+
+        public Builder setAuth(AuthenticationCredentials auth) {
+            return (Builder) super.setAuth(auth);
+        }
+
+        @Override
+        public DependencyResolver build() {
+            DependencyResolver resolver = new DependencyResolver(this);
+            resolver.getJsonSerializer().setDependencyResolver(resolver);
+
+            return resolver;
+        }
+    }
+
+    public Credentials getCredentials() {
+        return super.getAuth().getCredentials();
+    }
+
 }

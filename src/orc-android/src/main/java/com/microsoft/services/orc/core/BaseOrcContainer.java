@@ -14,8 +14,10 @@ import com.microsoft.services.orc.http.HttpTransport;
 import com.microsoft.services.orc.http.OrcResponse;
 import com.microsoft.services.orc.http.Request;
 import com.microsoft.services.orc.http.Response;
-import com.microsoft.services.orc.log.LogLevel;
-import com.microsoft.services.orc.log.Logger;
+import com.squareup.okhttp.HttpUrl;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
@@ -24,9 +26,19 @@ import java.util.Map;
  */
 public abstract class BaseOrcContainer extends OrcExecutable {
 
+    Logger logger = LoggerFactory.getLogger(BaseOrcContainer.class);
+
+
     private String url;
     private DependencyResolver resolver;
 
+
+    /**
+     * Instantiates a new Base orc container.
+     *
+     * @param url      the url
+     * @param resolver the resolver
+     */
     public BaseOrcContainer(String url, DependencyResolver resolver) {
         this.url = url;
         this.resolver = resolver;
@@ -35,19 +47,22 @@ public abstract class BaseOrcContainer extends OrcExecutable {
     @Override
     protected ListenableFuture<OrcResponse> oDataExecute(final Request request) {
         final SettableFuture<OrcResponse> result = SettableFuture.create();
-        final Logger logger = resolver.getLogger();
 
         try {
-            request.getUrl().setBaseUrl(this.url);
-            String fullUrl = request.getUrl().toString();
+            if (request.getUrl().getBaseUrl() == null) {
+                request.getUrl().setBaseUrl(this.url);
+            }
+            String rawUrl = request.getUrl().toString();
+            String fullUrl = HttpUrl.parse(rawUrl).toString();
 
             String executionInfo = String.format("URL: %s - HTTP VERB: %s", fullUrl, request.getVerb());
-            logger.log("Start preparing OData execution for " + executionInfo, LogLevel.INFO);
+            logger.info("Start preparing OData execution for " + executionInfo);
 
             if (request.getContent() != null) {
-                logger.log("With " + request.getContent().length + " bytes of payload", LogLevel.INFO);
+                logger.info("With " + request.getContent().length + " bytes of payload");
+                logger.info("Payload: " + new String(request.getContent()));
             } else if (request.getStreamedContent() != null) {
-                logger.log("With stream of bytes for payload", LogLevel.INFO);
+                logger.info("With stream of bytes for payload");
             }
 
             HttpTransport httpTransport = resolver.getHttpTransport();
@@ -77,17 +92,17 @@ public abstract class BaseOrcContainer extends OrcExecutable {
             }
 
             if (!credentialsSet) {
-                logger.log("Executing request without setting credentials", LogLevel.WARNING);
+                logger.info("Executing request without setting credentials");
             }
 
 
-            logger.log("Request Headers: ", LogLevel.VERBOSE);
+            logger.info("Request Headers: ");
             for (String key : request.getHeaders().keySet()) {
-                logger.log(key + " : " + request.getHeaders().get(key), LogLevel.VERBOSE);
+                logger.info(key + " : " + request.getHeaders().get(key));
             }
 
             final ListenableFuture<Response> future = httpTransport.execute(request);
-            logger.log("OData request executed", LogLevel.INFO);
+            logger.info("OData request executed");
 
             Futures.addCallback(future, new FutureCallback<Response>() {
 
@@ -101,21 +116,21 @@ public abstract class BaseOrcContainer extends OrcExecutable {
                     OrcResponse orcResponse = new OrcResponseImpl(response);
 
                     try {
-                        logger.log("OData response received", LogLevel.INFO);
+                        logger.info("OData response received");
 
                         int status = response.getStatus();
-                        logger.log("Response Status Code: " + status, LogLevel.INFO);
+                        logger.info("Response Status Code: " + status);
 
                         if (readBytes) {
-                            logger.log("Reading response data...", LogLevel.VERBOSE);
+                            logger.info("Reading response data...");
                             byte[] data = orcResponse.getPayload();
-                            logger.log(data.length + " bytes read from response", LogLevel.VERBOSE);
-
+                            logger.info(data.length + " bytes read from response");
+                            logger.info("Response Payload:" + new String(data));
                             try {
-                                logger.log("Closing response", LogLevel.VERBOSE);
+                                logger.info("Closing response");
                                 response.close();
                             } catch (Throwable t) {
-                                logger.log("Error closing response: " + t.toString(), LogLevel.ERROR);
+                                logger.info("Error closing response: " + t.toString());
                                 result.setException(t);
                                 return;
                             }
@@ -123,16 +138,16 @@ public abstract class BaseOrcContainer extends OrcExecutable {
                         }
 
                         if (status < 200 || status > 299) {
-                            logger.log("Invalid status code. Processing response content as String", LogLevel.VERBOSE);
+                            logger.info("Invalid status code. Processing response content as String");
                             String responseData = new String(orcResponse.getPayload(), Constants.UTF8_NAME);
                             String message = "Response status: " + response.getStatus() + "\n" + "Response content: " + responseData;
-                            logger.log(message, LogLevel.ERROR);
+                            logger.info(message);
                             result.setException(new OrcException(orcResponse, message));
                             return;
                         }
                         result.set(orcResponse);
                     } catch (Throwable t) {
-                        logger.log("Unexpected error: " + t.toString(), LogLevel.ERROR);
+                        logger.info("Unexpected error: " + t.toString());
                         result.setException(new OrcException(orcResponse, t));
                     }
                 }

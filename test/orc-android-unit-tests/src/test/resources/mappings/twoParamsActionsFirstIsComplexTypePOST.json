@@ -1,0 +1,12 @@
+{
+    "request": {
+        "method": "POST",
+        "url": "/Me/Microsoft.SampleService.TwoParamsActionsFirstIsComplexType/",
+        "bodyPatterns" : [{"equalToJson": "{\"ComplexType\":{\"Name\":\"Some Name\",\"AnotherProperty\":\"AnotherProperty\",\"@odata.type\":\"#Microsoft.SampleService.SampleComplexType\"},\"BooleanParams\":false}"}]
+
+    },
+    "response": {
+        "status": 200,
+        "body": "1"
+    }
+}

@@ -8,10 +8,17 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.microsoft.services.orc.core.AbstractDependencyResolver;
+import com.microsoft.services.orc.core.BaseOrcContainer;
+import com.microsoft.services.orc.core.ChangesTrackingList;
 import com.microsoft.services.orc.core.Constants;
+import com.microsoft.services.orc.core.DependencyResolver;
 import com.microsoft.services.orc.core.ODataBaseEntity;
+import com.microsoft.services.orc.core.OrcList;
 import com.microsoft.services.orc.serialization.ByteArrayTypeAdapterBase;
 import com.microsoft.services.orc.serialization.JsonSerializer;
+
+import org.joda.time.Period;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -33,16 +40,23 @@ import static com.microsoft.services.orc.core.Helpers.getReservedNames;
  */
 public abstract class GsonSerializerBase implements JsonSerializer {
     private static Map<String, Class<?>> cachedClassesFromOData = new ConcurrentHashMap<String, Class<?>>();
+    private DependencyResolver resolver;
 
     private Gson createGson() {
         return new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
                 .registerTypeAdapter(Calendar.class, new CalendarTypeAdapter())
                 .registerTypeAdapter(GregorianCalendar.class, new CalendarTypeAdapter())
+                .registerTypeAdapter(Period.class, new DurationTypeAdapter())
                 .registerTypeAdapter(byte[].class, getByteArrayTypeAdapter())
                 .create();
     }
 
+    /**
+     * Gets byte array type adapter.
+     *
+     * @return the byte array type adapter
+     */
     protected abstract ByteArrayTypeAdapterBase getByteArrayTypeAdapter();
 
     @Override
@@ -70,225 +84,49 @@ public abstract class GsonSerializerBase implements JsonSerializer {
 
         E odataEntity = serializer.fromJson(json, clazz);
 
-        referenceParents(odataEntity, null, null);
+        wrapLists(odataEntity);
 
         return odataEntity;
     }
 
-    private void referenceParents(Object objToAnalyze, ODataBaseEntity parent, String referenceProperty)  {
-        if (objToAnalyze == null) {
-            return;
-        }
-
-        Class objClass = objToAnalyze.getClass();
-
-        if (objToAnalyze instanceof ParentReferencedList) {
-            ParentReferencedList list = (ParentReferencedList)objToAnalyze;
-
-            for (Object subObject : list) {
-                referenceParents(subObject, parent, referenceProperty);
-            }
-        }
-        if (objToAnalyze instanceof List) {
-            List list = (List)objToAnalyze;
-
-            for (Object subObject : list) {
-                referenceParents(subObject, parent, referenceProperty);
-            }
-        } else if (objToAnalyze instanceof ODataBaseEntity) {
-            ODataBaseEntity entity = (ODataBaseEntity)objToAnalyze;
-            if (parent != null) {
-                entity.setParent(parent, referenceProperty);
-            }
-
-            for (Field field : getAllFields(objClass, ODataBaseEntity.class)) {
+    /**
+     * Wraps all the lists in an ODataBaseEntity into a ChangesTrackingList
+     * @param obj
+     */
+    private void wrapLists(Object obj) {
+        if(obj==null) return;
+        if (obj instanceof ODataBaseEntity ) {
+            ODataBaseEntity entity = (ODataBaseEntity)obj;
+            for (Field field : entity.getAllFields()) {
                 field.setAccessible(true);
 
                 try {
-                    Object fieldValue = field.get(objToAnalyze);
-                    if (fieldValue instanceof List && !(fieldValue instanceof ParentReferencedList)) {
-                        List originalList = (List)fieldValue;
-                        ParentReferencedList wrapperList = new ParentReferencedList(originalList, entity, field.getName());
-                        field.set(entity, wrapperList);
-                        referenceParents(wrapperList, wrapperList, null);
-                    } else {
-                        referenceParents(fieldValue, entity, field.getName());
+                    Object fieldValue = field.get(obj);
+                    if(fieldValue!=null) {
+                        if (fieldValue instanceof List) {
+                            field.set(entity, new ChangesTrackingList((List) fieldValue));
+                        } else {
+                            wrapLists(fieldValue);
+                        }
                     }
 
                 } catch (IllegalAccessException e) {
                 }
             }
-        }
-    }
-
-    private Iterable<? extends Field> getAllFields(Class clazz, Class topClass) {
-        List<Field> fields = new ArrayList<Field>();
-
-        while (clazz != topClass) {
-            for (Field f : clazz.getDeclaredFields()) {
-                fields.add(f);
+        } else if (obj instanceof List) {
+            for (Object internal : (List)obj) {
+                wrapLists(internal);
             }
-
-            clazz = clazz.getSuperclass();
-        }
-
-        return fields;
-    }
-
-    private class ParentReferencedList<E> extends ODataBaseEntity implements List<E> { // necesito que este y que odatabaseentity implementen notifypropertychanged, para que cuando encuentra la lista pase siempre esa lista como objeto para notificar en la recursion, en vez de el odatabaseentity
-
-        List<E> wrappedList;
-        ODataBaseEntity parent;
-        String referenceProperty;
-
-        public ParentReferencedList(List<E> wrappedlist, ODataBaseEntity parent, String referenceProperty) {
-            this.wrappedList = wrappedlist;
-            this.parent = parent;
-            this.referenceProperty = referenceProperty;
-        }
-
-        public void valueChanged(String property, Object payload) {
-            valueChanged();
-        }
-
-        void valueChanged() {
-            parent.valueChanged(referenceProperty, this);
-        }
-
-        @Override
-        public int size() {
-            return wrappedList.size();
-        }
-
-        @Override
-        public boolean isEmpty() {
-            return wrappedList.isEmpty();
-        }
-
-        @Override
-        public boolean contains(Object o) {
-            return wrappedList.contains(o);
-        }
-
-        @Override
-        public Iterator<E> iterator() {
-            return wrappedList.iterator();
-        }
-
-        @Override
-        public Object[] toArray() {
-            return wrappedList.toArray();
-        }
-
-        @Override
-        public <T> T[] toArray(T[] a) {
-            return wrappedList.toArray(a);
-        }
-
-        @Override
-        public boolean add(E e) {
-            boolean ret = wrappedList.add(e);
-            valueChanged();
-            return ret;
-        }
-
-        @Override
-        public boolean remove(Object o) {
-            boolean ret =  wrappedList.remove(o);
-            valueChanged();
-            return ret;
-        }
-
-        @Override
-        public boolean containsAll(Collection<?> c) {
-            return wrappedList.containsAll(c);
-        }
-
-        @Override
-        public boolean addAll(Collection<? extends E> c) {
-            boolean ret =  wrappedList.addAll(c);
-            valueChanged();
-            return ret;
-        }
-
-        @Override
-        public boolean addAll(int index, Collection<? extends E> c) {
-            boolean ret =  wrappedList.addAll(c);
-            valueChanged();
-            return ret;
-        }
-
-        @Override
-        public boolean removeAll(Collection<?> c) {
-            boolean ret =  wrappedList.removeAll(c);
-            valueChanged();
-            return ret;
-        }
-
-        @Override
-        public boolean retainAll(Collection<?> c) {
-            boolean ret = wrappedList.retainAll(c);
-            valueChanged();
-            return ret;
-        }
-
-        @Override
-        public void clear() {
-            wrappedList.clear();
-            valueChanged();
-        }
-
-        @Override
-        public E get(int index) {
-            return wrappedList.get(index);
-        }
-
-        @Override
-        public E set(int index, E element) {
-            E ret = wrappedList.set(index, element);
-            valueChanged();
-            return ret;
-        }
-
-        @Override
-        public void add(int index, E element) {
-            wrappedList.add(index, element);
-            valueChanged();
-        }
-
-        @Override
-        public E remove(int index) {
-            E ret =  wrappedList.remove(index);
-            valueChanged();
-            return ret;
-        }
-
-        @Override
-        public int indexOf(Object o) {
-            return wrappedList.indexOf(o);
-        }
-
-        @Override
-        public int lastIndexOf(Object o) {
-            return wrappedList.lastIndexOf(o);
-        }
-
-        @Override
-        public ListIterator<E> listIterator() {
-            return wrappedList.listIterator();
-        }
-
-        @Override
-        public ListIterator<E> listIterator(int index) {
-            return wrappedList.listIterator(index);
-        }
-
-        @Override
-        public List<E> subList(int fromIndex, int toIndex) {
-            return wrappedList.subList(fromIndex, toIndex);
         }
     }
 
+    /**
+     * Gets class from json.
+     *
+     * @param json the json
+     * @param pkg  the pkg
+     * @return the class from json
+     */
     protected Class getClassFromJson(JsonElement json, Package pkg) {
         try {
             if (json.isJsonObject()) {
@@ -306,7 +144,7 @@ public abstract class GsonSerializerBase implements JsonSerializer {
                     String classFullName = pkg.getName() + "." + className;
                     Class<?> derivedClass = Class.forName(classFullName);
 
-                    ODataBaseEntity instance = (ODataBaseEntity)derivedClass.newInstance();
+                    ODataBaseEntity instance = (ODataBaseEntity) derivedClass.newInstance();
 
                     Field field = ODataBaseEntity.class.getDeclaredField(Constants.ODATA_TYPE_PROPERTY_NAME);
                     if (field != null) {
@@ -328,7 +166,7 @@ public abstract class GsonSerializerBase implements JsonSerializer {
     }
 
     @Override
-    public <E> List<E> deserializeList(String payload, Class<E> clazz) {
+    public <E> OrcList<E> deserializeList(String payload, Class<E> clazz, BaseOrcContainer baseOrcContainer) {
         Gson serializer = createGson();
 
         JsonParser parser = new JsonParser();
@@ -337,10 +175,12 @@ public abstract class GsonSerializerBase implements JsonSerializer {
         JsonElement jsonArray = json.get("value");
         sanitizeForDeserialization(jsonArray);
 
+        JsonElement odataNextLink = json.get("@odata.nextLink");
+
         Package pkg = clazz.getPackage();
         ArrayList<E> arrayList = new ArrayList<E>();
 
-        for(JsonElement item : jsonArray.getAsJsonArray()) {
+        for (JsonElement item : jsonArray.getAsJsonArray()) {
             Class currentClass = clazz;
             Class overridenClass = getClassFromJson(item, pkg);
 
@@ -348,11 +188,17 @@ public abstract class GsonSerializerBase implements JsonSerializer {
                 currentClass = overridenClass;
             }
 
-            E deserializedItem  = (E) serializer.fromJson(item, currentClass);
+            E deserializedItem = (E) serializer.fromJson(item, currentClass);
             arrayList.add(deserializedItem);
         }
 
-        return arrayList;
+        String nextLink = null;
+        if (odataNextLink != null) {
+            nextLink = odataNextLink.getAsString();
+        }
+
+        OrcList<E> orcList = new OrcList<E>(arrayList, clazz, nextLink, resolver, baseOrcContainer);
+        return orcList;
     }
 
     private void sanitizePostSerialization(JsonElement json) {
@@ -424,6 +270,10 @@ public abstract class GsonSerializerBase implements JsonSerializer {
                 sanitizePostSerialization(subElement);
             }
         }
+    }
+
+    public void setDependencyResolver(DependencyResolver resolver) {
+        this.resolver = resolver;
     }
 
     @Override

@@ -1,0 +1,10 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/services(0a6a3de7-b974-42d0-af9e-9c23473b09b9)/"
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"DisplayName\":\"Some Display Name\",\"entityKey\":\"Some Entity Key\",\"Id\":\"5C338D75-CB90-4785-8667-CED25B3695BF\",\"@odata.type\":\"#Microsoft.SampleService.SampleEntity\"}"
+  }
+}

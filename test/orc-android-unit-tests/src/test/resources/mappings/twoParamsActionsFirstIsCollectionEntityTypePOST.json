@@ -1,0 +1,13 @@
+{
+    "request": {
+        "method": "POST",
+        "url": "/Me/Microsoft.SampleService.TwoParamsActionsFirstIsCollectionEntityType/",
+        "bodyPatterns": [{"equalToJson" : "{\"BooleanParams\":false,\"CollectionType\":[{\"@odata.type\":\"#Microsoft.SampleService.SampleEntity\"}]}"}]
+    },
+    "response": {
+        "status": 200,
+        "body": "1"
+    }
+}
+
+

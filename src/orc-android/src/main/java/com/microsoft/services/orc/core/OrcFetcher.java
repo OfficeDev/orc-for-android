@@ -9,6 +9,9 @@ import com.microsoft.services.orc.http.OrcResponse;
 import com.microsoft.services.orc.http.OrcURL;
 import com.microsoft.services.orc.http.Request;
 
+import static com.microsoft.services.orc.core.Helpers.addCustomParametersToRequest;
+
+
 /**
  * The type O data fetcher.
  *
@@ -29,6 +32,9 @@ public abstract class OrcFetcher<TEntity> extends OrcExecutable {
      */
     protected OrcExecutable parent;
 
+    private String select;
+    private String expand;
+
 
     /**
      * Instantiates a new O data fetcher.
@@ -46,6 +52,25 @@ public abstract class OrcFetcher<TEntity> extends OrcExecutable {
     @Override
     protected DependencyResolver getResolver() {
         return parent.getResolver();
+    }
+
+    @Override
+    protected ListenableFuture<OrcResponse> oDataExecute(Request request) {
+
+        OrcURL orcURL = request.getUrl();
+
+        if (select != null) {
+            orcURL.addQueryStringParameter("$select", select);
+        }
+
+        if (expand != null) {
+            orcURL.addQueryStringParameter("$expand", expand);
+        }
+
+        orcURL.prependPathComponent(urlComponent);
+
+        addCustomParametersToRequest(request, getParameters(), getHeaders());
+        return parent.oDataExecute(request);
     }
 
     /**
@@ -94,10 +119,9 @@ public abstract class OrcFetcher<TEntity> extends OrcExecutable {
      *
      * @param url          the url
      * @param urlComponent the url component
-     * @param selectedId   the selected id
+     * @param selector   the selected id
      */
-    protected void setSelectorUrl(OrcURL url, String urlComponent, String selectedId) {
-        String selector = "('" + selectedId + "')";
+    protected void setSelectorUrl(OrcURL url, String urlComponent, String selector) {
         url.prependPathComponent(urlComponent + selector);
     }
 }

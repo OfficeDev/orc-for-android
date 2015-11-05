@@ -7,8 +7,10 @@ import com.google.common.util.concurrent.SettableFuture;
 import com.microsoft.services.orc.http.OrcResponse;
 import com.microsoft.services.orc.http.OrcURL;
 import com.microsoft.services.orc.http.Request;
-import com.microsoft.services.orc.log.LogLevel;
 import com.microsoft.services.orc.serialization.impl.CalendarSerializer;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
@@ -21,6 +23,8 @@ import java.util.Set;
  * The type Helpers.
  */
 public class Helpers {
+
+    static final Logger logger = LoggerFactory.getLogger(Helpers.class);
 
     private static final String ENCODE_EXCEPTIONS = "!$&'()*+,;=:@";
 
@@ -80,6 +84,11 @@ public class Helpers {
         reservedNames.add("while");
     }
 
+    /**
+     * Gets reserved names.
+     *
+     * @return the reserved names
+     */
     public static HashSet<String> getReservedNames() {
         return reservedNames;
     }
@@ -87,9 +96,9 @@ public class Helpers {
     /**
      * Add custom parameters to o data uRL.
      *
-     * @param request    the request
+     * @param request the request
      * @param parameters the parameters
-     * @param headers    the custom headers
+     * @param headers the custom headers
      */
     public static void addCustomParametersToRequest(Request request, Map<String, Object> parameters, Map<String, String> headers) {
         OrcURL url = request.getUrl();
@@ -106,6 +115,12 @@ public class Helpers {
         }
     }
 
+    /**
+     * Gets function parameters.
+     *
+     * @param map the map
+     * @return the function parameters
+     */
     public static String getFunctionParameters(Map<String, Object> map) {
         StringBuilder sb = new StringBuilder();
         Set<String> keys = map.keySet();
@@ -124,6 +139,22 @@ public class Helpers {
         return sb.toString();
     }
 
+    public static String appendFunctionComponent(String functionName, Map<String, Object> arguments) {
+
+        String result;
+        if (!arguments.isEmpty()) {
+            result = "('";
+            for (Map.Entry<String, Object> entrySet : arguments.entrySet()) {
+                result = result + String.format("%s,%s", entrySet.getKey(), entrySet.getValue());
+            }
+            result = result + "')";
+        } else {
+            result = "()";
+        }
+        return functionName + result;
+    }
+
+
     private static String toODataURLValue(Object o) {
         if (o instanceof String) {
             return "'" + o + "'";
@@ -139,11 +170,11 @@ public class Helpers {
     /**
      * Url encode.
      *
-     * @param s the s
+     * @param string the string
      * @return the string
      */
-    public static String urlEncode(String s) {
-        return percentEncode(s, ENCODE_EXCEPTIONS);
+    public static String urlEncode(String string) {
+        return percentEncode(string, ENCODE_EXCEPTIONS);
     }
 
     private static String percentEncode(String s, String reserved) {
@@ -195,7 +226,7 @@ public class Helpers {
     /**
      * Serialize to json byte array.
      *
-     * @param entity   the entity
+     * @param entity the entity
      * @param resolver the resolver
      * @return the byte [ ]
      */
@@ -226,7 +257,10 @@ public class Helpers {
     /**
      * Apply string listenable future.
      *
+     * @param <TEntity>  the type parameter
      * @param future the future
+     * @param clazz the clazz
+     * @param resolver the resolver
      * @return the listenable future
      */
     public static <TEntity> ListenableFuture<TEntity> transformToEntityListenableFuture(
@@ -240,12 +274,14 @@ public class Helpers {
                 final SettableFuture<TEntity> result = SettableFuture.create();
                 TEntity entity = null;
                 try {
-                    resolver.getLogger().log("Entity Deserialization Started", LogLevel.VERBOSE);
+                    logger.info("Entity Deserialization Started");
                     entity = resolver.getJsonSerializer().deserialize(payload, clazz);
-                    resolver.getLogger().log("Entity Deserialization Finished", LogLevel.VERBOSE);
+                    logger.info("Entity Deserialization Finished");
 
                 } catch (Throwable throwable) {
+                    logger.error("Error in deserialization", throwable);
                     result.setException(throwable);
+
                 }
                 result.set(entity);
                 return result;
@@ -258,26 +294,32 @@ public class Helpers {
     /**
      * Add list result callback.
      *
+     * @param <TEntity>  the type parameter
      * @param future the future
+     * @param clazz the clazz
+     * @param resolver the resolver
+     * @return the listenable future
      */
-    public static <TEntity> ListenableFuture<List<TEntity>> transformToEntityListListenableFuture(
+    public static <TEntity> ListenableFuture<OrcList<TEntity>> transformToEntityListListenableFuture(
             ListenableFuture<String> future,
             final Class<TEntity> clazz,
-            final DependencyResolver resolver) {
+            final DependencyResolver resolver,
+            final BaseOrcContainer baseOrcContainer) {
 
-        return Futures.transform(future, new AsyncFunction<String, List<TEntity>>() {
+        return Futures.transform(future, new AsyncFunction<String, OrcList<TEntity>>() {
             @Override
-            public ListenableFuture<List<TEntity>> apply(String payload) throws Exception {
-                SettableFuture<List<TEntity>> result = SettableFuture.create();
-                List<TEntity> list;
+            public ListenableFuture<OrcList<TEntity>> apply(String payload) throws Exception {
+                SettableFuture<OrcList<TEntity>> result = SettableFuture.create();
+                OrcList<TEntity> list;
                 try {
-                    resolver.getLogger().log("Entity collection Deserialization Started", LogLevel.VERBOSE);
-                    list = resolver.getJsonSerializer().deserializeList(payload, clazz);
-                    resolver.getLogger().log("Entity collection Deserialization Finished", LogLevel.VERBOSE);
+                    logger.info("Entity collection Deserialization Started");
+                    list = resolver.getJsonSerializer().deserializeList(payload, clazz, baseOrcContainer);
+                    logger.info("Entity collection Deserialization Finished");
 
                     result.set(list);
-                } catch (Throwable t) {
-                    result.setException(t);
+                } catch (Throwable throwable) {
+                    logger.error("Error in deserialization", throwable);
+                    result.setException(throwable);
                 }
 
                 return result;
@@ -289,6 +331,7 @@ public class Helpers {
      * Add null result callback.
      *
      * @param future the future
+     * @return the listenable future
      */
     public static ListenableFuture<Void> transformToVoidListenableFuture(ListenableFuture<OrcResponse> future) {
         return Futures.transform(future, new AsyncFunction<OrcResponse, Void>() {

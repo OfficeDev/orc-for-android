@@ -10,6 +10,9 @@ import java.io.IOException;
 
 import okio.BufferedSink;
 
+/**
+ * The type Action interceptor.
+ */
 public class ActionInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {

@@ -1,5 +1,10 @@
 package com.microsoft.services.orc.serialization;
 
+import com.microsoft.services.orc.core.AbstractDependencyResolver;
+import com.microsoft.services.orc.core.BaseOrcContainer;
+import com.microsoft.services.orc.core.DependencyResolver;
+import com.microsoft.services.orc.core.OrcList;
+
 import java.util.List;
 import java.util.Map;
 
@@ -26,20 +31,24 @@ public interface JsonSerializer {
     /**
      * Deserialize e.
      *
-     * @param <E>  the type parameter
+     * @param <E>   the type parameter
      * @param serializedObject the serialized object
      * @param clazz the clazz
      * @return the e
+     * @throws Throwable the throwable
      */
     public <E> E deserialize(String serializedObject, Class<E> clazz) throws Throwable;
 
     /**
      * Deserialize list.
      *
-     * @param <E>  the type parameter
+     * @param <E>   the type parameter
      * @param serializedList the serialized list
      * @param clazz the clazz
      * @return the list
+     * @throws Throwable the throwable
      */
-    public <E> List<E> deserializeList(String serializedList, Class<E> clazz) throws Throwable;
+    public <E> OrcList<E> deserializeList(String serializedList, Class<E> clazz, BaseOrcContainer baseOrcContainer) throws Throwable;
+
+    public void setDependencyResolver(DependencyResolver resolver);
 }

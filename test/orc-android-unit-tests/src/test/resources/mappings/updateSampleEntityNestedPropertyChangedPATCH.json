@@ -1,0 +1,16 @@
+{
+  "request": {
+    "method": "PATCH",
+    "url": "/Me/",
+     "headers": {
+                 "UpdateNested": {
+                     "equalTo": "yes"
+                 }
+                },
+    "bodyPatterns": [{"equalToJson": "{\"nestedSampleEntity\":{\"entityKey\":\"Some Entity Key\",\"DisplayName\":\"New Name\",\"Id\":\"5C338D75-CB90-4785-8667-CED25B3695BF\",\"@odata.type\":\"#Microsoft.SampleService.SampleEntity\"}}"}]
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"nestedSampleEntity\":{\"DisplayName\":\"New Name\",\"entityKey\":\"Some Entity Key\",\"Id\":\"5C338D75-CB90-4785-8667-CED25B3695BF\",\"@odata.type\":\"#Microsoft.SampleService.SampleEntity\"},\"DisplayName\":\"Some Display Name\",\"entityKey\":\"Some Entity Key\",\"Id\":\"5C338D75-CB90-4785-8667-CED25B3695BF\",\"@odata.type\":\"#Microsoft.SampleService.SampleEntity\"}"
+  }
+}

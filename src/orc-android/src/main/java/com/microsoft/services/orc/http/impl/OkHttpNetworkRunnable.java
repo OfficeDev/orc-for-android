@@ -17,19 +17,24 @@ import java.io.InputStream;
 import okio.BufferedSink;
 
 
+/**
+ * The type Ok http network runnable.
+ */
 public class OkHttpNetworkRunnable extends NetworkRunnable {
-    public OkHttpNetworkRunnable(com.microsoft.services.orc.http.Request request,
+
+    private OkHttpClient client;
+
+    public OkHttpNetworkRunnable(OkHttpClient client,
+                                 com.microsoft.services.orc.http.Request request,
                                  SettableFuture<com.microsoft.services.orc.http.Response> future) {
         super(request, future);
+        this.client = client;
     }
 
     @Override
     public void run() {
 
         try {
-
-            OkHttpClient client = new OkHttpClient();
-            client.networkInterceptors().add(new LoggingInterceptor());
 
             RequestBody requestBody = null;
             MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
@@ -41,7 +46,7 @@ public class OkHttpNetworkRunnable extends NetworkRunnable {
             }
 
             if (requestBody == null && (mRequest.getVerb().toString().equals("POST") ||
-                                        mRequest.getVerb().toString().equals("PUT"))){
+                    mRequest.getVerb().toString().equals("PUT"))) {
 
                 requestBody = RequestBody.create(null, new byte[0]);
             }
@@ -72,7 +77,6 @@ public class OkHttpNetworkRunnable extends NetworkRunnable {
 
                 mFuture.set(response);
             } else {
-                responseBody.close();
                 mFuture.set(new EmptyResponse(status, okResponse.headers().toMultimap()));
             }
 
@@ -87,6 +91,12 @@ public class OkHttpNetworkRunnable extends NetworkRunnable {
         private MediaType mediaType;
         private com.microsoft.services.orc.http.Request request;
 
+        /**
+         * Instantiates a new Streamed request.
+         *
+         * @param mediaType the media type
+         * @param request   the request
+         */
         public StreamedRequest(MediaType mediaType, com.microsoft.services.orc.http.Request request) {
             this.mediaType = mediaType;
             this.request = request;
@@ -95,6 +105,11 @@ public class OkHttpNetworkRunnable extends NetworkRunnable {
         @Override
         public MediaType contentType() {
             return mediaType;
+        }
+
+        @Override
+        public long contentLength() throws IOException {
+            return request.getStreamedContentSize();
         }
 
         @Override

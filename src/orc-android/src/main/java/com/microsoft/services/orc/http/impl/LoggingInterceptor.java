@@ -8,7 +8,13 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 
+/**
+ * The type Logging interceptor.
+ */
 public class LoggingInterceptor implements Interceptor {
+    /**
+     * The Logger.
+     */
     static Logger logger = Logger.getLogger(LoggingInterceptor.class.getName());
 
     @Override

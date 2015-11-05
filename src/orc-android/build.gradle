@@ -10,7 +10,7 @@ def targetRepo = project.version.endsWith('-SNAPSHOT')?'oss-snapshot-local':'oss
 
 android {
     compileSdkVersion 15
-    buildToolsVersion "22.0.1"
+    buildToolsVersion "21.1.1"
 
     defaultConfig {
         minSdkVersion 15
@@ -42,8 +42,12 @@ dependencies {
     compile 'com.google.code.gson:gson:2.3'
     compile 'com.google.guava:guava:18.0'
     compile 'com.microsoft.aad:adal:2.0-alpha'
-    compile 'com.microsoft.services.msa:msa-auth:0.8.0'
+    compile 'com.microsoft.services.msa:msa-auth:0.8.1'
     compile 'com.squareup.okhttp:okhttp:2.4.0'
+    compile 'org.slf4j:slf4j-api:1.7.12'
+    compile 'com.github.tony19:logback-android-classic:1.1.1-4'
+    compile 'joda-time:joda-time:2.8.2'
+
 }
 
 task sourcesJar(type: Jar) {

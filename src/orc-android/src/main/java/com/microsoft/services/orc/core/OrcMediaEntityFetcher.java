@@ -14,7 +14,6 @@ import com.microsoft.services.orc.http.OrcResponse;
 import com.microsoft.services.orc.http.OrcURL;
 import com.microsoft.services.orc.http.Request;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 import static com.microsoft.services.orc.core.Helpers.transformToVoidListenableFuture;
@@ -23,8 +22,8 @@ import static com.microsoft.services.orc.core.Helpers.transformToVoidListenableF
 /**
  * The type OrcMediaEntityFetcher.
  *
- * @param <TEntity>     the type parameter
- * @param <TOperations> the type parameter
+ * @param <TEntity>      the type parameter
+ * @param <TOperations>  the type parameter
  */
 public abstract class OrcMediaEntityFetcher<TEntity extends ODataBaseEntity, TOperations extends OrcOperations>
         extends OrcEntityFetcher<TEntity, TOperations>
@@ -33,9 +32,9 @@ public abstract class OrcMediaEntityFetcher<TEntity extends ODataBaseEntity, TOp
     /**
      * Instantiates a new OrcMediaEntityFetcher.
      *
-     * @param urlComponent   the url component
-     * @param parent         the parent
-     * @param clazz          the clazz
+     * @param urlComponent the url component
+     * @param parent the parent
+     * @param clazz the clazz
      * @param operationClazz the operation clazz
      */
 
@@ -44,6 +43,11 @@ public abstract class OrcMediaEntityFetcher<TEntity extends ODataBaseEntity, TOp
         super(urlComponent, parent, clazz, operationClazz);
     }
 
+    /**
+     * Gets content.
+     *
+     * @return the content
+     */
     public ListenableFuture<byte[]> getContent() {
 
         Request request = getResolver().createRequest();
@@ -63,6 +67,11 @@ public abstract class OrcMediaEntityFetcher<TEntity extends ODataBaseEntity, TOp
         });
     }
 
+    /**
+     * Gets streamed content.
+     *
+     * @return the streamed content
+     */
     public ListenableFuture<InputStream> getStreamedContent() {
 
         Request request = getResolver().createRequest();
@@ -84,6 +93,12 @@ public abstract class OrcMediaEntityFetcher<TEntity extends ODataBaseEntity, TOp
     }
 
 
+    /**
+     * Put content.
+     *
+     * @param content the content
+     * @return the listenable future
+     */
     public ListenableFuture<Void> putContent(byte[] content) {
 
         Request request = getResolver().createRequest();
@@ -97,6 +112,13 @@ public abstract class OrcMediaEntityFetcher<TEntity extends ODataBaseEntity, TOp
         return transformToVoidListenableFuture(future);
     }
 
+    /**
+     * Put content.
+     *
+     * @param stream the stream
+     * @param streamSize the stream size
+     * @return the listenable future
+     */
     public ListenableFuture<Void> putContent(InputStream stream, long streamSize) {
         Request request = getResolver().createRequest();
         request.setStreamedContent(stream, streamSize);
@@ -109,60 +131,4 @@ public abstract class OrcMediaEntityFetcher<TEntity extends ODataBaseEntity, TOp
         return transformToVoidListenableFuture(future);
     }
 
-    public class MediaEntityInputStream extends InputStream {
-        private InputStream internalStream;
-        private OrcResponse response;
-
-        public MediaEntityInputStream(InputStream internalStream, OrcResponse response) {
-            this.internalStream = internalStream;
-            this.response = response;
-        }
-
-        @Override
-        public int read() throws IOException {
-            return internalStream.read();
-
-        }
-
-        @Override
-        public void close() throws IOException {
-            this.internalStream.close();
-            this.response.closeStreamedResponse();
-        }
-
-        @Override
-        public int available() throws IOException {
-            return this.internalStream.available();
-        }
-
-        @Override
-        public boolean markSupported() {
-            return this.internalStream.markSupported();
-        }
-
-        @Override
-        public synchronized void mark(int readlimit) {
-            this.internalStream.mark(readlimit);
-        }
-
-        @Override
-        public int read(byte[] b) throws IOException {
-            return this.internalStream.read(b);
-        }
-
-        @Override
-        public int read(byte[] b, int off, int len) throws IOException {
-            return this.internalStream.read(b, off, len);
-        }
-
-        @Override
-        public synchronized void reset() throws IOException {
-            this.internalStream.reset();
-        }
-
-        @Override
-        public long skip(long n) throws IOException {
-            return this.internalStream.skip(n);
-        }
-    }
 }
