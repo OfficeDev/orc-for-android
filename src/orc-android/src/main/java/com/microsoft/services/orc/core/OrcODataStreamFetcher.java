@@ -36,8 +36,6 @@ public class OrcODataStreamFetcher {
         Request request = dependencyResolver.createRequest();
         request.setVerb(HttpVerb.GET);
         request.addOption(Request.MUST_STREAM_RESPONSE_CONTENT, "true");
-        OrcURL url = request.getUrl();
-        url.appendPathComponent("$value");
 
         ListenableFuture<OrcResponse> future = oDataExecute(request);
 
@@ -62,8 +60,6 @@ public class OrcODataStreamFetcher {
         Request request = getResolver().createRequest();
         request.setContent(content);
         request.setVerb(HttpVerb.PUT);
-        OrcURL url = request.getUrl();
-        url.appendPathComponent("$value");
 
         ListenableFuture<OrcResponse> future = oDataExecute(request);
 
@@ -81,8 +77,6 @@ public class OrcODataStreamFetcher {
         Request request = getResolver().createRequest();
         request.setStreamedContent(stream, streamSize);
         request.setVerb(HttpVerb.PUT);
-        OrcURL url = request.getUrl();
-        url.appendPathComponent("$value");
 
         ListenableFuture<OrcResponse> future = oDataExecute(request);
 
