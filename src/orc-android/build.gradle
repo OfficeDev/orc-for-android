@@ -42,7 +42,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.3'
     compile 'com.google.guava:guava:18.0'
     compile 'com.microsoft.aad:adal:1.1.7'
-    compile 'com.microsoft.services.msa:msa-auth:0.8.1'
+    compile 'com.microsoft.services.msa:msa-auth:0.8.3'
     compile 'com.squareup.okhttp:okhttp:2.4.0'
     compile 'org.slf4j:slf4j-api:1.7.12'
     compile 'com.github.tony19:logback-android-classic:1.1.1-4'
