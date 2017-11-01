@@ -1,5 +1,6 @@
 ## ORC for Android
 
+**Important:** This preview SDK has been deprecated and is no longer being maintained. We recommend that you use [Microsoft Graph](https://graph.microsoft.com/) and the associated [Microsoft Graph SDKs](https://developer.microsoft.com/en-us/graph/code-samples-and-sdks) instead.
 
 [![Build Status](https://travis-ci.org/MSOpenTech/orc-for-android.svg?branch=master)](https://travis-ci.org/MSOpenTech/orc-for-android)
 [ ![Download](https://api.bintray.com/packages/msopentech/Maven/ORC-android/images/download.svg) ](https://bintray.com/msopentech/Maven/ORC-android/_latestVersion)
